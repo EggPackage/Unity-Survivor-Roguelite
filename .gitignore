@@ -1,0 +1,47 @@
+# Unity 自动生成的文件夹与缓存
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# AssetBundles 输出(通常不入库,按需可移除此行)
+/[Aa]ssetBundles/
+
+# 编译产物
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# Visual Studio / Rider / IDE 生成文件
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# OS 生成文件
+.DS_Store
+Thumbs.db
+
+# Unity Crashlytics / 崩溃报告
+sysinfo.txt
+crashlytics-build.properties
+
+# 临时文件
+*.tmp
