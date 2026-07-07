@@ -3,131 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ÊÂ¼şÀàĞÍ Ã¶¾Ù
+/// äº‹ä»¶ç±»å‹ æšä¸¾
 /// </summary>
-public enum E_EventType 
+public enum E_EventType
 {
     /// <summary>
-    /// ¹ÖÎïËÀÍöÊÂ¼ş ?? ²ÎÊı£ºMonster
+    /// æ€ªç‰©æ­»äº¡äº‹ä»¶ â€”â€” å‚æ•°ï¼šMonster
     /// </summary>
     E_Monster_Dead,
     /// <summary>
-    /// Íæ¼Ò»ñÈ¡½±Àø ?? ²ÎÊı£ºint
+    /// ç©å®¶è·å–å¥–åŠ± â€”â€” å‚æ•°ï¼šint
     /// </summary>
     E_Player_GetReward,
     /// <summary>
-    /// ²âÊÔÓÃÊÂ¼ş ?? ²ÎÊı£ºÎŞ
+    /// æµ‹è¯•ç”¨äº‹ä»¶ â€”â€” å‚æ•°ï¼šæ— 
     /// </summary>
     E_Test,
     /// <summary>
-    /// ³¡¾°ÇĞ»»Ê±½ø¶È±ä»¯»ñÈ¡
+    /// åœºæ™¯åˆ‡æ¢æ—¶è¿›åº¦å˜åŒ–è¯»å–
     /// </summary>
     E_SceneLoadChange,
 
     /// <summary>
-    /// ÊäÈëÏµÍ³´¥·¢¼¼ÄÜ1 ĞĞÎª
+    /// è¾“å…¥ç³»ç»Ÿï¼šæŠ€èƒ½1 è¡Œä¸º
     /// </summary>
     E_Input_Skill1,
     /// <summary>
-    /// ÊäÈëÏµÍ³´¥·¢¼¼ÄÜ2 ĞĞÎª
+    /// è¾“å…¥ç³»ç»Ÿï¼šæŠ€èƒ½2 è¡Œä¸º
     /// </summary>
     E_Input_Skill2,
     /// <summary>
-    /// ÊäÈëÏµÍ³´¥·¢¼¼ÄÜ3 ĞĞÎª
+    /// è¾“å…¥ç³»ç»Ÿï¼šæŠ€èƒ½3 è¡Œä¸º
     /// </summary>
     E_Input_Skill3,
 
     /// <summary>
-    /// Ë®Æ½ÈÈ¼ü -1~1µÄÊÂ¼ş¼àÌı
+    /// æ°´å¹³è½´ -1~1 äº‹ä»¶ä¼ é€’
     /// </summary>
     E_Input_Horizontal,
 
     /// <summary>
-    /// ÊúÖ±ÈÈ¼ü -1~1µÄÊÂ¼ş¼àÌı
+    /// å‚ç›´è½´ -1~1 äº‹ä»¶ä¼ é€’
     /// </summary>
     E_Input_Vertical,
-
-    // ===== ĞÂÔöÓÎÏ·ÊÂ¼ş =====
-    /// <summary>
-    /// ´æµµ¼ÓÔØÍê³ÉÊÂ¼ş
-    /// </summary>
-    E_SaveLoaded,
-    /// <summary>
-    /// Ê±¼äÇĞ»»ÊÂ¼ş ?? ²ÎÊı£ºE_TimeOfDay
-    /// </summary>
-    E_TimeOfDayChange,
-    /// <summary>
-    /// ½øÈëĞÂµÄÒ»ÌìÊÂ¼ş ?? ²ÎÊı£ºint dayCount
-    /// </summary>
-    E_NewDay,
-    /// <summary>
-    /// NPC±»¾ÈÔ®ÊÂ¼ş ?? ²ÎÊı£ºstring npcId
-    /// </summary>
-    E_NPCRescued,
-    /// <summary>
-    /// Ê·À³Ä·±»ÊÕÈİÊÂ¼ş
-    /// </summary>
-    E_SlimeCaptured,
-    /// <summary>
-    /// µêÆÌµÈ¼¶ÌáÉıÊÂ¼ş ?? ²ÎÊı£ºint newLevel
-    /// </summary>
-    E_ShopLevelUp,
-    /// <summary>
-    /// Ìì¸³Éı¼¶ÊÂ¼ş ?? ²ÎÊı£ºstring talentType
-    /// </summary>
-    E_TalentLevelUp,
-    /// <summary>
-    /// Åä·½½âËøÊÂ¼ş ?? ²ÎÊı£ºstring recipeId
-    /// </summary>
-    E_RecipeUnlocked,
-    /// <summary>
-    /// µØÀÎÍ¨¹ØÊÂ¼ş ?? ²ÎÊı£ºint floor
-    /// </summary>
-    E_DungeonCleared,
-    /// <summary>
-    /// ÇåĞÑÖµ±ä»¯ÊÂ¼ş ?? ²ÎÊı£ºint currentAwareness
-    /// </summary>
-    E_AwarenessChanged,
-    /// <summary>
-    /// ½ğ±Ò±ä»¯ÊÂ¼ş ?? ²ÎÊı£ºint gold
-    /// </summary>
-    E_GoldChanged,
-    /// <summary>
-    /// ¾«»ª±ä»¯ÊÂ¼ş ?? ²ÎÊı£ºint essence
-    /// </summary>
-    E_EssenceChanged,
-    /// <summary>
-    /// ±³°ü±ä»¯ÊÂ¼ş
-    /// </summary>
-    E_InventoryChanged,
-    /// <summary>
-    /// ²Ö¿â±ä»¯ÊÂ¼ş
-    /// </summary>
-    E_WarehouseChanged,
-    /// <summary>
-    /// ÈÎÎñÍê³ÉÊÂ¼ş ?? ²ÎÊı£ºstring questId
-    /// </summary>
-    E_QuestCompleted,
-    /// <summary>
-    /// ½á¾Ö´¥·¢ÊÂ¼ş ?? ²ÎÊı£ºbool isTrueEnding
-    /// </summary>
-    E_EndingTriggered,
-
-    // ===== Ã¿ÈÕËæ»úÊÂ¼ş =====
-    /// <summary>
-    /// ²É¼¯·­±¶ÊÂ¼ş
-    /// </summary>
-    MaterialDouble,
-    /// <summary>
-    /// Ä§Îï³±ÊÂ¼ş
-    /// </summary>
-    MonsterSurge,
-    /// <summary>
-    /// ´óÁ¿±»À§´åÃñÊÂ¼ş
-    /// </summary>
-    ManyTrappedNPCs,
-    /// <summary>
-    /// ÆÕÍ¨ÈÕÊÂ¼ş
-    /// </summary>
-    NormalDay,
 }

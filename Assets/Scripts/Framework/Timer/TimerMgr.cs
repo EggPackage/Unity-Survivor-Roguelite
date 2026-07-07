@@ -4,30 +4,29 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// ¼ÆÊ±Æ÷¹ÜÀíÆ÷ Ö÷ÒªÓÃÓÚ¿ªÆô¡¢Í£Ö¹¡¢ÖØÖÃµÈµÈ²Ù×÷À´¹ÜÀí¼ÆÊ±Æ÷
-/// Í¬Ê±¼¯³ÉÖçÒ¹Ê±¼ä¹ÜÀí¹¦ÄÜ
+/// è®¡æ—¶å™¨ç®¡ç†å™¨ ä¸»è¦ç”¨äºå¼€å¯ã€åœæ­¢ã€é‡ç½®ç­‰ç­‰æ“ä½œçš„é€šç”¨è®¡æ—¶å™¨
 /// </summary>
 public class TimerMgr : BaseManager<TimerMgr>
 {
     /// <summary>
-    /// ÓÃÓÚ¼ÇÂ¼µ±Ç°½«Òª´´½¨µÄÎ¨Ò»IDµÄ
+    /// ç”¨äºè®°å½•å½“å‰éœ€è¦åˆ†é…çš„å”¯ä¸€IDå·
     /// </summary>
     private int TIMER_KEY = 0;
     /// <summary>
-    /// ÓÃÓÚ´æ´¢¹ÜÀíËùÓĞ¼ÆÊ±Æ÷µÄ×ÖµäÈİÆ÷
+    /// ç”¨äºå­˜å‚¨ç®¡ç†æ‰€æœ‰è®¡æ—¶å™¨é¡¹çš„å­—å…¸å®¹å™¨
     /// </summary>
     private Dictionary<int, TimerItem> timerDic = new Dictionary<int, TimerItem>();
     /// <summary>
-    /// ÓÃÓÚ´æ´¢¹ÜÀíËùÓĞ¼ÆÊ±Æ÷µÄ×ÖµäÈİÆ÷£¨²»ÊÜTime.timeScaleÓ°ÏìµÄ¼ÆÊ±Æ÷£©
+    /// ç”¨äºå­˜å‚¨ç®¡ç†æ‰€æœ‰è®¡æ—¶å™¨é¡¹çš„å­—å…¸å®¹å™¨ï¼ˆä¸å—Time.timeScaleå½±å“çš„è®¡æ—¶å™¨ï¼‰
     /// </summary>
     private Dictionary<int, TimerItem> realTimerDic = new Dictionary<int, TimerItem>();
     /// <summary>
-    /// ´ıÒÆ³ıÁĞ±í
+    /// å¾…ç§»é™¤åˆ—è¡¨
     /// </summary>
     private List<TimerItem> delList = new List<TimerItem>();
 
-    //ÎªÁË±ÜÃâÄÚ´æµÄÀË·Ñ Ã¿´Îwhile¶¼»áÉú³É 
-    //ÎÒÃÇÖ±½Ó½«ÆäÉùÃ÷Îª³ÉÔ±±äÁ¿
+    //ä¸ºäº†é¿å…å†…å­˜æµªè´¹ æ¯æ¬¡whileä¸­éƒ½æ–°å»º
+    //è¿™é‡Œç›´æ¥å°†å®ƒå£°æ˜ä¸ºæˆå‘˜å˜é‡
     private WaitForSecondsRealtime waitForSecondsRealtime = new WaitForSecondsRealtime(intervalTime);
     private WaitForSeconds waitForSeconds = new WaitForSeconds(intervalTime);
 
@@ -35,59 +34,27 @@ public class TimerMgr : BaseManager<TimerMgr>
     private Coroutine realTimer;
 
     /// <summary>
-    /// ¼ÆÊ±Æ÷¹ÜÀíÆ÷ÖĞµÄÎ¨Ò»¼ÆÊ±ÓÃµÄĞ­Í¬³ÌĞò µÄ¼ä¸ôÊ±¼ä
+    /// è®¡æ—¶å™¨å®¹å™¨è¿è¡Œä¸­çš„å”¯ä¸€é—´éš”ç”¨çš„ååŒç¨‹åº çš„é—´éš”æ—¶é—´
     /// </summary>
     private const float intervalTime = 0.1f;
 
-    // ===== ÖçÒ¹Ê±¼ä¹ÜÀíÏà¹Ø =====
-    /// <summary>
-    /// µ±Ç°Ê±¼ä¶Î
-    /// </summary>
-    private E_TimeOfDay currentTimeOfDay = E_TimeOfDay.Dawn;
-    /// <summary>
-    /// µ±Ç°ÌìÊı
-    /// </summary>
-    private int currentDay = 1;
-    /// <summary>
-    /// Ã¿¸öÊ±¼ä¶Î³ÖĞøÊ±¼ä£¨Ãë£©
-    /// </summary>
-    private const int TIME_PHASE_DURATION = 30;
-    /// <summary>
-    /// µ±Ç°Ê±¼ä¶ÎÊ£ÓàÊ±¼ä£¨Ãë£©
-    /// </summary>
-    private float currentPhaseRemainingTime = TIME_PHASE_DURATION;
-    /// <summary>
-    /// Ê±¼äÁ÷ÊÅËÙ¶È±¶ÂÊ
-    /// </summary>
-    private float timeSpeed = 1f;
-    /// <summary>
-    /// Ê±¼äÊÇ·ñÔİÍ£
-    /// </summary>
-    private bool isTimePaused = false;
-    /// <summary>
-    /// ÖçÒ¹Ñ­»·¼ÆÊ±Æ÷ID
-    /// </summary>
-    private int dayNightTimerId = 0;
-
-    private TimerMgr() 
+    private TimerMgr()
     {
         Start();
     }
 
-    //¿ªÆô¼ÆÊ±Æ÷¹ÜÀíÆ÷µÄ·½·¨
+    //å¼€å¯è®¡æ—¶å™¨å®¹å™¨åŠŸèƒ½çš„æ–¹æ³•
     public void Start()
     {
         timer = MonoMgr.Instance.StartCoroutine(StartTiming(false, timerDic));
         realTimer = MonoMgr.Instance.StartCoroutine(StartTiming(true, realTimerDic));
-        StartDayNightCycle();
     }
 
-    //¹Ø±Õ¼ÆÊ±Æ÷¹ÜÀíÆ÷µÄ·½·¨
+    //å…³é—­è®¡æ—¶å™¨å®¹å™¨åŠŸèƒ½çš„æ–¹æ³•
     public void Stop()
     {
         MonoMgr.Instance.StopCoroutine(timer);
         MonoMgr.Instance.StopCoroutine(realTimer);
-        StopDayNightCycle();
     }
 
     IEnumerator StartTiming(bool isRealTime, Dictionary<int, TimerItem> timerDic)
@@ -129,14 +96,14 @@ public class TimerMgr : BaseManager<TimerMgr>
     }
 
     /// <summary>
-    /// ´´½¨µ¥¸ö¼ÆÊ±Æ÷
+    /// åˆ›å»ºå¹¶æ·»åŠ è®¡æ—¶å™¨
     /// </summary>
-    /// <param name="isRealTime">Èç¹ûÊÇtrue²»ÊÜTime.timeScaleÓ°Ïì</param>
-    /// <param name="allTime">×ÜµÄÊ±¼ä ºÁÃë 1s=1000ms</param>
-    /// <param name="overCallBack">×ÜÊ±¼ä½áÊø»Øµ÷</param>
-    /// <param name="intervalTime">¼ä¸ô¼ÆÊ±Ê±¼ä ºÁÃë 1s=1000ms</param>
-    /// <param name="callBack">¼ä¸ô¼ÆÊ±Ê±¼ä½áÊø »Øµ÷</param>
-    /// <returns>·µ»ØÎ¨Ò»ID ÓÃÓÚÍâ²¿¿ØÖÆ¶ÔÓ¦¼ÆÊ±Æ÷</returns>
+    /// <param name="isRealTime">å¦‚æœæ˜¯trueåˆ™ä¸å—Time.timeScaleå½±å“</param>
+    /// <param name="allTime">æ€»çš„æ—¶é—´ æ¯”å¦‚ 1s=1000ms</param>
+    /// <param name="overCallBack">è®¡æ—¶ç»“æŸåçš„å›è°ƒ</param>
+    /// <param name="intervalTime">é—´éš”è®¡æ—¶æ—¶é—´ æ¯”å¦‚ 1s=1000ms</param>
+    /// <param name="callBack">é—´éš”è®¡æ—¶æ—¶é—´åˆ°å å›è°ƒ</param>
+    /// <returns>è¿”å›å”¯ä¸€ID ç”¨äºå¤–éƒ¨æ§åˆ¶å¯¹åº”è®¡æ—¶å™¨</returns>
     public int CreateTimer(bool isRealTime, int allTime, UnityAction overCallBack, int intervalTime = 0, UnityAction callBack = null)
     {
         int keyID = ++TIMER_KEY;
@@ -149,7 +116,7 @@ public class TimerMgr : BaseManager<TimerMgr>
         return keyID;
     }
 
-    //ÒÆ³ıµ¥¸ö¼ÆÊ±Æ÷
+    //ç§»é™¤å•ä¸ªè®¡æ—¶å™¨
     public void RemoveTimer(int keyID)
     {
         if(timerDic.ContainsKey(keyID))
@@ -165,9 +132,9 @@ public class TimerMgr : BaseManager<TimerMgr>
     }
 
     /// <summary>
-    /// ÖØÖÃµ¥¸ö¼ÆÊ±Æ÷
+    /// é‡ç½®å•ä¸ªè®¡æ—¶å™¨
     /// </summary>
-    /// <param name="keyID">¼ÆÊ±Æ÷Î¨Ò»ID</param>
+    /// <param name="keyID">è®¡æ—¶å™¨å”¯ä¸€ID</param>
     public void ResetTimer(int keyID)
     {
         if (timerDic.ContainsKey(keyID))
@@ -181,9 +148,9 @@ public class TimerMgr : BaseManager<TimerMgr>
     }
 
     /// <summary>
-    /// ¿ªÆôµ±¸ö¼ÆÊ±Æ÷ Ö÷ÒªÓÃÓÚÔİÍ£ºóÖØĞÂ¿ªÊ¼
+    /// å¼€å¯å•ä¸ªè®¡æ—¶å™¨ ä¸»è¦ç”¨äºæš‚åœåé‡æ–°å¼€å§‹
     /// </summary>
-    /// <param name="keyID">¼ÆÊ±Æ÷Î¨Ò»ID</param>
+    /// <param name="keyID">è®¡æ—¶å™¨å”¯ä¸€ID</param>
     public void StartTimer(int keyID)
     {
         if (timerDic.ContainsKey(keyID))
@@ -197,9 +164,9 @@ public class TimerMgr : BaseManager<TimerMgr>
     }
 
     /// <summary>
-    /// Í£Ö¹µ¥¸ö¼ÆÊ±Æ÷ Ö÷ÒªÓÃÓÚÔİÍ£
+    /// åœæ­¢å•ä¸ªè®¡æ—¶å™¨ ä¸»è¦ç”¨äºæš‚åœ
     /// </summary>
-    /// <param name="keyID">¼ÆÊ±Æ÷Î¨Ò»ID</param>
+    /// <param name="keyID">è®¡æ—¶å™¨å”¯ä¸€ID</param>
     public void StopTimer(int keyID)
     {
         if (timerDic.ContainsKey(keyID))
@@ -210,174 +177,5 @@ public class TimerMgr : BaseManager<TimerMgr>
         {
             realTimerDic[keyID].isRuning = false;
         }
-    }
-
-    // ===== ÖçÒ¹Ê±¼ä¹ÜÀí·½·¨ =====
-
-    /// <summary>
-    /// Æô¶¯ÖçÒ¹Ñ­»·
-    /// </summary>
-    private void StartDayNightCycle()
-    {
-        if (dayNightTimerId != 0)
-        {
-            RemoveTimer(dayNightTimerId);
-        }
-        dayNightTimerId = CreateTimer(true, int.MaxValue, null, 1000, UpdateDayNightCycle);
-    }
-
-    /// <summary>
-    /// Í£Ö¹ÖçÒ¹Ñ­»·
-    /// </summary>
-    private void StopDayNightCycle()
-    {
-        if (dayNightTimerId != 0)
-        {
-            RemoveTimer(dayNightTimerId);
-            dayNightTimerId = 0;
-        }
-    }
-
-    /// <summary>
-    /// ¸üĞÂÖçÒ¹Ñ­»·
-    /// </summary>
-    private void UpdateDayNightCycle()
-    {
-        if (isTimePaused)
-            return;
-
-        currentPhaseRemainingTime -= timeSpeed;
-
-        if (currentPhaseRemainingTime <= 0)
-        {
-            AdvanceTime();
-        }
-    }
-
-    /// <summary>
-    /// ÍÆ½øµ½ÏÂÒ»Ê±¼ä¶Î
-    /// </summary>
-    public void AdvanceTime()
-    {
-        switch (currentTimeOfDay)
-        {
-            case E_TimeOfDay.Dawn:
-                currentTimeOfDay = E_TimeOfDay.Day;
-                break;
-            case E_TimeOfDay.Day:
-                currentTimeOfDay = E_TimeOfDay.Night;
-                break;
-            case E_TimeOfDay.Night:
-                currentTimeOfDay = E_TimeOfDay.LateNight;
-                break;
-            case E_TimeOfDay.LateNight:
-                NewDay();
-                break;
-        }
-
-        currentPhaseRemainingTime = TIME_PHASE_DURATION;
-
-        EventCenter.Instance.EventTrigger(E_EventType.E_TimeOfDayChange, currentTimeOfDay);
-    }
-
-    /// <summary>
-    /// ½øÈëĞÂµÄÒ»Ìì
-    /// </summary>
-    private void NewDay()
-    {
-        currentDay++;
-        currentTimeOfDay = E_TimeOfDay.Dawn;
-
-        EventCenter.Instance.EventTrigger(E_EventType.E_NewDay, currentDay);
-    }
-
-    /// <summary>
-    /// »ñÈ¡µ±Ç°Ê±¼ä¶Î
-    /// </summary>
-    public E_TimeOfDay GetCurrentTimeOfDay()
-    {
-        return currentTimeOfDay;
-    }
-
-    /// <summary>
-    /// »ñÈ¡µ±Ç°ÌìÊı
-    /// </summary>
-    public int GetCurrentDay()
-    {
-        return currentDay;
-    }
-
-    /// <summary>
-    /// »ñÈ¡µ±Ç°Ê±¼ä¶ÎÊ£ÓàÊ±¼ä£¨Ãë£©
-    /// </summary>
-    public float GetPhaseRemainingTime()
-    {
-        return currentPhaseRemainingTime;
-    }
-
-    /// <summary>
-    /// »ñÈ¡Ê±¼ä¶Î×ÜÊ±³¤£¨Ãë£©
-    /// </summary>
-    public int GetPhaseDuration()
-    {
-        return TIME_PHASE_DURATION;
-    }
-
-    /// <summary>
-    /// ÉèÖÃÊ±¼äÁ÷ÊÅËÙ¶È
-    /// </summary>
-    /// <param name="speed">ËÙ¶È±¶ÂÊ</param>
-    public void SetTimeSpeed(float speed)
-    {
-        timeSpeed = Mathf.Max(0, speed);
-    }
-
-    /// <summary>
-    /// »ñÈ¡µ±Ç°Ê±¼äËÙ¶È
-    /// </summary>
-    public float GetTimeSpeed()
-    {
-        return timeSpeed;
-    }
-
-    /// <summary>
-    /// ÔİÍ£Ê±¼ä
-    /// </summary>
-    public void PauseTime()
-    {
-        isTimePaused = true;
-    }
-
-    /// <summary>
-    /// »Ö¸´Ê±¼ä
-    /// </summary>
-    public void ResumeTime()
-    {
-        isTimePaused = false;
-    }
-
-    /// <summary>
-    /// Ö±½ÓÉèÖÃÊ±¼ä
-    /// </summary>
-    /// <param name="day">ÌìÊı</param>
-    /// <param name="timeOfDay">Ê±¼ä¶Î</param>
-    public void SetTime(int day, E_TimeOfDay timeOfDay)
-    {
-        currentDay = day;
-        currentTimeOfDay = timeOfDay;
-        currentPhaseRemainingTime = TIME_PHASE_DURATION;
-
-        EventCenter.Instance.EventTrigger(E_EventType.E_TimeOfDayChange, currentTimeOfDay);
-    }
-
-    /// <summary>
-    /// Ö±½ÓÉèÖÃÊ±¼ä¶Î
-    /// </summary>
-    /// <param name="timeOfDay">Ê±¼ä¶Î</param>
-    public void SetTimeOfDay(E_TimeOfDay timeOfDay)
-    {
-        currentTimeOfDay = timeOfDay;
-        currentPhaseRemainingTime = TIME_PHASE_DURATION;
-        EventCenter.Instance.EventTrigger(E_EventType.E_TimeOfDayChange, currentTimeOfDay);
     }
 }
