@@ -8,12 +8,12 @@ using UnityEngine.Networking;
 public class UWQResMgr : SingletonAutoMono<UWQResMgr>
 {
     /// <summary>
-    /// ÀûÓÃUnityWebRequestÈ¥¼ÓÔØ×ÊÔ´
+    /// åˆ©ç”¨UnityWebRequestå»åŠ è½½èµ„æº
     /// </summary>
-    /// <typeparam name="T">ÀàĞÍÖ»ÄÜÊÇstring¡¢byte[]¡¢Texture¡¢AssetBundle ²»ÄÜÊÇÆäËûÀàĞÍ Ä¿Ç°²»Ö§³Ö</typeparam>
-    /// <param name="path">×ÊÔ´Â·¾¶¡¢Òª×Ô¼º¼ÓÉÏĞ­Òé http¡¢ftp¡¢file</param>
-    /// <param name="callBack">¼ÓÔØ³É¹¦µÄ»Øµ÷º¯Êı</param>
-    /// <param name="failCallBack">¼ÓÔØÊ§°ÜµÄ»Øµ÷º¯Êı</param>
+    /// <typeparam name="T">ç±»å‹åªèƒ½æ˜¯stringã€byte[]ã€Textureã€AssetBundle ä¸èƒ½æ˜¯å…¶ä»–ç±»å‹ ç›®å‰ä¸æ”¯æŒ</typeparam>
+    /// <param name="path">èµ„æºè·¯å¾„ã€è¦è‡ªå·±åŠ ä¸Šåè®® httpã€ftpã€file</param>
+    /// <param name="callBack">åŠ è½½æˆåŠŸçš„å›è°ƒå‡½æ•°</param>
+    /// <param name="failCallBack">åŠ è½½å¤±è´¥çš„å›è°ƒå‡½æ•°</param>
     public void LoadRes<T>(string path, UnityAction<T> callBack, UnityAction failCallBack) where T : class
     {
         StartCoroutine(ReallyLoadRes<T>(path, callBack, failCallBack));
@@ -26,7 +26,7 @@ public class UWQResMgr : SingletonAutoMono<UWQResMgr>
         //Texture
         //AssetBundle
         Type type = typeof(T);
-        //ÓÃÓÚ¼ÓÔØµÄ¶ÔÏó
+        //ç”¨äºåŠ è½½çš„å¯¹è±¡
         UnityWebRequest req = null;
         if (type == typeof(string) ||
             type == typeof(byte[]))
@@ -42,7 +42,7 @@ public class UWQResMgr : SingletonAutoMono<UWQResMgr>
         }
 
         yield return req.SendWebRequest();
-        //Èç¹û¼ÓÔØ³É¹¦ 
+        //å¦‚æœåŠ è½½æˆåŠŸ 
         if (req.result == UnityWebRequest.Result.Success)
         {
             if (type == typeof(string))
@@ -56,7 +56,7 @@ public class UWQResMgr : SingletonAutoMono<UWQResMgr>
         }
         else
             failCallBack?.Invoke();
-        //ÊÍ·ÅUWQ¶ÔÏó
+        //é‡Šæ”¾UWQå¯¹è±¡
         req.Dispose();
     }
 }

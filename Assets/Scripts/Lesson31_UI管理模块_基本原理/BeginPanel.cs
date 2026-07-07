@@ -8,15 +8,15 @@ public class BeginPanel : BasePanel
 {
     private void Start()
     {
-        print("»ñÈ¡µ½µÄ°´Å¥¿Ø¼şÃûÎª£º" + GetControl<Button>("btnBegin").name);
+        print("è·å–åˆ°çš„æŒ‰é’®æ§ä»¶åä¸ºï¼š" + GetControl<Button>("btnBegin").name);
 
         UIMgr.AddCustomEventListener(GetControl<Button>("btnBegin"), EventTriggerType.PointerEnter, (data) =>
         {
-            print("Êó±ê½øÈë");
+            print("é¼ æ ‡è¿›å…¥");
         });
         UIMgr.AddCustomEventListener(GetControl<Button>("btnBegin"), EventTriggerType.PointerExit, (data) =>
         {
-            print("Êó±êÀë¿ª");
+            print("é¼ æ ‡ç¦»å¼€");
         });
 
         EventCenter.Instance.AddEventListener<float>(E_EventType.E_SceneLoadChange, ChangeScene);
@@ -24,7 +24,7 @@ public class BeginPanel : BasePanel
 
     private void ChangeScene(float p)
     {
-        print("ÇĞ»»³¡¾°µÄ½ø¶È" + p);
+        print("åˆ‡æ¢åœºæ™¯çš„è¿›åº¦" + p);
     }
 
     protected override void ClickBtn(string btnName)
@@ -32,24 +32,24 @@ public class BeginPanel : BasePanel
         switch (btnName)
         {
             case "btnBegin":
-                print("¿ªÊ¼°´Å¥±»µã»÷");
+                print("å¼€å§‹æŒ‰é’®è¢«ç‚¹å‡»");
                 SceneMgr.Instance.LoadSceneAsyn("Test", () =>
                 {
-                    print("³¡¾°¼ÓÔØ½áÊø");
+                    print("åœºæ™¯åŠ è½½ç»“æŸ");
                 });
                 break;
             case "btnSetting":
-                print("ÉèÖÃ°´Å¥±»µã»÷");
+                print("è®¾ç½®æŒ‰é’®è¢«ç‚¹å‡»");
                 break;
             case "btnQuit":
-                print("ÍË³ö°´Å¥±»µã»÷");
+                print("é€€å‡ºæŒ‰é’®è¢«ç‚¹å‡»");
                 break;
         }
     }
 
     public override void ShowMe()
     {
-        print("ÏÔÊ¾Ãæ°åÊ± BegingPanel»áÖ´ĞĞµÄÄ¬ÈÏÂß¼­");
+        print("æ˜¾ç¤ºé¢æ¿æ—¶ BegingPanelä¼šæ‰§è¡Œçš„é»˜è®¤é€»è¾‘");
         
     }
 
@@ -65,6 +65,6 @@ public class BeginPanel : BasePanel
 
     public void TestFun()
     {
-        print("ÏëÒªÖ´ĞĞµÄBeginPanelÂß¼­");
+        print("æƒ³è¦æ‰§è¡Œçš„BeginPanelé€»è¾‘");
     }
 }

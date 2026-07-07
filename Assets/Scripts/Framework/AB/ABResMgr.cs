@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// ÓÃÓÚ½øĞĞ¼ÓÔØABÏà¹Ø×ÊÔ´µÄÕûºÏ ÔÚ¿ª·¢ÖĞ¿ÉÒÔÍ¨¹ıEditorResMgrÈ¥¼ÓÔØ¶ÔÓ¦×ÊÔ´½øĞĞ²âÊÔ
+/// ç”¨äºè¿›è¡ŒåŠ è½½ABç›¸å…³èµ„æºçš„æ•´åˆ åœ¨å¼€å‘ä¸­å¯ä»¥é€šè¿‡EditorResMgrå»åŠ è½½å¯¹åº”èµ„æºè¿›è¡Œæµ‹è¯•
 /// </summary>
 public class ABResMgr : BaseManager<ABResMgr>
 {
-    //Èç¹ûÊÇtrue»áÍ¨¹ıEditorResMgrÈ¥¼ÓÔØ Èç¹ûÊÇfalse»áÍ¨¹ıABMgr AB°üµÄĞÎÊ½È¥¼ÓÔØ
+    //å¦‚æœæ˜¯trueä¼šé€šè¿‡EditorResMgrå»åŠ è½½ å¦‚æœæ˜¯falseä¼šé€šè¿‡ABMgr ABåŒ…çš„å½¢å¼å»åŠ è½½
     private bool isDebug = false;
 
     private ABResMgr() { }
@@ -18,7 +18,7 @@ public class ABResMgr : BaseManager<ABResMgr>
 #if UNITY_EDITOR
         if(isDebug)
         {
-            //ÎÒÃÇ×Ô¶¨ÒåÁËÒ»¸öAB°üÖĞ×ÊÔ´µÄ¹ÜÀí·½Ê½ ¶ÔÓ¦ÎÄ¼ş¼ĞÃû ¾ÍÊÇ°üÃû 
+            //æˆ‘ä»¬è‡ªå®šä¹‰äº†ä¸€ä¸ªABåŒ…ä¸­èµ„æºçš„ç®¡ç†æ–¹å¼ å¯¹åº”æ–‡ä»¶å¤¹å å°±æ˜¯åŒ…å 
             T res = EditorResMgr.Instance.LoadEditorRes<T>($"{abName}/{resName}");
             callBack?.Invoke(res as T);
         }

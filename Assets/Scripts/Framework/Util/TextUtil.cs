@@ -6,18 +6,18 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// ÓÃÓÚ´¦Àí×Ö·û´®µÄÒ»Ğ©¹«¹²¹¦ÄÜµÄ
+/// ç”¨äºå¤„ç†å­—ç¬¦ä¸²çš„ä¸€äº›å…¬å…±åŠŸèƒ½çš„
 /// </summary>
 public class TextUtil
 {
     private static StringBuilder resultStr = new StringBuilder("");
 
-    #region ×Ö·û´®²ğ·ÖÏà¹Ø
+    #region å­—ç¬¦ä¸²æ‹†åˆ†ç›¸å…³
     /// <summary>
-    /// ²ğ·Ö×Ö·û´® ·µ»Ø×Ö·û´®Êı×é
+    /// æ‹†åˆ†å­—ç¬¦ä¸² è¿”å›å­—ç¬¦ä¸²æ•°ç»„
     /// </summary>
-    /// <param name="str">ÏëÒª±»²ğ·ÖµÄ×Ö·û´®</param>
-    /// <param name="type">²ğ·Ö×Ö·ûÀàĞÍ£º 1-; 2-, 3-% 4-: 5-¿Õ¸ñ 6-| 7-_ </param>
+    /// <param name="str">æƒ³è¦è¢«æ‹†åˆ†çš„å­—ç¬¦ä¸²</param>
+    /// <param name="type">æ‹†åˆ†å­—ç¬¦ç±»å‹ï¼š 1-; 2-, 3-% 4-: 5-ç©ºæ ¼ 6-| 7-_ </param>
     /// <returns></returns>
     public static string[] SplitStr(string str, int type = 1)
     {
@@ -26,16 +26,16 @@ public class TextUtil
         string newStr = str;
         if (type == 1)
         {
-            //ÎªÁË±ÜÃâÓ¢ÎÄ·ûºÅÌî³ÉÁËÖĞÎÄ·ûºÅ ÎÒÃÇÏÈ½øĞĞÒ»¸öÌæ»»
-            while (newStr.IndexOf("£»") != -1)
-                newStr = newStr.Replace("£»", ";");
+            //ä¸ºäº†é¿å…è‹±æ–‡ç¬¦å·å¡«æˆäº†ä¸­æ–‡ç¬¦å· æˆ‘ä»¬å…ˆè¿›è¡Œä¸€ä¸ªæ›¿æ¢
+            while (newStr.IndexOf("ï¼›") != -1)
+                newStr = newStr.Replace("ï¼›", ";");
             return newStr.Split(';');
         }
         else if (type == 2)
         {
-            //ÎªÁË±ÜÃâÓ¢ÎÄ·ûºÅÌî³ÉÁËÖĞÎÄ·ûºÅ ÎÒÃÇÏÈ½øĞĞÒ»¸öÌæ»»
-            while (newStr.IndexOf("£¬") != -1)
-                newStr = newStr.Replace("£¬", ",");
+            //ä¸ºäº†é¿å…è‹±æ–‡ç¬¦å·å¡«æˆäº†ä¸­æ–‡ç¬¦å· æˆ‘ä»¬å…ˆè¿›è¡Œä¸€ä¸ªæ›¿æ¢
+            while (newStr.IndexOf("ï¼Œ") != -1)
+                newStr = newStr.Replace("ï¼Œ", ",");
             return newStr.Split(',');
         }
         else if (type == 3)
@@ -44,9 +44,9 @@ public class TextUtil
         }
         else if (type == 4)
         {
-            //ÎªÁË±ÜÃâÓ¢ÎÄ·ûºÅÌî³ÉÁËÖĞÎÄ·ûºÅ ÎÒÃÇÏÈ½øĞĞÒ»¸öÌæ»»
-            while (newStr.IndexOf("£º") != -1)
-                newStr = newStr.Replace("£º", ":");
+            //ä¸ºäº†é¿å…è‹±æ–‡ç¬¦å·å¡«æˆäº†ä¸­æ–‡ç¬¦å· æˆ‘ä»¬å…ˆè¿›è¡Œä¸€ä¸ªæ›¿æ¢
+            while (newStr.IndexOf("ï¼š") != -1)
+                newStr = newStr.Replace("ï¼š", ":");
             return newStr.Split(':');
         }
         else if (type == 5)
@@ -66,18 +66,18 @@ public class TextUtil
     }
 
     /// <summary>
-    /// ²ğ·Ö×Ö·û´® ·µ»ØÕûĞÎÊı×é
+    /// æ‹†åˆ†å­—ç¬¦ä¸² è¿”å›æ•´å½¢æ•°ç»„
     /// </summary>
-    /// <param name="str">ÏëÒª±»²ğ·ÖµÄ×Ö·û´®</param>
-    /// <param name="type">²ğ·Ö×Ö·ûÀàĞÍ£º 1-; 2-, 3-% 4-: 5-¿Õ¸ñ 6-| 7-_ </param>
+    /// <param name="str">æƒ³è¦è¢«æ‹†åˆ†çš„å­—ç¬¦ä¸²</param>
+    /// <param name="type">æ‹†åˆ†å­—ç¬¦ç±»å‹ï¼š 1-; 2-, 3-% 4-: 5-ç©ºæ ¼ 6-| 7-_ </param>
     /// <returns></returns>
     public static int[] SplitStrToIntArr(string str, int type = 1)
     {
-        //µÃµ½²ğ·ÖºóµÄ×Ö·û´®Êı×é
+        //å¾—åˆ°æ‹†åˆ†åçš„å­—ç¬¦ä¸²æ•°ç»„
         string[] strs = SplitStr(str, type);
         if (strs.Length == 0)
             return new int[0];
-        //°Ñ×Ö·û´®Êı×é ×ª»»³É intÊı×é 
+        //æŠŠå­—ç¬¦ä¸²æ•°ç»„ è½¬æ¢æˆ intæ•°ç»„ 
         return Array.ConvertAll<string, int>(strs, (str) =>
         {
             return int.Parse(str);
@@ -85,12 +85,12 @@ public class TextUtil
     }
 
     /// <summary>
-    /// ×¨ÃÅÓÃÀ´²ğ·Ö¶à×é¼üÖµ¶ÔĞÎÊ½µÄÊı¾İµÄ ÒÔint·µ»Ø
+    /// ä¸“é—¨ç”¨æ¥æ‹†åˆ†å¤šç»„é”®å€¼å¯¹å½¢å¼çš„æ•°æ®çš„ ä»¥intè¿”å›
     /// </summary>
-    /// <param name="str">´ı²ğ·ÖµÄ×Ö·û´®</param>
-    /// <param name="typeOne">×é¼ä·Ö¸ô·û  1-; 2-, 3-% 4-: 5-¿Õ¸ñ 6-| 7-_ </param>
-    /// <param name="typeTwo">¼üÖµ¶Ô·Ö¸ô·û 1-; 2-, 3-% 4-: 5-¿Õ¸ñ 6-| 7-_ </param>
-    /// <param name="callBack">»Øµ÷º¯Êı</param>
+    /// <param name="str">å¾…æ‹†åˆ†çš„å­—ç¬¦ä¸²</param>
+    /// <param name="typeOne">ç»„é—´åˆ†éš”ç¬¦  1-; 2-, 3-% 4-: 5-ç©ºæ ¼ 6-| 7-_ </param>
+    /// <param name="typeTwo">é”®å€¼å¯¹åˆ†éš”ç¬¦ 1-; 2-, 3-% 4-: 5-ç©ºæ ¼ 6-| 7-_ </param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°</param>
     public static void SplitStrToIntArrTwice(string str, int typeOne, int typeTwo, UnityAction<int, int> callBack)
     {
         string[] strs = SplitStr(str, typeOne);
@@ -99,7 +99,7 @@ public class TextUtil
         int[] ints;
         for (int i = 0; i < strs.Length; i++)
         {
-            //²ğ·Öµ¥¸öµÀ¾ßµÄIDºÍÊıÁ¿ĞÅÏ¢
+            //æ‹†åˆ†å•ä¸ªé“å…·çš„IDå’Œæ•°é‡ä¿¡æ¯
             ints = SplitStrToIntArr(strs[i], typeTwo);
             if (ints.Length == 0)
                 continue;
@@ -108,12 +108,12 @@ public class TextUtil
     }
 
     /// <summary>
-    /// ×¨ÃÅÓÃÀ´²ğ·Ö¶à×é¼üÖµ¶ÔĞÎÊ½µÄÊı¾İµÄ ÒÔstring·µ»Ø
+    /// ä¸“é—¨ç”¨æ¥æ‹†åˆ†å¤šç»„é”®å€¼å¯¹å½¢å¼çš„æ•°æ®çš„ ä»¥stringè¿”å›
     /// </summary>
-    /// <param name="str">´ı²ğ·ÖµÄ×Ö·û´®</param>
-    /// <param name="typeOne">×é¼ä·Ö¸ô·û 1-; 2-, 3-% 4-: 5-¿Õ¸ñ 6-| 7-_ </param>
-    /// <param name="typeTwo">¼üÖµ¶Ô·Ö¸ô·û  1-; 2-, 3-% 4-: 5-¿Õ¸ñ 6-| 7-_ </param>
-    /// <param name="callBack">»Øµ÷º¯Êı</param>
+    /// <param name="str">å¾…æ‹†åˆ†çš„å­—ç¬¦ä¸²</param>
+    /// <param name="typeOne">ç»„é—´åˆ†éš”ç¬¦ 1-; 2-, 3-% 4-: 5-ç©ºæ ¼ 6-| 7-_ </param>
+    /// <param name="typeTwo">é”®å€¼å¯¹åˆ†éš”ç¬¦  1-; 2-, 3-% 4-: 5-ç©ºæ ¼ 6-| 7-_ </param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°</param>
     public static void SplitStrTwice(string str, int typeOne, int typeTwo, UnityAction<string, string> callBack)
     {
         string[] strs = SplitStr(str, typeOne);
@@ -122,7 +122,7 @@ public class TextUtil
         string[] strs2;
         for (int i = 0; i < strs.Length; i++)
         {
-            //²ğ·Öµ¥¸öµÀ¾ßµÄIDºÍÊıÁ¿ĞÅÏ¢
+            //æ‹†åˆ†å•ä¸ªé“å…·çš„IDå’Œæ•°é‡ä¿¡æ¯
             strs2 = SplitStr(strs[i], typeTwo);
             if (strs2.Length == 0)
                 continue;
@@ -133,74 +133,74 @@ public class TextUtil
 
     #endregion
 
-    #region Êı×Ö×ª×Ö·û´®Ïà¹Ø
+    #region æ•°å­—è½¬å­—ç¬¦ä¸²ç›¸å…³
     /// <summary>
-    /// µÃµ½Ö¸¶¨³¤¶ÈµÄÊı×Ö×ª×Ö·û´®ÄÚÈİ£¬Èç¹û³¤¶È²»¹»»áÔÚÇ°Ãæ²¹0£¬Èç¹û³¤¶È³¬³ö£¬»á±£ÁôÔ­Ê¼ÊıÖµ
+    /// å¾—åˆ°æŒ‡å®šé•¿åº¦çš„æ•°å­—è½¬å­—ç¬¦ä¸²å†…å®¹ï¼Œå¦‚æœé•¿åº¦ä¸å¤Ÿä¼šåœ¨å‰é¢è¡¥0ï¼Œå¦‚æœé•¿åº¦è¶…å‡ºï¼Œä¼šä¿ç•™åŸå§‹æ•°å€¼
     /// </summary>
-    /// <param name="value">ÊıÖµ</param>
-    /// <param name="len">³¤¶È</param>
+    /// <param name="value">æ•°å€¼</param>
+    /// <param name="len">é•¿åº¦</param>
     /// <returns></returns>
     public static string GetNumStr(int value, int len)
     {
-        //tostringÖĞ´«ÈëÒ»¸ö Dn µÄ×Ö·û´®
-        //´ú±íÏëÒª½«Êı×Ö×ª»»Îª³¤¶ÈÎ»nµÄ×Ö·û´®
-        //Èç¹û³¤¶È²»¹» »áÔÚÇ°Ãæ²¹0
+        //tostringä¸­ä¼ å…¥ä¸€ä¸ª Dn çš„å­—ç¬¦ä¸²
+        //ä»£è¡¨æƒ³è¦å°†æ•°å­—è½¬æ¢ä¸ºé•¿åº¦ä½nçš„å­—ç¬¦ä¸²
+        //å¦‚æœé•¿åº¦ä¸å¤Ÿ ä¼šåœ¨å‰é¢è¡¥0
         return value.ToString($"D{len}");
     }
     /// <summary>
-    /// ÈÃÖ¸¶¨¸¡µãÊı±£ÁôĞ¡ÊıµãºónÎ»
+    /// è®©æŒ‡å®šæµ®ç‚¹æ•°ä¿ç•™å°æ•°ç‚¹ånä½
     /// </summary>
-    /// <param name="value">¾ßÌåµÄ¸¡µãÊı</param>
-    /// <param name="len">±£ÁôĞ¡ÊıµãºónÎ»</param>
+    /// <param name="value">å…·ä½“çš„æµ®ç‚¹æ•°</param>
+    /// <param name="len">ä¿ç•™å°æ•°ç‚¹ånä½</param>
     /// <returns></returns>
     public static string GetDecimalStr(float value, int len)
     {
-        //tostringÖĞ´«ÈëÒ»¸ö Fn µÄ×Ö·û´®
-        //´ú±íÏëÒª±£ÁôĞ¡Êıµãºó¼¸Î»Ğ¡Êı
+        //tostringä¸­ä¼ å…¥ä¸€ä¸ª Fn çš„å­—ç¬¦ä¸²
+        //ä»£è¡¨æƒ³è¦ä¿ç•™å°æ•°ç‚¹åå‡ ä½å°æ•°
         return value.ToString($"F{len}");
     }
 
     /// <summary>
-    /// ½«½Ï´ó½Ï³¤µÄÊı ×ª»»Îª×Ö·û´®
+    /// å°†è¾ƒå¤§è¾ƒé•¿çš„æ•° è½¬æ¢ä¸ºå­—ç¬¦ä¸²
     /// </summary>
-    /// <param name="num">¾ßÌåÊıÖµ</param>
-    /// <returns>nÒÚnÇ§Íò »ò nÍònÇ§ »ò 1000 3434 234</returns>
+    /// <param name="num">å…·ä½“æ•°å€¼</param>
+    /// <returns>näº¿nåƒä¸‡ æˆ– nä¸‡nåƒ æˆ– 1000 3434 234</returns>
     public static string GetBigDataToString(int num)
     {
-        //Èç¹û´óÓÚ1ÒÚ ÄÇÃ´¾ÍÏÔÊ¾ nÒÚnÇ§Íò
+        //å¦‚æœå¤§äº1äº¿ é‚£ä¹ˆå°±æ˜¾ç¤º näº¿nåƒä¸‡
         if (num >= 100000000)
         {
-            return BigDataChange(num, 100000000, "ÒÚ", "Ç§Íò");
+            return BigDataChange(num, 100000000, "äº¿", "åƒä¸‡");
         }
-        //Èç¹û´óÓÚ1Íò ÄÇÃ´¾ÍÏÔÊ¾ nÍònÇ§
+        //å¦‚æœå¤§äº1ä¸‡ é‚£ä¹ˆå°±æ˜¾ç¤º nä¸‡nåƒ
         else if (num >= 10000)
         {
-            return BigDataChange(num, 10000, "Íò", "Ç§");
+            return BigDataChange(num, 10000, "ä¸‡", "åƒ");
         }
-        //¶¼²»Âú×ã ¾ÍÖ±½ÓÏÔÊ¾ÊıÖµ±¾Éí
+        //éƒ½ä¸æ»¡è¶³ å°±ç›´æ¥æ˜¾ç¤ºæ•°å€¼æœ¬èº«
         else
             return num.ToString();
     }
 
     /// <summary>
-    /// °Ñ´óÊı¾İ×ª»»³É¶ÔÓ¦µÄ×Ö·û´®Æ´½Ó
+    /// æŠŠå¤§æ•°æ®è½¬æ¢æˆå¯¹åº”çš„å­—ç¬¦ä¸²æ‹¼æ¥
     /// </summary>
-    /// <param name="num">ÊıÖµ</param>
-    /// <param name="company">·Ö¸îµ¥Î» ¿ÉÒÔÌî 100000000¡¢10000</param>
-    /// <param name="bigCompany">´óµ¥Î» ÒÚ¡¢Íò</param>
-    /// <param name="littltCompany">Ğ¡µ¥Î» Íò¡¢Ç§</param>
+    /// <param name="num">æ•°å€¼</param>
+    /// <param name="company">åˆ†å‰²å•ä½ å¯ä»¥å¡« 100000000ã€10000</param>
+    /// <param name="bigCompany">å¤§å•ä½ äº¿ã€ä¸‡</param>
+    /// <param name="littltCompany">å°å•ä½ ä¸‡ã€åƒ</param>
     /// <returns></returns>
     private static string BigDataChange(int num, int company, string bigCompany, string littltCompany)
     {
         resultStr.Clear();
-        //ÓĞ¼¸ÒÚ¡¢¼¸Íò
+        //æœ‰å‡ äº¿ã€å‡ ä¸‡
         resultStr.Append(num / company);
         resultStr.Append(bigCompany);
-        //ÓĞ¼¸Ç§Íò¡¢¼¸Ç§
+        //æœ‰å‡ åƒä¸‡ã€å‡ åƒ
         int tmpNum = num % company;
-        //¿´ÓĞ¼¸Ç§Íò¡¢¼¸Ç§
+        //çœ‹æœ‰å‡ åƒä¸‡ã€å‡ åƒ
         tmpNum /= (company / 10);
-        //Ëã³öÀ´²»Îª0
+        //ç®—å‡ºæ¥ä¸ä¸º0
         if(tmpNum != 0)
         {
             resultStr.Append(tmpNum);
@@ -211,53 +211,53 @@ public class TextUtil
 
     #endregion
 
-    #region Ê±¼ä×ª»»Ïà¹Ø
+    #region æ—¶é—´è½¬æ¢ç›¸å…³
     /// <summary>
-    /// Ãë×ªÊ±·ÖÃë¸ñÊ½ ÆäÖĞÊ±·ÖÃë¿ÉÒÔ×Ô¼º´«
+    /// ç§’è½¬æ—¶åˆ†ç§’æ ¼å¼ å…¶ä¸­æ—¶åˆ†ç§’å¯ä»¥è‡ªå·±ä¼ 
     /// </summary>
-    /// <param name="s">ÃëÊı</param>
-    /// <param name="egZero">ÊÇ·ñºöÂÔ0</param>
-    /// <param name="isKeepLen">ÊÇ·ñ±£ÁôÖÁÉÙ2Î»</param>
-    /// <param name="hourStr">Ğ¡Ê±µÄÆ´½Ó×Ö·û</param>
-    /// <param name="minuteStr">·ÖÖÓµÄÆ´½Ó×Ö·û</param>
-    /// <param name="secondStr">ÃëµÄÆ´½Ó×Ö·û</param>
+    /// <param name="s">ç§’æ•°</param>
+    /// <param name="egZero">æ˜¯å¦å¿½ç•¥0</param>
+    /// <param name="isKeepLen">æ˜¯å¦ä¿ç•™è‡³å°‘2ä½</param>
+    /// <param name="hourStr">å°æ—¶çš„æ‹¼æ¥å­—ç¬¦</param>
+    /// <param name="minuteStr">åˆ†é’Ÿçš„æ‹¼æ¥å­—ç¬¦</param>
+    /// <param name="secondStr">ç§’çš„æ‹¼æ¥å­—ç¬¦</param>
     /// <returns></returns>
-    public static string SecondToHMS(int s, bool egZero = false, bool isKeepLen = false, string hourStr = "Ê±", string minuteStr = "·Ö", string secondStr = "Ãë")
+    public static string SecondToHMS(int s, bool egZero = false, bool isKeepLen = false, string hourStr = "æ—¶", string minuteStr = "åˆ†", string secondStr = "ç§’")
     {
-        //Ê±¼ä²»»áÓĞ¸ºÊı ËùÒÔÎÒÃÇÈç¹û·¢ÏÖÊÇ¸ºÊıÖ±½Ó¹é0
+        //æ—¶é—´ä¸ä¼šæœ‰è´Ÿæ•° æ‰€ä»¥æˆ‘ä»¬å¦‚æœå‘ç°æ˜¯è´Ÿæ•°ç›´æ¥å½’0
         if (s < 0)
             s = 0;
-        //¼ÆËãĞ¡Ê±
+        //è®¡ç®—å°æ—¶
         int hour = s / 3600;
-        //¼ÆËã·ÖÖÓ
-        //³ıÈ¥Ğ¡Ê±ºóµÄÊ£ÓàÃë
+        //è®¡ç®—åˆ†é’Ÿ
+        //é™¤å»å°æ—¶åçš„å‰©ä½™ç§’
         int second = s % 3600;
-        //Ê£ÓàÃë×ªÎª·ÖÖÓÊı
+        //å‰©ä½™ç§’è½¬ä¸ºåˆ†é’Ÿæ•°
         int minute = second / 60;
-        //¼ÆËãÃë
+        //è®¡ç®—ç§’
         second = s % 60;
-        //Æ´½Ó
+        //æ‹¼æ¥
         resultStr.Clear();
-        //Èç¹ûĞ¡Ê±²»Îª0 »òÕß ²»ºöÂÔ0 
+        //å¦‚æœå°æ—¶ä¸ä¸º0 æˆ–è€… ä¸å¿½ç•¥0 
         if (hour != 0 || !egZero)
         {
-            resultStr.Append(isKeepLen?GetNumStr(hour, 2):hour);//¾ßÌå¼¸¸öĞ¡Ê±
+            resultStr.Append(isKeepLen?GetNumStr(hour, 2):hour);//å…·ä½“å‡ ä¸ªå°æ—¶
             resultStr.Append(hourStr);
         }
-        //Èç¹û·ÖÖÓ²»Îª0 »òÕß ²»ºöÂÔ0 »òÕß Ğ¡Ê±²»Îª0
+        //å¦‚æœåˆ†é’Ÿä¸ä¸º0 æˆ–è€… ä¸å¿½ç•¥0 æˆ–è€… å°æ—¶ä¸ä¸º0
         if(minute != 0 || !egZero || hour != 0)
         {
-            resultStr.Append(isKeepLen?GetNumStr(minute,2): minute);//¾ßÌå¼¸·ÖÖÓ
+            resultStr.Append(isKeepLen?GetNumStr(minute,2): minute);//å…·ä½“å‡ åˆ†é’Ÿ
             resultStr.Append(minuteStr);
         }
-        //Èç¹ûÃë²»Îª0 »òÕß ²»ºöÂÔ0 »òÕß Ğ¡Ê±ºÍ·ÖÖÓ²»Îª0
+        //å¦‚æœç§’ä¸ä¸º0 æˆ–è€… ä¸å¿½ç•¥0 æˆ–è€… å°æ—¶å’Œåˆ†é’Ÿä¸ä¸º0
         if(second != 0 || !egZero || hour != 0 || minute != 0)
         {
-            resultStr.Append(isKeepLen?GetNumStr(second,2): second);//¾ßÌå¶àÉÙÃë
+            resultStr.Append(isKeepLen?GetNumStr(second,2): second);//å…·ä½“å¤šå°‘ç§’
             resultStr.Append(secondStr);
         }
 
-        //Èç¹û´«ÈëµÄ²ÎÊıÊÇ0ÃëÊ±
+        //å¦‚æœä¼ å…¥çš„å‚æ•°æ˜¯0ç§’æ—¶
         if(resultStr.Length == 0)
         {
             resultStr.Append(0);
@@ -268,7 +268,7 @@ public class TextUtil
     }
     
     /// <summary>
-    /// Ãë×ª00:00:00¸ñÊ½
+    /// ç§’è½¬00:00:00æ ¼å¼
     /// </summary>
     /// <param name="s"></param>
     /// <param name="egZero"></param>

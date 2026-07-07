@@ -5,43 +5,43 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// ²ã¼¶Ã¶¾Ù
+/// å±‚çº§æšä¸¾
 /// </summary>
 public enum E_UILayer
 {
     /// <summary>
-    /// ×îµ×²ã
+    /// æœ€åº•å±‚
     /// </summary>
     Bottom,
     /// <summary>
-    /// ÖĞ²ã
+    /// ä¸­å±‚
     /// </summary>
     Middle,
     /// <summary>
-    /// ¸ß²ã
+    /// é«˜å±‚
     /// </summary>
     Top,
     /// <summary>
-    /// ÏµÍ³²ã ×î¸ß²ã
+    /// ç³»ç»Ÿå±‚ æœ€é«˜å±‚
     /// </summary>
     System,
 }
 
 /// <summary>
-/// ¹ÜÀíËùÓĞUIÃæ°åµÄ¹ÜÀíÆ÷
-/// ×¢Òâ£ºÃæ°åÔ¤ÉèÌåÃûÒªºÍÃæ°åÀàÃûÒ»ÖÂ£¡£¡£¡£¡£¡
+/// ç®¡ç†æ‰€æœ‰UIé¢æ¿çš„ç®¡ç†å™¨
+/// æ³¨æ„ï¼šé¢æ¿é¢„è®¾ä½“åè¦å’Œé¢æ¿ç±»åä¸€è‡´ï¼ï¼ï¼ï¼ï¼
 /// </summary>
 public class UIMgr : BaseManager<UIMgr>
 {
     /// <summary>
-    /// Ö÷ÒªÓÃÓÚÀïÊ½Ìæ»»Ô­Ôò ÔÚ×ÖµäÖĞ ÓÃ¸¸ÀàÈİÆ÷×°ÔØ×ÓÀà¶ÔÏó
+    /// ä¸»è¦ç”¨äºé‡Œå¼æ›¿æ¢åŸåˆ™ åœ¨å­—å…¸ä¸­ ç”¨çˆ¶ç±»å®¹å™¨è£…è½½å­ç±»å¯¹è±¡
     /// </summary>
     private abstract class BasePanelInfo { }
 
     /// <summary>
-    /// ÓÃÓÚ´æ´¢Ãæ°åĞÅÏ¢ ºÍ¼ÓÔØÍê³ÉµÄ»Øµ÷º¯ÊıµÄ
+    /// ç”¨äºå­˜å‚¨é¢æ¿ä¿¡æ¯ å’ŒåŠ è½½å®Œæˆçš„å›è°ƒå‡½æ•°çš„
     /// </summary>
-    /// <typeparam name="T">Ãæ°åµÄÀàĞÍ</typeparam>
+    /// <typeparam name="T">é¢æ¿çš„ç±»å‹</typeparam>
     private class PanelInfo<T> : BasePanelInfo where T:BasePanel
     {
         public T panel;
@@ -59,46 +59,46 @@ public class UIMgr : BaseManager<UIMgr>
     private Canvas uiCanvas;
     private EventSystem uiEventSystem;
 
-    //²ã¼¶¸¸¶ÔÏó
+    //å±‚çº§çˆ¶å¯¹è±¡
     private Transform bottomLayer;
     private Transform middleLayer;
     private Transform topLayer;
     private Transform systemLayer;
 
     /// <summary>
-    /// ÓÃÓÚ´æ´¢ËùÓĞµÄÃæ°å¶ÔÏó
+    /// ç”¨äºå­˜å‚¨æ‰€æœ‰çš„é¢æ¿å¯¹è±¡
     /// </summary>
     private Dictionary<string, BasePanelInfo> panelDic = new Dictionary<string, BasePanelInfo>();
 
     private UIMgr()
     {
-        //¶¯Ì¬´´½¨Î¨Ò»µÄCanvasºÍEventSystem£¨ÉãÏñ»ú£©
+        //åŠ¨æ€åˆ›å»ºå”¯ä¸€çš„Canvaså’ŒEventSystemï¼ˆæ‘„åƒæœºï¼‰
         uiCamera = GameObject.Instantiate(ResMgr.Instance.Load<GameObject>("UI/UICamera")).GetComponent<Camera>();
-        //uiÉãÏñ»ú¹ı³¡¾°²»ÒÆ³ı ×¨ÃÅÓÃÀ´äÖÈ¾UIÃæ°å
+        //uiæ‘„åƒæœºè¿‡åœºæ™¯ä¸ç§»é™¤ ä¸“é—¨ç”¨æ¥æ¸²æŸ“UIé¢æ¿
         GameObject.DontDestroyOnLoad(uiCamera.gameObject);
 
-        //¶¯Ì¬´´½¨Canvas
+        //åŠ¨æ€åˆ›å»ºCanvas
         uiCanvas = GameObject.Instantiate(ResMgr.Instance.Load<GameObject>("UI/Canvas")).GetComponent<Canvas>();
-        //ÉèÖÃÊ¹ÓÃµÄUIÉãÏñ»ú
+        //è®¾ç½®ä½¿ç”¨çš„UIæ‘„åƒæœº
         uiCanvas.worldCamera = uiCamera;
-        //¹ı³¡¾°²»ÒÆ³ı
+        //è¿‡åœºæ™¯ä¸ç§»é™¤
         GameObject.DontDestroyOnLoad(uiCanvas.gameObject);
 
-        //ÕÒµ½²ã¼¶¸¸¶ÔÏó
+        //æ‰¾åˆ°å±‚çº§çˆ¶å¯¹è±¡
         bottomLayer = uiCanvas.transform.Find("Bottom");
         middleLayer = uiCanvas.transform.Find("Middle");
         topLayer = uiCanvas.transform.Find("Top");
         systemLayer = uiCanvas.transform.Find("System");
 
-        //¶¯Ì¬´´½¨EventSystem
+        //åŠ¨æ€åˆ›å»ºEventSystem
         uiEventSystem = GameObject.Instantiate(ResMgr.Instance.Load<GameObject>("UI/EventSystem")).GetComponent<EventSystem>();
         GameObject.DontDestroyOnLoad(uiEventSystem.gameObject);
     }
 
     /// <summary>
-    /// »ñÈ¡¶ÔÓ¦²ã¼¶µÄ¸¸¶ÔÏó
+    /// è·å–å¯¹åº”å±‚çº§çš„çˆ¶å¯¹è±¡
     /// </summary>
-    /// <param name="layer">²ã¼¶Ã¶¾ÙÖµ</param>
+    /// <param name="layer">å±‚çº§æšä¸¾å€¼</param>
     /// <returns></returns>
     public Transform GetLayerFather(E_UILayer layer)
     {
@@ -118,114 +118,114 @@ public class UIMgr : BaseManager<UIMgr>
     }
 
     /// <summary>
-    /// ÏÔÊ¾Ãæ°å
+    /// æ˜¾ç¤ºé¢æ¿
     /// </summary>
-    /// <typeparam name="T">Ãæ°åµÄÀàĞÍ</typeparam>
-    /// <param name="layer">Ãæ°åÏÔÊ¾µÄ²ã¼¶</param>
-    /// <param name="callBack">ÓÉÓÚ¿ÉÄÜÊÇÒì²½¼ÓÔØ Òò´ËÍ¨¹ıÎ¯ÍĞ»Øµ÷µÄĞÎÊ½ ½«¼ÓÔØÍê³ÉµÄÃæ°å´«µİ³öÈ¥½øĞĞÊ¹ÓÃ</param>
-    /// <param name="isSync">ÊÇ·ñ²ÉÓÃÍ¬²½¼ÓÔØ Ä¬ÈÏÎªfalse</param>
+    /// <typeparam name="T">é¢æ¿çš„ç±»å‹</typeparam>
+    /// <param name="layer">é¢æ¿æ˜¾ç¤ºçš„å±‚çº§</param>
+    /// <param name="callBack">ç”±äºå¯èƒ½æ˜¯å¼‚æ­¥åŠ è½½ å› æ­¤é€šè¿‡å§”æ‰˜å›è°ƒçš„å½¢å¼ å°†åŠ è½½å®Œæˆçš„é¢æ¿ä¼ é€’å‡ºå»è¿›è¡Œä½¿ç”¨</param>
+    /// <param name="isSync">æ˜¯å¦é‡‡ç”¨åŒæ­¥åŠ è½½ é»˜è®¤ä¸ºfalse</param>
     public void ShowPanel<T>(E_UILayer layer = E_UILayer.Middle, UnityAction<T> callBack = null, bool isSync = false) where T:BasePanel
     {
-        //»ñÈ¡Ãæ°åÃû Ô¤ÉèÌåÃû±ØĞëºÍÃæ°åÀàÃûÒ»ÖÂ 
+        //è·å–é¢æ¿å é¢„è®¾ä½“åå¿…é¡»å’Œé¢æ¿ç±»åä¸€è‡´ 
         string panelName = typeof(T).Name;
-        //´æÔÚÃæ°å
+        //å­˜åœ¨é¢æ¿
         if(panelDic.ContainsKey(panelName))
         {
-            //È¡³ö×ÖµäÖĞÒÑ¾­Õ¼ºÃÎ»ÖÃµÄÊı¾İ
+            //å–å‡ºå­—å…¸ä¸­å·²ç»å å¥½ä½ç½®çš„æ•°æ®
             PanelInfo<T> panelInfo = panelDic[panelName] as PanelInfo<T>;
-            //ÕıÔÚÒì²½¼ÓÔØÖĞ
+            //æ­£åœ¨å¼‚æ­¥åŠ è½½ä¸­
             if(panelInfo.panel == null)
             {
-                //Èç¹ûÖ®Ç°ÏÔÊ¾ÁËÓÖÒş²Ø ÏÖÔÚÓÖÏëÏÔÊ¾ ÄÇÃ´Ö±½ÓÉèÎªfalse
+                //å¦‚æœä¹‹å‰æ˜¾ç¤ºäº†åˆéšè— ç°åœ¨åˆæƒ³æ˜¾ç¤º é‚£ä¹ˆç›´æ¥è®¾ä¸ºfalse
                 panelInfo.isHide = false;
 
-                //Èç¹ûÕıÔÚÒì²½¼ÓÔØ Ó¦¸ÃµÈ´ıËü¼ÓÔØÍê±Ï Ö»ĞèÒª¼ÇÂ¼»Øµ÷º¯Êı ¼ÓÔØÍêºóÈ¥µ÷ÓÃ¼´¿É
+                //å¦‚æœæ­£åœ¨å¼‚æ­¥åŠ è½½ åº”è¯¥ç­‰å¾…å®ƒåŠ è½½å®Œæ¯• åªéœ€è¦è®°å½•å›è°ƒå‡½æ•° åŠ è½½å®Œåå»è°ƒç”¨å³å¯
                 if (callBack != null)
                     panelInfo.callBack += callBack;
             }
-            else//ÒÑ¾­¼ÓÔØ½áÊø
+            else//å·²ç»åŠ è½½ç»“æŸ
             {
-                //Èç¹ûÊÇÊ§»î×´Ì¬ Ö±½Ó¼¤»îÃæ°å ¾Í¿ÉÒÔÏÔÊ¾ÁË
+                //å¦‚æœæ˜¯å¤±æ´»çŠ¶æ€ ç›´æ¥æ¿€æ´»é¢æ¿ å°±å¯ä»¥æ˜¾ç¤ºäº†
                 if (!panelInfo.panel.gameObject.activeSelf)
                     panelInfo.panel.gameObject.SetActive(true);
 
-                //Èç¹ûÒªÏÔÊ¾Ãæ°å »áÖ´ĞĞÒ»´ÎÃæ°åµÄÄ¬ÈÏÏÔÊ¾Âß¼­
+                //å¦‚æœè¦æ˜¾ç¤ºé¢æ¿ ä¼šæ‰§è¡Œä¸€æ¬¡é¢æ¿çš„é»˜è®¤æ˜¾ç¤ºé€»è¾‘
                 panelInfo.panel.ShowMe();
-                //Èç¹û´æÔÚ»Øµ÷ Ö±½Ó·µ»Ø³öÈ¥¼´¿É
+                //å¦‚æœå­˜åœ¨å›è°ƒ ç›´æ¥è¿”å›å‡ºå»å³å¯
                 callBack?.Invoke(panelInfo.panel);
             }
             return;
         }
 
-        //²»´æÔÚÃæ°å ÏÈ´æÈë×Öµäµ±ÖĞ Õ¼¸öÎ»ÖÃ Ö®ºóÈç¹ûÓÖÏÔÊ¾ ÎÒ²ÅÄÜµÃµ½×ÖµäÖĞµÄĞÅÏ¢½øĞĞÅĞ¶Ï
+        //ä¸å­˜åœ¨é¢æ¿ å…ˆå­˜å…¥å­—å…¸å½“ä¸­ å ä¸ªä½ç½® ä¹‹åå¦‚æœåˆæ˜¾ç¤º æˆ‘æ‰èƒ½å¾—åˆ°å­—å…¸ä¸­çš„ä¿¡æ¯è¿›è¡Œåˆ¤æ–­
         panelDic.Add(panelName, new PanelInfo<T>(callBack));
 
-        //²»´æÔÚÃæ°å ¼ÓÔØÃæ°å
+        //ä¸å­˜åœ¨é¢æ¿ åŠ è½½é¢æ¿
         ABResMgr.Instance.LoadResAsync<GameObject>("ui", panelName, (res) =>
         {
-            //È¡³ö×ÖµäÖĞÒÑ¾­Õ¼ºÃÎ»ÖÃµÄÊı¾İ
+            //å–å‡ºå­—å…¸ä¸­å·²ç»å å¥½ä½ç½®çš„æ•°æ®
             PanelInfo<T> panelInfo = panelDic[panelName] as PanelInfo<T>;
-            //±íÊ¾Òì²½¼ÓÔØ½áÊøÇ° ¾ÍÏëÒªÒş²Ø¸ÃÃæ°åÁË 
+            //è¡¨ç¤ºå¼‚æ­¥åŠ è½½ç»“æŸå‰ å°±æƒ³è¦éšè—è¯¥é¢æ¿äº† 
             if(panelInfo.isHide)
             {
                 panelDic.Remove(panelName);
                 return;
             }
 
-            //²ã¼¶µÄ´¦Àí
+            //å±‚çº§çš„å¤„ç†
             Transform father = GetLayerFather(layer);
-            //±ÜÃâÃ»ÓĞ°´Ö¸¶¨¹æÔò´«µİ²ã¼¶²ÎÊı ±ÜÃâÎª¿Õ
+            //é¿å…æ²¡æœ‰æŒ‰æŒ‡å®šè§„åˆ™ä¼ é€’å±‚çº§å‚æ•° é¿å…ä¸ºç©º
             if (father == null)
                 father = middleLayer;
-            //½«Ãæ°åÔ¤ÉèÌå´´½¨µ½¶ÔÓ¦¸¸¶ÔÏóÏÂ ²¢ÇÒ±£³ÖÔ­±¾µÄËõ·Å´óĞ¡
+            //å°†é¢æ¿é¢„è®¾ä½“åˆ›å»ºåˆ°å¯¹åº”çˆ¶å¯¹è±¡ä¸‹ å¹¶ä¸”ä¿æŒåŸæœ¬çš„ç¼©æ”¾å¤§å°
             GameObject panelObj = GameObject.Instantiate(res, father, false);
 
-            //»ñÈ¡¶ÔÓ¦UI×é¼ş·µ»Ø³öÈ¥
+            //è·å–å¯¹åº”UIç»„ä»¶è¿”å›å‡ºå»
             T panel = panelObj.GetComponent<T>();
-            //ÏÔÊ¾Ãæ°åÊ±Ö´ĞĞµÄÄ¬ÈÏ·½·¨
+            //æ˜¾ç¤ºé¢æ¿æ—¶æ‰§è¡Œçš„é»˜è®¤æ–¹æ³•
             panel.ShowMe();
-            //´«³öÈ¥Ê¹ÓÃ
+            //ä¼ å‡ºå»ä½¿ç”¨
             panelInfo.callBack?.Invoke(panel);
-            //»Øµ÷Ö´ĞĞÍê ½«ÆäÇå¿Õ ±ÜÃâÄÚ´æĞ¹Â©
+            //å›è°ƒæ‰§è¡Œå®Œ å°†å…¶æ¸…ç©º é¿å…å†…å­˜æ³„æ¼
             panelInfo.callBack = null;
-            //´æ´¢panel
+            //å­˜å‚¨panel
             panelInfo.panel = panel;
 
         }, isSync);
     }
 
     /// <summary>
-    /// Òş²ØÃæ°å
+    /// éšè—é¢æ¿
     /// </summary>
-    /// <typeparam name="T">Ãæ°åÀàĞÍ</typeparam>
+    /// <typeparam name="T">é¢æ¿ç±»å‹</typeparam>
     public void HidePanel<T>(bool isDestory = false) where T : BasePanel
     {
         string panelName = typeof(T).Name;
         if (panelDic.ContainsKey(panelName))
         {
-            //È¡³ö×ÖµäÖĞÒÑ¾­Õ¼ºÃÎ»ÖÃµÄÊı¾İ
+            //å–å‡ºå­—å…¸ä¸­å·²ç»å å¥½ä½ç½®çš„æ•°æ®
             PanelInfo<T> panelInfo = panelDic[panelName] as PanelInfo<T>;
-            //µ«ÊÇÕıÔÚ¼ÓÔØÖĞ
+            //ä½†æ˜¯æ­£åœ¨åŠ è½½ä¸­
             if(panelInfo.panel == null)
             {
-                //ĞŞ¸ÄÒş²Ø±íÊ¾ ±íÊ¾ Õâ¸öÃæ°å¼´½«ÒªÒş²Ø
+                //ä¿®æ”¹éšè—è¡¨ç¤º è¡¨ç¤º è¿™ä¸ªé¢æ¿å³å°†è¦éšè—
                 panelInfo.isHide = true;
-                //¼ÈÈ»ÒªÒş²ØÁË »Øµ÷º¯Êı¶¼²»»áµ÷ÓÃÁË Ö±½ÓÖÃ¿Õ
+                //æ—¢ç„¶è¦éšè—äº† å›è°ƒå‡½æ•°éƒ½ä¸ä¼šè°ƒç”¨äº† ç›´æ¥ç½®ç©º
                 panelInfo.callBack = null;
             }
-            else//ÒÑ¾­¼ÓÔØ½áÊø
+            else//å·²ç»åŠ è½½ç»“æŸ
             {
-                //Ö´ĞĞÄ¬ÈÏµÄÒş²ØÃæ°åÏëÒª×öµÄÊÂÇé
+                //æ‰§è¡Œé»˜è®¤çš„éšè—é¢æ¿æƒ³è¦åšçš„äº‹æƒ…
                 panelInfo.panel.HideMe();
-                //Èç¹ûÒªÏú»Ù  ¾ÍÖ±½Ó½«Ãæ°åÏú»Ù´Ó×ÖµäÖĞÒÆ³ı¼ÇÂ¼
+                //å¦‚æœè¦é”€æ¯  å°±ç›´æ¥å°†é¢æ¿é”€æ¯ä»å­—å…¸ä¸­ç§»é™¤è®°å½•
                 if (isDestory)
                 {
-                    //Ïú»ÙÃæ°å
+                    //é”€æ¯é¢æ¿
                     GameObject.Destroy(panelInfo.panel.gameObject);
-                    //´ÓÈİÆ÷ÖĞÒÆ³ı
+                    //ä»å®¹å™¨ä¸­ç§»é™¤
                     panelDic.Remove(panelName);
                 }
-                //Èç¹û²»Ïú»Ù ÄÇÃ´¾ÍÖ»ÊÇÊ§»î ÏÂ´ÎÔÙÏÔÊ¾µÄÊ±ºò Ö±½Ó¸´ÓÃ¼´¿É
+                //å¦‚æœä¸é”€æ¯ é‚£ä¹ˆå°±åªæ˜¯å¤±æ´» ä¸‹æ¬¡å†æ˜¾ç¤ºçš„æ—¶å€™ ç›´æ¥å¤ç”¨å³å¯
                 else
                     panelInfo.panel.gameObject.SetActive(false);
             }
@@ -233,23 +233,23 @@ public class UIMgr : BaseManager<UIMgr>
     }
 
     /// <summary>
-    /// »ñÈ¡Ãæ°å
+    /// è·å–é¢æ¿
     /// </summary>
-    /// <typeparam name="T">Ãæ°åµÄÀàĞÍ</typeparam>
+    /// <typeparam name="T">é¢æ¿çš„ç±»å‹</typeparam>
     public void GetPanel<T>( UnityAction<T> callBack ) where T:BasePanel
     {
         string panelName = typeof(T).Name;
         if (panelDic.ContainsKey(panelName))
         {
-            //È¡³ö×ÖµäÖĞÒÑ¾­Õ¼ºÃÎ»ÖÃµÄÊı¾İ
+            //å–å‡ºå­—å…¸ä¸­å·²ç»å å¥½ä½ç½®çš„æ•°æ®
             PanelInfo<T> panelInfo = panelDic[panelName] as PanelInfo<T>;
-            //ÕıÔÚ¼ÓÔØÖĞ
+            //æ­£åœ¨åŠ è½½ä¸­
             if(panelInfo.panel == null)
             {
-                //¼ÓÔØÖĞ Ó¦¸ÃµÈ´ı¼ÓÔØ½áÊø ÔÙÍ¨¹ı»Øµ÷´«µİ¸øÍâ²¿È¥Ê¹ÓÃ
+                //åŠ è½½ä¸­ åº”è¯¥ç­‰å¾…åŠ è½½ç»“æŸ å†é€šè¿‡å›è°ƒä¼ é€’ç»™å¤–éƒ¨å»ä½¿ç”¨
                 panelInfo.callBack += callBack;
             }
-            else if(!panelInfo.isHide)//¼ÓÔØ½áÊø ²¢ÇÒÃ»ÓĞÒş²Ø
+            else if(!panelInfo.isHide)//åŠ è½½ç»“æŸ å¹¶ä¸”æ²¡æœ‰éšè—
             {
                 callBack?.Invoke(panelInfo.panel);
             }
@@ -258,14 +258,14 @@ public class UIMgr : BaseManager<UIMgr>
 
 
     /// <summary>
-    /// Îª¿Ø¼şÌí¼Ó×Ô¶¨ÒåÊÂ¼ş
+    /// ä¸ºæ§ä»¶æ·»åŠ è‡ªå®šä¹‰äº‹ä»¶
     /// </summary>
-    /// <param name="control">¶ÔÓ¦µÄ¿Ø¼ş</param>
-    /// <param name="type">ÊÂ¼şµÄÀàĞÍ</param>
-    /// <param name="callBack">ÏìÓ¦µÄº¯Êı</param>
+    /// <param name="control">å¯¹åº”çš„æ§ä»¶</param>
+    /// <param name="type">äº‹ä»¶çš„ç±»å‹</param>
+    /// <param name="callBack">å“åº”çš„å‡½æ•°</param>
     public static void AddCustomEventListener(UIBehaviour control, EventTriggerType type, UnityAction<BaseEventData> callBack)
     {
-        //ÕâÖÖÂß¼­Ö÷ÒªÊÇÓÃÓÚ±£Ö¤ ¿Ø¼şÉÏÖ»»á¹ÒÔØÒ»¸öEventTrigger
+        //è¿™ç§é€»è¾‘ä¸»è¦æ˜¯ç”¨äºä¿è¯ æ§ä»¶ä¸Šåªä¼šæŒ‚è½½ä¸€ä¸ªEventTrigger
         EventTrigger trigger = control.GetComponent<EventTrigger>();
         if (trigger == null)
             trigger = control.gameObject.AddComponent<EventTrigger>();

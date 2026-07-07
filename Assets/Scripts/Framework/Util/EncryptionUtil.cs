@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// ¼ÓÃÜ¹¤¾ßÀà Ö÷ÒªÌá¹©¼ÓÃÜĞèÇó
+/// åŠ å¯†å·¥å…·ç±» ä¸»è¦æä¾›åŠ å¯†éœ€æ±‚
 /// </summary>
 public class EncryptionUtil
 {
-    //1.»ñÈ¡Ëæ»úÃÜÔ¿
+    //1.è·å–éšæœºå¯†é’¥
     public static int GetRandomKey()
     {
         return Random.Range(1, 10000) + 5;
     }
 
-    //2.¼ÓÃÜÊı¾İ
+    //2.åŠ å¯†æ•°æ®
     public static int LockValue(int value, int key)
     {
-        //Ö÷Òª²ÉÓÃÒì»ò¼ÓÃÜ
+        //ä¸»è¦é‡‡ç”¨å¼‚æˆ–åŠ å¯†
         value = value ^ (key % 9);
         value = value ^ 0xADAD;
         value = value ^ (1 << 5);
@@ -25,7 +25,7 @@ public class EncryptionUtil
 
     public static long LockValue(long value, int key)
     {
-        //Ö÷Òª²ÉÓÃÒì»ò¼ÓÃÜ
+        //ä¸»è¦é‡‡ç”¨å¼‚æˆ–åŠ å¯†
         value = value ^ (key % 9);
         value = value ^ 0xADAD;
         value = value ^ (1 << 5);
@@ -33,11 +33,11 @@ public class EncryptionUtil
         return value;
     }
 
-    //3.½âÃÜÊı¾İ
+    //3.è§£å¯†æ•°æ®
     public static int UnLoackValue(int value, int key)
     {
-        //ÓĞ¿ÉÄÜ»¹Ã»ÓĞ¼ÓÃÜ¹ı Ã»ÓĞ³õÊ¼»¯¹ıµÄÊı¾İ Ö±½ÓÏëÒª»ñÈ¡ ÄÇÃ´¾Í²»ÓÃ½âÃÜÁË
-        //ÕâÖÖÊ±ºòÊıÖµ¿Ï¶¨ÊÇ0
+        //æœ‰å¯èƒ½è¿˜æ²¡æœ‰åŠ å¯†è¿‡ æ²¡æœ‰åˆå§‹åŒ–è¿‡çš„æ•°æ® ç›´æ¥æƒ³è¦è·å– é‚£ä¹ˆå°±ä¸ç”¨è§£å¯†äº†
+        //è¿™ç§æ—¶å€™æ•°å€¼è‚¯å®šæ˜¯0
         if (value == 0)
             return value;
         value -= key;
@@ -49,8 +49,8 @@ public class EncryptionUtil
 
     public static long UnLoackValue(long value, int key)
     {
-        //ÓĞ¿ÉÄÜ»¹Ã»ÓĞ¼ÓÃÜ¹ı Ã»ÓĞ³õÊ¼»¯¹ıµÄÊı¾İ Ö±½ÓÏëÒª»ñÈ¡ ÄÇÃ´¾Í²»ÓÃ½âÃÜÁË
-        //ÕâÖÖÊ±ºòÊıÖµ¿Ï¶¨ÊÇ0
+        //æœ‰å¯èƒ½è¿˜æ²¡æœ‰åŠ å¯†è¿‡ æ²¡æœ‰åˆå§‹åŒ–è¿‡çš„æ•°æ® ç›´æ¥æƒ³è¦è·å– é‚£ä¹ˆå°±ä¸ç”¨è§£å¯†äº†
+        //è¿™ç§æ—¶å€™æ•°å€¼è‚¯å®šæ˜¯0
         if (value == 0)
             return value;
         value -= key;

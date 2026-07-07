@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¹ÒÔØÊ½ ¼Ì³ĞMonoµÄµ¥ÀıÄ£Ê½»ùÀà
+/// æŒ‚è½½å¼ ç»§æ‰¿Monoçš„å•ä¾‹æ¨¡å¼åŸºç±»
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public class SingletonMono<T>: MonoBehaviour where T:MonoBehaviour
@@ -20,15 +20,15 @@ public class SingletonMono<T>: MonoBehaviour where T:MonoBehaviour
 
     protected virtual void Awake()
     {
-        //ÒÑ¾­´æÔÚÒ»¸ö¶ÔÓ¦µÄµ¥ÀıÄ£Ê½¶ÔÏóÁË ²»ĞèÒªÔÚÓĞÒ»¸öÁË
+        //å·²ç»å­˜åœ¨ä¸€ä¸ªå¯¹åº”çš„å•ä¾‹æ¨¡å¼å¯¹è±¡äº† ä¸éœ€è¦åœ¨æœ‰ä¸€ä¸ªäº†
         if(instance != null)
         {
             Destroy(this);
             return;
         }
         instance = this as T;
-        //ÎÒÃÇ¹ÒÔØ¼Ì³Ğ¸Ãµ¥ÀıÄ£Ê½»ùÀàµÄ½Å±¾ºó ÒÀ¸½µÄ¶ÔÏó¹ı³¡¾°Ê±¾Í²»»á±»ÒÆ³ıÁË
-        //¾Í¿ÉÒÔ±£Ö¤ÔÚÓÎÏ·µÄÕû¸öÉúÃüÖÜÆÚÖĞ¶¼´æÔÚ 
+        //æˆ‘ä»¬æŒ‚è½½ç»§æ‰¿è¯¥å•ä¾‹æ¨¡å¼åŸºç±»çš„è„šæœ¬å ä¾é™„çš„å¯¹è±¡è¿‡åœºæ™¯æ—¶å°±ä¸ä¼šè¢«ç§»é™¤äº†
+        //å°±å¯ä»¥ä¿è¯åœ¨æ¸¸æˆçš„æ•´ä¸ªç”Ÿå‘½å‘¨æœŸä¸­éƒ½å­˜åœ¨ 
         DontDestroyOnLoad(this.gameObject);
     }
 }

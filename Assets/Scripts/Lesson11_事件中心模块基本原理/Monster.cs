@@ -16,16 +16,16 @@ public class Monster : MonoBehaviour
 
     public void Dead()
     {
-        Debug.Log("¹ÖÎïËÀÍöÁË");
-        //ÆäËû¶ÔÏóÔÚ¹ÖÎïËÀÍöÊ±Ïë×öµÄÊÂÇé
+        Debug.Log("æ€ªç‰©æ­»äº¡äº†");
+        //å…¶ä»–å¯¹è±¡åœ¨æ€ªç‰©æ­»äº¡æ—¶æƒ³åšçš„äº‹æƒ…
         EventCenter.Instance.EventTrigger<Monster>(E_EventType.E_Monster_Dead, this);
-        ////±ÈÈç
-        ////1.ÈÎÎñ¸üĞÂ
+        ////æ¯”å¦‚
+        ////1.ä»»åŠ¡æ›´æ–°
         //GameObject.Find("Task").GetComponent<Task>().TaskWaitMonsterDeadDo();
-        ////2.Íæ¼ÒµÃ½±Àø
+        ////2.ç©å®¶å¾—å¥–åŠ±
         //GameObject.Find("Player").GetComponent<Player>().PlayerWaitMonsterDeadDo();
-        ////3.ÆäËûÏà¹ØÏµÍ³
+        ////3.å…¶ä»–ç›¸å…³ç³»ç»Ÿ
         //GameObject.Find("Other").GetComponent<Other>().OtherWaitMonsterDeadDo();
-        ////n¸öÆäËûÏà¹Ø´¦Àí
+        ////nä¸ªå…¶ä»–ç›¸å…³å¤„ç†
     }
 }

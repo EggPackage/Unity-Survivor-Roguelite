@@ -7,16 +7,16 @@ public class Lesson60 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        #region ֪ʶ�� ʵ����ѧ���㹤�����е� �ǶȺͻ����໥ת�� �ķ���
-        //ΪʲôҪ��װ �ǶȺͻ����໥ת�� �ķ���
+        #region 知识点 实现数学计算工具类中的 角度和弧度相互转换 的方法
+        //为什么要封装 角度和弧度相互转换 的方法
 
-        //��ȻUnity�е�Mathf�����Ѿ��� Mathf.Deg2Rad �� Mathf.Rad2Deg ��ص�ϵ��
-        //����Ϊ�˱���ʹ�ô���
-        //������ȫ���Խ����װΪ����
-        //�ⲿֻ�贫��ǶȻ򻡶� ����Եõ����
-        //�������ⲿ���г˷�����
+        //虽然Unity中的Mathf类中已经有 Mathf.Deg2Rad 、 Mathf.Rad2Deg 相关的系数
+        //但是为了避免使用错误
+        //我们完全可以将其封装为方法
+        //外部只需传入角度或弧度 便可以得到结果
+        //无需在外部进行乘法运算
 
-        //����Щ�������ʹ���������ӵķ���
+        //让这些常规操作使用起来更加的方便
 
         float rad = MathUtil.Deg2Rad(60);
         print(rad);

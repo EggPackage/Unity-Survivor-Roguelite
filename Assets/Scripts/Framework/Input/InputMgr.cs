@@ -8,14 +8,14 @@ public class InputMgr : BaseManager<InputMgr>
 {
     private Dictionary<E_EventType, InputInfo> inputDic = new Dictionary<E_EventType, InputInfo>();
 
-    //µ±Ç°±éÀúÊ±È¡³öµÄÊäÈëĞÅÏ¢
+    //å½“å‰éå†æ—¶å–å‡ºçš„è¾“å…¥ä¿¡æ¯
     private InputInfo nowInputInfo;
 
-    //ÊÇ·ñ¿ªÆôÁËÊäÈëÏµÍ³¼ì²â
+    //æ˜¯å¦å¼€å¯äº†è¾“å…¥ç³»ç»Ÿæ£€æµ‹
     private bool isStart;
-    //ÓÃÓÚÔÚ¸Ä½¨Ê±»ñÈ¡ÊäÈëĞÅÏ¢µÄÎ¯ÍĞ Ö»ÓĞµ±updateÖĞ»ñÈ¡µ½ĞÅÏ¢µÄÊ±ºò ÔÙÍ¨¹ıÎ¯ÍĞ´«µİ¸øÍâ²¿
+    //ç”¨äºåœ¨æ”¹å»ºæ—¶è·å–è¾“å…¥ä¿¡æ¯çš„å§”æ‰˜ åªæœ‰å½“updateä¸­è·å–åˆ°ä¿¡æ¯çš„æ—¶å€™ å†é€šè¿‡å§”æ‰˜ä¼ é€’ç»™å¤–éƒ¨
     private UnityAction<InputInfo> getInputInfoCallBack;
-    //ÊÇ·ñ¿ªÊ¼¼ì²âÊäÈëĞÅÏ¢
+    //æ˜¯å¦å¼€å§‹æ£€æµ‹è¾“å…¥ä¿¡æ¯
     private bool isBeginCheckInput = false;
 
     private InputMgr()
@@ -24,7 +24,7 @@ public class InputMgr : BaseManager<InputMgr>
     }
 
     /// <summary>
-    /// ¿ªÆô»òÕß¹Ø±ÕÎÒÃÇµÄÊäÈë¹ÜÀíÄ£¿éµÄ¼ì²â
+    /// å¼€å¯æˆ–è€…å…³é—­æˆ‘ä»¬çš„è¾“å…¥ç®¡ç†æ¨¡å—çš„æ£€æµ‹
     /// </summary>
     /// <param name="isStart"></param>
     public void StartOrCloseInputMgr(bool isStart)
@@ -33,20 +33,20 @@ public class InputMgr : BaseManager<InputMgr>
     }
 
     /// <summary>
-    /// Ìá¹©¸øÍâ²¿¸Ä½¨»ò³õÊ¼»¯µÄ·½·¨(¼üÅÌ)
+    /// æä¾›ç»™å¤–éƒ¨æ”¹å»ºæˆ–åˆå§‹åŒ–çš„æ–¹æ³•(é”®ç›˜)
     /// </summary>
     /// <param name="key"></param>
     /// <param name="inputType"></param>
     public void ChangeKeyboardInfo(E_EventType eventType, KeyCode key, InputInfo.E_InputType inputType)
     {
-        //³õÊ¼»¯
+        //åˆå§‹åŒ–
         if(!inputDic.ContainsKey(eventType))
         {
             inputDic.Add(eventType, new InputInfo(inputType, key));
         }
-        else//¸Ä½¨
+        else//æ”¹å»º
         {
-            //Èç¹ûÖ®Ç°ÊÇÊó±ê ÎÒÃÇ±ØĞëÒªĞŞ¸ÄËüµÄ°´¼üÀàĞÍ
+            //å¦‚æœä¹‹å‰æ˜¯é¼ æ ‡ æˆ‘ä»¬å¿…é¡»è¦ä¿®æ”¹å®ƒçš„æŒ‰é”®ç±»å‹
             inputDic[eventType].keyOrMouse = InputInfo.E_KeyOrMouse.Key;
             inputDic[eventType].key = key;
             inputDic[eventType].inputType = inputType;
@@ -54,21 +54,21 @@ public class InputMgr : BaseManager<InputMgr>
     }
 
     /// <summary>
-    /// Ìá¹©¸øÍâ²¿¸Ä½¨»ò³õÊ¼»¯µÄ·½·¨(Êó±ê)
+    /// æä¾›ç»™å¤–éƒ¨æ”¹å»ºæˆ–åˆå§‹åŒ–çš„æ–¹æ³•(é¼ æ ‡)
     /// </summary>
     /// <param name="eventType"></param>
     /// <param name="mouseID"></param>
     /// <param name="inputType"></param>
     public void ChangeMouseInfo(E_EventType eventType, int mouseID, InputInfo.E_InputType inputType)
     {
-        //³õÊ¼»¯
+        //åˆå§‹åŒ–
         if (!inputDic.ContainsKey(eventType))
         {
             inputDic.Add(eventType, new InputInfo(inputType, mouseID));
         }
-        else//¸Ä½¨
+        else//æ”¹å»º
         {
-            //Èç¹ûÖ®Ç°ÊÇÊó±ê ÎÒÃÇ±ØĞëÒªĞŞ¸ÄËüµÄ°´¼üÀàĞÍ
+            //å¦‚æœä¹‹å‰æ˜¯é¼ æ ‡ æˆ‘ä»¬å¿…é¡»è¦ä¿®æ”¹å®ƒçš„æŒ‰é”®ç±»å‹
             inputDic[eventType].keyOrMouse = InputInfo.E_KeyOrMouse.Mouse;
             inputDic[eventType].mouseID = mouseID;
             inputDic[eventType].inputType = inputType;
@@ -76,7 +76,7 @@ public class InputMgr : BaseManager<InputMgr>
     }
 
     /// <summary>
-    /// ÒÆ³ıÖ¸¶¨ĞĞÎªµÄÊäÈë¼àÌı
+    /// ç§»é™¤æŒ‡å®šè¡Œä¸ºçš„è¾“å…¥ç›‘å¬
     /// </summary>
     /// <param name="eventType"></param>
     public void RemoveInputInfo(E_EventType eventType)
@@ -86,7 +86,7 @@ public class InputMgr : BaseManager<InputMgr>
     }
     
     /// <summary>
-    /// »ñÈ¡ÏÂÒ»´ÎµÄÊäÈëĞÅÏ¢
+    /// è·å–ä¸‹ä¸€æ¬¡çš„è¾“å…¥ä¿¡æ¯
     /// </summary>
     /// <param name="callBack"></param>
     public void GetInputInfo(UnityAction<InputInfo> callBack)
@@ -97,34 +97,34 @@ public class InputMgr : BaseManager<InputMgr>
 
     private IEnumerator BeginCheckInput()
     {
-        //µÈÒ»Ö¡
+        //ç­‰ä¸€å¸§
         yield return 0;
-        //Ò»Ö¡ºó²Å»á±»ÖÃ³Étrue
+        //ä¸€å¸§åæ‰ä¼šè¢«ç½®æˆtrue
         isBeginCheckInput = true;
     }
 
     private void InputUpdate()
     {
-        //µ±Î¯ÍĞ²»Îª¿ÕÊ± Ö¤Ã÷ÏëÒª»ñÈ¡µ½ÊäÈëµÄĞÅÏ¢ ´«µİ¸øÍâ²¿
+        //å½“å§”æ‰˜ä¸ä¸ºç©ºæ—¶ è¯æ˜æƒ³è¦è·å–åˆ°è¾“å…¥çš„ä¿¡æ¯ ä¼ é€’ç»™å¤–éƒ¨
         if(isBeginCheckInput)
         {
-            //µ±Ò»¸ö¼ü°´ÏÂÊ± È»ºó±éÀúËùÓĞ°´¼üĞÅÏ¢ µÃµ½ÊÇË­±»°´ÏÂÁË
+            //å½“ä¸€ä¸ªé”®æŒ‰ä¸‹æ—¶ ç„¶åéå†æ‰€æœ‰æŒ‰é”®ä¿¡æ¯ å¾—åˆ°æ˜¯è°è¢«æŒ‰ä¸‹äº†
             if (Input.anyKeyDown)
             {
                 InputInfo inputInfo = null;
-                //ÎÒÃÇĞèÒªÈ¥±éÀú¼àÌıËùÓĞ¼üÎ»µÄ°´ÏÂ À´µÃµ½¶ÔÓ¦ÊäÈëµÄĞÅÏ¢
-                //¼üÅÌ
+                //æˆ‘ä»¬éœ€è¦å»éå†ç›‘å¬æ‰€æœ‰é”®ä½çš„æŒ‰ä¸‹ æ¥å¾—åˆ°å¯¹åº”è¾“å…¥çš„ä¿¡æ¯
+                //é”®ç›˜
                 Array keyCodes = Enum.GetValues(typeof(KeyCode));
                 foreach (KeyCode inputKey in keyCodes)
                 {
-                    //ÅĞ¶Ïµ½µ×ÊÇË­±»°´ÏÂÁË ÄÇÃ´¾Í¿ÉÒÔµÃµ½¶ÔÓ¦µÄÊäÈëµÄ¼üÅÌĞÅÏ¢
+                    //åˆ¤æ–­åˆ°åº•æ˜¯è°è¢«æŒ‰ä¸‹äº† é‚£ä¹ˆå°±å¯ä»¥å¾—åˆ°å¯¹åº”çš„è¾“å…¥çš„é”®ç›˜ä¿¡æ¯
                     if (Input.GetKeyDown(inputKey))
                     {
                         inputInfo = new InputInfo(InputInfo.E_InputType.Down, inputKey);
                         break;
                     }
                 }
-                //Êó±ê
+                //é¼ æ ‡
                 for (int i = 0; i < 3; i++)
                 {
                     if (Input.GetMouseButtonDown(i))
@@ -133,27 +133,27 @@ public class InputMgr : BaseManager<InputMgr>
                         break;
                     }
                 }
-                //°Ñ»ñÈ¡µ½µÄĞÅÏ¢´«µİ¸øÍâ²¿
+                //æŠŠè·å–åˆ°çš„ä¿¡æ¯ä¼ é€’ç»™å¤–éƒ¨
                 getInputInfoCallBack.Invoke(inputInfo);
                 getInputInfoCallBack = null;
-                //¼ì²âÒ»´Îºó¾ÍÍ£Ö¹¼ì²âÁË
+                //æ£€æµ‹ä¸€æ¬¡åå°±åœæ­¢æ£€æµ‹äº†
                 isBeginCheckInput = false;
             }
         }
        
 
 
-        //Èç¹ûÍâ²¿Ã»ÓĞ¿ªÆô¼ì²â¹¦ÄÜ ¾Í²»Òª¼ì²â
+        //å¦‚æœå¤–éƒ¨æ²¡æœ‰å¼€å¯æ£€æµ‹åŠŸèƒ½ å°±ä¸è¦æ£€æµ‹
         if (!isStart)
             return;
 
         foreach (E_EventType eventType in inputDic.Keys)
         {
             nowInputInfo = inputDic[eventType];
-            //Èç¹ûÊÇ¼üÅÌÊäÈë
+            //å¦‚æœæ˜¯é”®ç›˜è¾“å…¥
             if(nowInputInfo.keyOrMouse == InputInfo.E_KeyOrMouse.Key)
             {
-                //ÊÇÌ§Æğ»¹ÊÇ°´ÏÂ»¹ÊÇ³¤°´
+                //æ˜¯æŠ¬èµ·è¿˜æ˜¯æŒ‰ä¸‹è¿˜æ˜¯é•¿æŒ‰
                 switch (nowInputInfo.inputType)
                 {
                     case InputInfo.E_InputType.Down:
@@ -172,7 +172,7 @@ public class InputMgr : BaseManager<InputMgr>
                         break;
                 }
             }
-            //Èç¹ûÊÇÊó±êÊäÈë
+            //å¦‚æœæ˜¯é¼ æ ‡è¾“å…¥
             else
             {
                 switch (nowInputInfo.inputType)

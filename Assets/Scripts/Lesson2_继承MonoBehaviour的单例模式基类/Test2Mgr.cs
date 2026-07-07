@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//²»ÔÊĞíÔÚÍ¬Ò»¸ö¶ÔÏóÉÏ¹ÒÔØ¶à¸öÏàÍ¬½Å±¾
+//ä¸å…è®¸åœ¨åŒä¸€ä¸ªå¯¹è±¡ä¸ŠæŒ‚è½½å¤šä¸ªç›¸åŒè„šæœ¬
 [DisallowMultipleComponent]
 public class Test2Mgr : SingletonMono<Test2Mgr>
 {
     protected override void Awake()
     {
-        //ÖØĞ´AwakeÊ± ÕâÒ»¶¨²»ÄÜÊ¡ÂÔ»òÉ¾³ı
+        //é‡å†™Awakeæ—¶ è¿™ä¸€å®šä¸èƒ½çœç•¥æˆ–åˆ é™¤
         base.Awake();
     }
 

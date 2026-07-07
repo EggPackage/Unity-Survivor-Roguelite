@@ -7,31 +7,31 @@ public class Lesson6 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        #region ��Ҫ���ݻع�
-        //��������Monoģ��ر�֪ʶ��
-        //1.ί���¼� ���֪ʶ��C#�Ĳ���C#�����У�
-        //2.�������ں��� ���֪ʶ��Unity�Ĳ���֮Unity�����У�
-        //3.Эͬ���� ���֪ʶ��Unity�Ĳ���֮Unity������
+        #region 重要内容回顾
+        //制作公共Mono模块必备知识点
+        //1.委托事件 相关知识（C#四部曲C#进阶中）
+        //2.生命周期函数 相关知识（Unity四部曲之Unity入门中）
+        //3.协同程序 相关知识（Unity四部曲之Unity基础中
 
-        //����Monoģ�����Ҫ����
-        //�ò��̳�MonoBehaviour�Ľű�Ҳ��
-        //1.����֡���»�ʱ���´����߼�
-        //2.����Эͬ�������߼�
-        //3.����ͳһִ�й���֡���»�ʱ��������߼�(�������Ƿ�̳�MonoBehaviour)
+        //公共Mono模块的主要作用
+        //让不继承MonoBehaviour的脚本也能
+        //1.利用帧更新或定时更新处理逻辑
+        //2.利用协同程序处理逻辑
+        //3.可以统一执行管理帧更新或定时更新相关逻辑(不管你是否继承MonoBehaviour)
         
-        //����Monoģ��Ļ���ԭ��
-        //1.ͨ���¼���ί�� ���� ��ظ��º���
-        //2.�ṩЭͬ��������رյķ���
+        //公共Mono模块的基本原理
+        //1.通过事件或委托 管理 相关更新函数
+        //2.提供协同程序开启或关闭的方法
         #endregion
 
-        #region ֪ʶ��һ ʵ�ֹ���Monoģ��
-        //1.����MonoMgr�̳� �Զ�����ʽ�ļ̳�MonoBehaviour�ĵ���ģʽ����
-        //2.ʵ��Update��FixedUpdate��LateUpdate�������ں���
-        //3.������Ӧ�¼���ί�����ڴ洢�ⲿ���������ṩ�����Ƴ��������Ӷ��ﵽ�ò��̳�MonoBehaviour�Ľű�����ִ��֡���»�ʱ���µ�Ŀ��
-        //4.����Эͬ�������رպ������Ӷ��ﵽ�ò��̳�MonoBehaviour�Ľű�����ִ��Эͬ�����Ŀ��
+        #region 知识点一 实现公共Mono模块
+        //1.创建MonoMgr继承 自动挂载式的继承MonoBehaviour的单例模式基类
+        //2.实现Update、FixedUpdate、LateUpdate生命周期函数
+        //3.声明对应事件或委托用于存储外部函数，并提供添加移除方法，从而达到让不继承MonoBehaviour的脚本可以执行帧更新或定时更新的目的
+        //4.声明协同程序开启关闭函数，从而达到让不继承MonoBehaviour的脚本可以执行协同程序的目的
         #endregion
 
-        #region ֪ʶ��� ����
+        #region 知识点二 测试
         //MonoMgr.Instance.AddUpdateListener(MyUpdate);
         #endregion
     }

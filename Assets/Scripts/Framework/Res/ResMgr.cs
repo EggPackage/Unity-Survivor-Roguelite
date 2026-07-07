@@ -5,26 +5,26 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// ×ÊÔ´ĞÅÏ¢»ùÀà Ö÷ÒªÓÃÓÚÀïÊ½Ìæ»»Ô­Ôò ¸¸ÀàÈİÆ÷×°×ÓÀà¶ÔÏó
+/// èµ„æºä¿¡æ¯åŸºç±» ä¸»è¦ç”¨äºé‡Œå¼æ›¿æ¢åŸåˆ™ çˆ¶ç±»å®¹å™¨è£…å­ç±»å¯¹è±¡
 /// </summary>
 public abstract class ResInfoBase {
-    //ÒıÓÃ¼ÆÊı
+    //å¼•ç”¨è®¡æ•°
     public int refCount;
 }
 
 /// <summary>
-/// ×ÊÔ´ĞÅÏ¢¶ÔÏó Ö÷ÒªÓÃÓÚ´æ´¢×ÊÔ´ĞÅÏ¢ Òì²½¼ÓÔØÎ¯ÍĞĞÅÏ¢ Òì²½¼ÓÔØ Ğ­³ÌĞÅÏ¢
+/// èµ„æºä¿¡æ¯å¯¹è±¡ ä¸»è¦ç”¨äºå­˜å‚¨èµ„æºä¿¡æ¯ å¼‚æ­¥åŠ è½½å§”æ‰˜ä¿¡æ¯ å¼‚æ­¥åŠ è½½ åç¨‹ä¿¡æ¯
 /// </summary>
-/// <typeparam name="T">×ÊÔ´ÀàĞÍ</typeparam>
+/// <typeparam name="T">èµ„æºç±»å‹</typeparam>
 public class ResInfo<T> : ResInfoBase
 {
-    //×ÊÔ´
+    //èµ„æº
     public T asset;
-    //Ö÷ÒªÓÃÓÚÒì²½¼ÓÔØ½áÊøºó ´«µİ×ÊÔ´µ½Íâ²¿µÄÎ¯ÍĞ
+    //ä¸»è¦ç”¨äºå¼‚æ­¥åŠ è½½ç»“æŸå ä¼ é€’èµ„æºåˆ°å¤–éƒ¨çš„å§”æ‰˜
     public UnityAction<T> callBack;
-    //ÓÃÓÚ´æ´¢Òì²½¼ÓÔØÊ± ¿ªÆôµÄĞ­Í¬³ÌĞò
+    //ç”¨äºå­˜å‚¨å¼‚æ­¥åŠ è½½æ—¶ å¼€å¯çš„ååŒç¨‹åº
     public Coroutine coroutine;
-    //¾ö¶¨ÒıÓÃ¼ÆÊıÎª0Ê± ÊÇ·ñÕæÕıĞèÒªÒÆ³ı
+    //å†³å®šå¼•ç”¨è®¡æ•°ä¸º0æ—¶ æ˜¯å¦çœŸæ­£éœ€è¦ç§»é™¤
     public bool isDel;
     
 
@@ -37,23 +37,23 @@ public class ResInfo<T> : ResInfoBase
     {
         --refCount;
         if (refCount < 0)
-            Debug.LogError("ÒıÓÃ¼ÆÊıĞ¡ÓÚ0ÁË£¬Çë¼ì²éÊ¹ÓÃºÍĞ¶ÔØÊÇ·ñÅä¶ÔÖ´ĞĞ");
+            Debug.LogError("å¼•ç”¨è®¡æ•°å°äº0äº†ï¼Œè¯·æ£€æŸ¥ä½¿ç”¨å’Œå¸è½½æ˜¯å¦é…å¯¹æ‰§è¡Œ");
     }
 }
 
 
 /// <summary>
-/// Resources ×ÊÔ´¼ÓÔØÄ£¿é¹ÜÀíÆ÷
+/// Resources èµ„æºåŠ è½½æ¨¡å—ç®¡ç†å™¨
 /// </summary>
 public class ResMgr : BaseManager<ResMgr>
 {
-    //ÓÃÓÚ´æ´¢¼ÓÔØ¹ıµÄ×ÊÔ´»òÕß¼ÓÔØÖĞµÄ×ÊÔ´µÄÈİÆ÷
+    //ç”¨äºå­˜å‚¨åŠ è½½è¿‡çš„èµ„æºæˆ–è€…åŠ è½½ä¸­çš„èµ„æºçš„å®¹å™¨
     private Dictionary<string, ResInfoBase> resDic = new Dictionary<string, ResInfoBase>();
 
     private ResMgr() { }
 
     /// <summary>
-    /// Í¬²½¼ÓÔØResourcesÏÂ×ÊÔ´µÄ·½·¨
+    /// åŒæ­¥åŠ è½½Resourcesä¸‹èµ„æºçš„æ–¹æ³•
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="path"></param>
@@ -62,115 +62,115 @@ public class ResMgr : BaseManager<ResMgr>
     {
         string resName = path + "_" + typeof(T).Name;
         ResInfo<T> info;
-        //×ÖµäÖĞ²»´æÔÚ×ÊÔ´Ê±
+        //å­—å…¸ä¸­ä¸å­˜åœ¨èµ„æºæ—¶
         if (!resDic.ContainsKey(resName))
         {
-            //Ö±½ÓÍ¬²½¼ÓÔØ ²¢ÇÒ¼ÇÂ¼×ÊÔ´ĞÅÏ¢ µ½×ÖµäÖĞ ·½±ãÏÂ´ÎÖ±½ÓÈ¡³öÀ´ÓÃ
+            //ç›´æ¥åŒæ­¥åŠ è½½ å¹¶ä¸”è®°å½•èµ„æºä¿¡æ¯ åˆ°å­—å…¸ä¸­ æ–¹ä¾¿ä¸‹æ¬¡ç›´æ¥å–å‡ºæ¥ç”¨
             T res = Resources.Load<T>(path);
             info = new ResInfo<T>();
             info.asset = res;
-            //ÒıÓÃ¼ÆÊıÔö¼Ó
+            //å¼•ç”¨è®¡æ•°å¢åŠ 
             info.AddRefCount();
             resDic.Add(resName, info);
             return res;
         }
         else
         {
-            //È¡³ö×ÖµäÖĞµÄ¼ÇÂ¼
+            //å–å‡ºå­—å…¸ä¸­çš„è®°å½•
             info = resDic[resName] as ResInfo<T>;
-            //ÒıÓÃ¼ÆÊıÔö¼Ó
+            //å¼•ç”¨è®¡æ•°å¢åŠ 
             info.AddRefCount();
-            //´æÔÚÒì²½¼ÓÔØ »¹ÔÚ¼ÓÔØÖĞ
+            //å­˜åœ¨å¼‚æ­¥åŠ è½½ è¿˜åœ¨åŠ è½½ä¸­
             if (info.asset == null)
             {
-                //Í£Ö¹Òì²½¼ÓÔØ 
+                //åœæ­¢å¼‚æ­¥åŠ è½½ 
                 MonoMgr.Instance.StopCoroutine(info.coroutine);
-                //Ö±½Ó²ÉÓÃÍ¬²½µÄ·½Ê½¼ÓÔØ³É¹¦
+                //ç›´æ¥é‡‡ç”¨åŒæ­¥çš„æ–¹å¼åŠ è½½æˆåŠŸ
                 T res = Resources.Load<T>(path);
-                //¼ÇÂ¼ 
+                //è®°å½• 
                 info.asset = res;
-                //»¹Ó¦¸Ã°ÑÄÇĞ©µÈ´ı×ÅÒì²½¼ÓÔØ½áÊøµÄÎ¯ÍĞÈ¥Ö´ĞĞÁË
+                //è¿˜åº”è¯¥æŠŠé‚£äº›ç­‰å¾…ç€å¼‚æ­¥åŠ è½½ç»“æŸçš„å§”æ‰˜å»æ‰§è¡Œäº†
                 info.callBack?.Invoke(res);
-                //»Øµ÷½áÊø Òì²½¼ÓÔØÒ²Í£ÁË ËùÒÔÇå³ıÎŞÓÃµÄÒıÓÃ
+                //å›è°ƒç»“æŸ å¼‚æ­¥åŠ è½½ä¹Ÿåœäº† æ‰€ä»¥æ¸…é™¤æ— ç”¨çš„å¼•ç”¨
                 info.callBack = null;
                 info.coroutine = null;
-                // ²¢Ê¹ÓÃ
+                // å¹¶ä½¿ç”¨
                 return res;
             }
             else
             {
-                //Èç¹ûÒÑ¾­¼ÓÔØ½áÊø Ö±½ÓÓÃ
+                //å¦‚æœå·²ç»åŠ è½½ç»“æŸ ç›´æ¥ç”¨
                 return info.asset;
             }
         }
     }
 
     /// <summary>
-    /// Òì²½¼ÓÔØ×ÊÔ´µÄ·½·¨
+    /// å¼‚æ­¥åŠ è½½èµ„æºçš„æ–¹æ³•
     /// </summary>
-    /// <typeparam name="T">×ÊÔ´ÀàĞÍ</typeparam>
-    /// <param name="path">×ÊÔ´Â·¾¶£¨ResourcesÏÂµÄ£©</param>
-    /// <param name="callBack">¼ÓÔØ½áÊøºóµÄ»Øµ÷º¯Êı µ±Òì²½¼ÓÔØ×ÊÔ´½áÊøºó²Å»áµ÷ÓÃ</param>
+    /// <typeparam name="T">èµ„æºç±»å‹</typeparam>
+    /// <param name="path">èµ„æºè·¯å¾„ï¼ˆResourcesä¸‹çš„ï¼‰</param>
+    /// <param name="callBack">åŠ è½½ç»“æŸåçš„å›è°ƒå‡½æ•° å½“å¼‚æ­¥åŠ è½½èµ„æºç»“æŸåæ‰ä¼šè°ƒç”¨</param>
     public void LoadAsync<T>(string path, UnityAction<T> callBack) where T: UnityEngine.Object
     {
-        //×ÊÔ´µÄÎ¨Ò»ID£¬ÊÇÍ¨¹ı Â·¾¶Ãû_×ÊÔ´ÀàĞÍ Æ´½Ó¶ø³ÉµÄ
+        //èµ„æºçš„å”¯ä¸€IDï¼Œæ˜¯é€šè¿‡ è·¯å¾„å_èµ„æºç±»å‹ æ‹¼æ¥è€Œæˆçš„
         string resName = path + "_" + typeof(T).Name;
         ResInfo<T> info;
         if (!resDic.ContainsKey(resName))
         {
-            //ÉùÃ÷Ò»¸ö ×ÊÔ´ĞÅÏ¢¶ÔÏó
+            //å£°æ˜ä¸€ä¸ª èµ„æºä¿¡æ¯å¯¹è±¡
             info = new ResInfo<T>();
-            //ÒıÓÃ¼ÆÊıÔö¼Ó
+            //å¼•ç”¨è®¡æ•°å¢åŠ 
             info.AddRefCount();
-            //½«×ÊÔ´¼ÇÂ¼Ìí¼Óµ½×ÖµäÖĞ£¨×ÊÔ´»¹Ã»ÓĞ¼ÓÔØ³É¹¦£©
+            //å°†èµ„æºè®°å½•æ·»åŠ åˆ°å­—å…¸ä¸­ï¼ˆèµ„æºè¿˜æ²¡æœ‰åŠ è½½æˆåŠŸï¼‰
             resDic.Add(resName, info);
-            //¼ÇÂ¼´«ÈëµÄÎ¯ÍĞº¯Êı Ò»»á¶ù¼ÓÔØÍê³ÉÁË ÔÙÊ¹ÓÃ
+            //è®°å½•ä¼ å…¥çš„å§”æ‰˜å‡½æ•° ä¸€ä¼šå„¿åŠ è½½å®Œæˆäº† å†ä½¿ç”¨
             info.callBack += callBack;
-            //¿ªÆôĞ­³ÌÈ¥½øĞĞ Òì²½¼ÓÔØ ²¢ÇÒ¼ÇÂ¼Ğ­Í¬³ÌĞò £¨ÓÃÓÚÖ®ºó¿ÉÄÜµÄ Í£Ö¹£©
+            //å¼€å¯åç¨‹å»è¿›è¡Œ å¼‚æ­¥åŠ è½½ å¹¶ä¸”è®°å½•ååŒç¨‹åº ï¼ˆç”¨äºä¹‹åå¯èƒ½çš„ åœæ­¢ï¼‰
             info.coroutine = MonoMgr.Instance.StartCoroutine(ReallyLoadAsync<T>(path));
         }
         else
         {
-            //´Ó×ÖµäÖĞÈ¡³ö×ÊÔ´ĞÅÏ¢
+            //ä»å­—å…¸ä¸­å–å‡ºèµ„æºä¿¡æ¯
             info = resDic[resName] as ResInfo<T>;
-            //ÒıÓÃ¼ÆÊıÔö¼Ó
+            //å¼•ç”¨è®¡æ•°å¢åŠ 
             info.AddRefCount();
-            //Èç¹û×ÊÔ´»¹Ã»ÓĞ¼ÓÔØÍê 
-            //ÒâÎ¶×Å »¹ÔÚ½øĞĞÒì²½¼ÓÔØ
+            //å¦‚æœèµ„æºè¿˜æ²¡æœ‰åŠ è½½å®Œ 
+            //æ„å‘³ç€ è¿˜åœ¨è¿›è¡Œå¼‚æ­¥åŠ è½½
             if (info.asset == null)
                 info.callBack += callBack;
             else
                 callBack?.Invoke(info.asset);
         }
 
-        //ÒªÍ¨¹ıĞ­Í¬³ÌĞòÈ¥Òì²½¼ÓÔØ×ÊÔ´
+        //è¦é€šè¿‡ååŒç¨‹åºå»å¼‚æ­¥åŠ è½½èµ„æº
         //MonoMgr.Instance.StartCoroutine(ReallyLoadAsync<T>(path, callBack));
     }
 
     private IEnumerator ReallyLoadAsync<T>(string path) where T : UnityEngine.Object
     {
-        //Òì²½¼ÓÔØ×ÊÔ´
+        //å¼‚æ­¥åŠ è½½èµ„æº
         ResourceRequest rq = Resources.LoadAsync<T>(path);
-        //µÈ´ı×ÊÔ´¼ÓÔØ½áÊøºó ²Å»á¼ÌĞøÖ´ĞĞyield returnºóÃæµÄ´úÂë
+        //ç­‰å¾…èµ„æºåŠ è½½ç»“æŸå æ‰ä¼šç»§ç»­æ‰§è¡Œyield returnåé¢çš„ä»£ç 
         yield return rq;
 
         string resName = path + "_" + typeof(T).Name;
-        //×ÊÔ´¼ÓÔØ½áÊø ½«×ÊÔ´´«µ½Íâ²¿µÄÎ¯ÍĞº¯ÊıÈ¥½øĞĞÊ¹ÓÃ
+        //èµ„æºåŠ è½½ç»“æŸ å°†èµ„æºä¼ åˆ°å¤–éƒ¨çš„å§”æ‰˜å‡½æ•°å»è¿›è¡Œä½¿ç”¨
         if (resDic.ContainsKey(resName))
         {
             ResInfo<T> resInfo = resDic[resName] as ResInfo<T>;
-            //È¡³ö×ÊÔ´ĞÅÏ¢ ²¢ÇÒ¼ÇÂ¼¼ÓÔØÍê³ÉµÄ×ÊÔ´
+            //å–å‡ºèµ„æºä¿¡æ¯ å¹¶ä¸”è®°å½•åŠ è½½å®Œæˆçš„èµ„æº
             resInfo.asset = rq.asset as T;
 
-            //Èç¹û·¢ÏÖĞèÒªÉ¾³ı ÔÙÈ¥ÒÆ³ı×ÊÔ´
-            //ÒıÓÃ¼ÆÊıÎª0 ²ÅÕæÕıÈ¥ÒÆ³ı
+            //å¦‚æœå‘ç°éœ€è¦åˆ é™¤ å†å»ç§»é™¤èµ„æº
+            //å¼•ç”¨è®¡æ•°ä¸º0 æ‰çœŸæ­£å»ç§»é™¤
             if (resInfo.refCount == 0)
                 UnloadAsset<T>(path, resInfo.isDel, null, false);
             else
             {
-                //½«¼ÓÔØÍê³ÉµÄ×ÊÔ´´«µİ³öÈ¥
+                //å°†åŠ è½½å®Œæˆçš„èµ„æºä¼ é€’å‡ºå»
                 resInfo.callBack?.Invoke(resInfo.asset);
-                //¼ÓÔØÍê±Ïºó ÕâĞ©ÒıÓÃ¾Í¿ÉÒÔÇå¿Õ ±ÜÃâÒıÓÃµÄÕ¼ÓÃ ¿ÉÄÜ´øÀ´µÄÇ±ÔÚµÄÄÚ´æĞ¹Â©ÎÊÌâ
+                //åŠ è½½å®Œæ¯•å è¿™äº›å¼•ç”¨å°±å¯ä»¥æ¸…ç©º é¿å…å¼•ç”¨çš„å ç”¨ å¯èƒ½å¸¦æ¥çš„æ½œåœ¨çš„å†…å­˜æ³„æ¼é—®é¢˜
                 resInfo.callBack = null;
                 resInfo.coroutine = null;
             }
@@ -179,37 +179,37 @@ public class ResMgr : BaseManager<ResMgr>
     }
 
     /// <summary>
-    /// Òì²½¼ÓÔØ×ÊÔ´µÄ·½·¨
+    /// å¼‚æ­¥åŠ è½½èµ„æºçš„æ–¹æ³•
     /// </summary>
-    /// <param name="path">×ÊÔ´Â·¾¶£¨ResourcesÏÂµÄ£©</param>
-    /// <param name="callBack">¼ÓÔØ½áÊøºóµÄ»Øµ÷º¯Êı µ±Òì²½¼ÓÔØ×ÊÔ´½áÊøºó²Å»áµ÷ÓÃ</param>
-    [Obsolete("×¢Òâ£º½¨ÒéÊ¹ÓÃ·ºĞÍ¼ÓÔØ·½Ê½£¬Èç¹ûÊµÔÚÒªÓÃType¼ÓÔØ£¬Ò»¶¨²»ÄÜºÍ·ºĞÍ¼ÓÔØ»ìÓÃÈ¥¼ÓÔØÍ¬ÀàĞÍÍ¬Ãû×ÊÔ´")]
+    /// <param name="path">èµ„æºè·¯å¾„ï¼ˆResourcesä¸‹çš„ï¼‰</param>
+    /// <param name="callBack">åŠ è½½ç»“æŸåçš„å›è°ƒå‡½æ•° å½“å¼‚æ­¥åŠ è½½èµ„æºç»“æŸåæ‰ä¼šè°ƒç”¨</param>
+    [Obsolete("æ³¨æ„ï¼šå»ºè®®ä½¿ç”¨æ³›å‹åŠ è½½æ–¹å¼ï¼Œå¦‚æœå®åœ¨è¦ç”¨TypeåŠ è½½ï¼Œä¸€å®šä¸èƒ½å’Œæ³›å‹åŠ è½½æ··ç”¨å»åŠ è½½åŒç±»å‹åŒåèµ„æº")]
     public void LoadAsync(string path, Type type, UnityAction<UnityEngine.Object> callBack) 
     {
-        //×ÊÔ´µÄÎ¨Ò»ID£¬ÊÇÍ¨¹ı Â·¾¶Ãû_×ÊÔ´ÀàĞÍ Æ´½Ó¶ø³ÉµÄ
+        //èµ„æºçš„å”¯ä¸€IDï¼Œæ˜¯é€šè¿‡ è·¯å¾„å_èµ„æºç±»å‹ æ‹¼æ¥è€Œæˆçš„
         string resName = path + "_" + type.Name;
         ResInfo<UnityEngine.Object> info;
         if (!resDic.ContainsKey(resName))
         {
-            //ÉùÃ÷Ò»¸ö ×ÊÔ´ĞÅÏ¢¶ÔÏó
+            //å£°æ˜ä¸€ä¸ª èµ„æºä¿¡æ¯å¯¹è±¡
             info = new ResInfo<UnityEngine.Object>();
-            //ÒıÓÃ¼ÆÊıÔö¼Ó
+            //å¼•ç”¨è®¡æ•°å¢åŠ 
             info.AddRefCount();
-            //½«×ÊÔ´¼ÇÂ¼Ìí¼Óµ½×ÖµäÖĞ£¨×ÊÔ´»¹Ã»ÓĞ¼ÓÔØ³É¹¦£©
+            //å°†èµ„æºè®°å½•æ·»åŠ åˆ°å­—å…¸ä¸­ï¼ˆèµ„æºè¿˜æ²¡æœ‰åŠ è½½æˆåŠŸï¼‰
             resDic.Add(resName, info);
-            //¼ÇÂ¼´«ÈëµÄÎ¯ÍĞº¯Êı Ò»»á¶ù¼ÓÔØÍê³ÉÁË ÔÙÊ¹ÓÃ
+            //è®°å½•ä¼ å…¥çš„å§”æ‰˜å‡½æ•° ä¸€ä¼šå„¿åŠ è½½å®Œæˆäº† å†ä½¿ç”¨
             info.callBack += callBack;
-            //¿ªÆôĞ­³ÌÈ¥½øĞĞ Òì²½¼ÓÔØ ²¢ÇÒ¼ÇÂ¼Ğ­Í¬³ÌĞò £¨ÓÃÓÚÖ®ºó¿ÉÄÜµÄ Í£Ö¹£©
+            //å¼€å¯åç¨‹å»è¿›è¡Œ å¼‚æ­¥åŠ è½½ å¹¶ä¸”è®°å½•ååŒç¨‹åº ï¼ˆç”¨äºä¹‹åå¯èƒ½çš„ åœæ­¢ï¼‰
             info.coroutine = MonoMgr.Instance.StartCoroutine(ReallyLoadAsync(path, type));
         }
         else
         {
-            //´Ó×ÖµäÖĞÈ¡³ö×ÊÔ´ĞÅÏ¢
+            //ä»å­—å…¸ä¸­å–å‡ºèµ„æºä¿¡æ¯
             info = resDic[resName] as ResInfo<UnityEngine.Object>;
-            //ÒıÓÃ¼ÆÊıÔö¼Ó
+            //å¼•ç”¨è®¡æ•°å¢åŠ 
             info.AddRefCount();
-            //Èç¹û×ÊÔ´»¹Ã»ÓĞ¼ÓÔØÍê 
-            //ÒâÎ¶×Å »¹ÔÚ½øĞĞÒì²½¼ÓÔØ
+            //å¦‚æœèµ„æºè¿˜æ²¡æœ‰åŠ è½½å®Œ 
+            //æ„å‘³ç€ è¿˜åœ¨è¿›è¡Œå¼‚æ­¥åŠ è½½
             if (info.asset == null)
                 info.callBack += callBack;
             else
@@ -219,27 +219,27 @@ public class ResMgr : BaseManager<ResMgr>
 
     private IEnumerator ReallyLoadAsync(string path, Type type)
     {
-        //Òì²½¼ÓÔØ×ÊÔ´
+        //å¼‚æ­¥åŠ è½½èµ„æº
         ResourceRequest rq = Resources.LoadAsync(path, type);
-        //µÈ´ı×ÊÔ´¼ÓÔØ½áÊøºó ²Å»á¼ÌĞøÖ´ĞĞyield returnºóÃæµÄ´úÂë
+        //ç­‰å¾…èµ„æºåŠ è½½ç»“æŸå æ‰ä¼šç»§ç»­æ‰§è¡Œyield returnåé¢çš„ä»£ç 
         yield return rq;
 
         string resName = path + "_" + type.Name;
-        //×ÊÔ´¼ÓÔØ½áÊø ½«×ÊÔ´´«µ½Íâ²¿µÄÎ¯ÍĞº¯ÊıÈ¥½øĞĞÊ¹ÓÃ
+        //èµ„æºåŠ è½½ç»“æŸ å°†èµ„æºä¼ åˆ°å¤–éƒ¨çš„å§”æ‰˜å‡½æ•°å»è¿›è¡Œä½¿ç”¨
         if (resDic.ContainsKey(resName))
         {
             ResInfo<UnityEngine.Object> resInfo = resDic[resName] as ResInfo<UnityEngine.Object>;
-            //È¡³ö×ÊÔ´ĞÅÏ¢ ²¢ÇÒ¼ÇÂ¼¼ÓÔØÍê³ÉµÄ×ÊÔ´
+            //å–å‡ºèµ„æºä¿¡æ¯ å¹¶ä¸”è®°å½•åŠ è½½å®Œæˆçš„èµ„æº
             resInfo.asset = rq.asset;
-            //Èç¹û·¢ÏÖĞèÒªÉ¾³ı ÔÙÈ¥ÒÆ³ı×ÊÔ´
-            //ÒıÓÃ¼ÆÊıÎª0 ²ÅÕæÕıÈ¥ÒÆ³ı
+            //å¦‚æœå‘ç°éœ€è¦åˆ é™¤ å†å»ç§»é™¤èµ„æº
+            //å¼•ç”¨è®¡æ•°ä¸º0 æ‰çœŸæ­£å»ç§»é™¤
             if (resInfo.refCount == 0)
                 UnloadAsset(path, type, resInfo.isDel, null, false);
             else
             {
-                //½«¼ÓÔØÍê³ÉµÄ×ÊÔ´´«µİ³öÈ¥
+                //å°†åŠ è½½å®Œæˆçš„èµ„æºä¼ é€’å‡ºå»
                 resInfo.callBack?.Invoke(resInfo.asset);
-                //¼ÓÔØÍê±Ïºó ÕâĞ©ÒıÓÃ¾Í¿ÉÒÔÇå¿Õ ±ÜÃâÒıÓÃµÄÕ¼ÓÃ ¿ÉÄÜ´øÀ´µÄÇ±ÔÚµÄÄÚ´æĞ¹Â©ÎÊÌâ
+                //åŠ è½½å®Œæ¯•å è¿™äº›å¼•ç”¨å°±å¯ä»¥æ¸…ç©º é¿å…å¼•ç”¨çš„å ç”¨ å¯èƒ½å¸¦æ¥çš„æ½œåœ¨çš„å†…å­˜æ³„æ¼é—®é¢˜
                 resInfo.callBack = null;
                 resInfo.coroutine = null;
             }
@@ -247,37 +247,37 @@ public class ResMgr : BaseManager<ResMgr>
     }
 
     /// <summary>
-    /// Ö¸¶¨Ğ¶ÔØÒ»¸ö×ÊÔ´
+    /// æŒ‡å®šå¸è½½ä¸€ä¸ªèµ„æº
     /// </summary>
     /// <param name="assetToUnload"></param>
     public void UnloadAsset<T>(string path, bool isDel = false, UnityAction<T> callBack = null, bool isSub = true)
     {
         string resName = path + "_" + typeof(T).Name;
-        //ÅĞ¶ÏÊÇ·ñ´æÔÚ¶ÔÓ¦×ÊÔ´
+        //åˆ¤æ–­æ˜¯å¦å­˜åœ¨å¯¹åº”èµ„æº
         if(resDic.ContainsKey(resName))
         {
             ResInfo<T> resInfo = resDic[resName] as ResInfo<T>;
-            //ÒıÓÃ¼ÆÊı-1
+            //å¼•ç”¨è®¡æ•°-1
             if(isSub)
                 resInfo.SubRefCount();
-            //¼ÇÂ¼ ÒıÓÃ¼ÆÊıÎª0Ê±  ÊÇ·ñÂíÉÏÒÆ³ı±êÇ©
+            //è®°å½• å¼•ç”¨è®¡æ•°ä¸º0æ—¶  æ˜¯å¦é©¬ä¸Šç§»é™¤æ ‡ç­¾
             resInfo.isDel = isDel;
-            //×ÊÔ´ÒÑ¾­¼ÓÔØ½áÊø 
+            //èµ„æºå·²ç»åŠ è½½ç»“æŸ 
             if(resInfo.asset != null && resInfo.refCount == 0 && resInfo.isDel)
             {
-                //´Ó×ÖµäÒÆ³ı
+                //ä»å­—å…¸ç§»é™¤
                 resDic.Remove(resName);
-                //Í¨¹ıapi Ğ¶ÔØ×ÊÔ´
+                //é€šè¿‡api å¸è½½èµ„æº
                 Resources.UnloadAsset(resInfo.asset as UnityEngine.Object);
             }
-            else if(resInfo.asset == null)//×ÊÔ´ÕıÔÚÒì²½¼ÓÔØÖĞ
+            else if(resInfo.asset == null)//èµ„æºæ­£åœ¨å¼‚æ­¥åŠ è½½ä¸­
             {
                 //MonoMgr.Instance.StopCoroutine(resInfo.coroutine);
                 //resDic.Remove(resName);
-                //ÎªÁË±£ÏÕÆğ¼û Ò»¶¨ÒªÈÃ×ÊÔ´ÒÆ³ıÁË
-                //¸Ä±ä±íÊ¾ ´ıÉ¾³ı
+                //ä¸ºäº†ä¿é™©èµ·è§ ä¸€å®šè¦è®©èµ„æºç§»é™¤äº†
+                //æ”¹å˜è¡¨ç¤º å¾…åˆ é™¤
                 //resInfo.isDel = true;
-                //µ±Òì²½¼ÓÔØ²»ÏëÊ¹ÓÃÊ± ÎÒÃÇÓ¦¸ÃÒÆ³ıËüµÄ»Øµ÷¼ÇÂ¼ ¶ø²»ÊÇÖ±½ÓÈ¥Ğ¶ÔØ×ÊÔ´
+                //å½“å¼‚æ­¥åŠ è½½ä¸æƒ³ä½¿ç”¨æ—¶ æˆ‘ä»¬åº”è¯¥ç§»é™¤å®ƒçš„å›è°ƒè®°å½• è€Œä¸æ˜¯ç›´æ¥å»å¸è½½èµ„æº
                 if (callBack != null)
                     resInfo.callBack -= callBack;
 
@@ -288,31 +288,31 @@ public class ResMgr : BaseManager<ResMgr>
     public void UnloadAsset(string path, Type type, bool isDel = false, UnityAction<UnityEngine.Object> callBack = null, bool isSub = true)
     {
         string resName = path + "_" + type.Name;
-        //ÅĞ¶ÏÊÇ·ñ´æÔÚ¶ÔÓ¦×ÊÔ´
+        //åˆ¤æ–­æ˜¯å¦å­˜åœ¨å¯¹åº”èµ„æº
         if (resDic.ContainsKey(resName))
         {
             ResInfo<UnityEngine.Object> resInfo = resDic[resName] as ResInfo<UnityEngine.Object>;
-            //ÒıÓÃ¼ÆÊı-1
+            //å¼•ç”¨è®¡æ•°-1
             if(isSub)
                 resInfo.SubRefCount();
-            //¼ÇÂ¼ ÒıÓÃ¼ÆÊıÎª0Ê±  ÊÇ·ñÂíÉÏÒÆ³ı±êÇ©
+            //è®°å½• å¼•ç”¨è®¡æ•°ä¸º0æ—¶  æ˜¯å¦é©¬ä¸Šç§»é™¤æ ‡ç­¾
             resInfo.isDel = isDel;
-            //×ÊÔ´ÒÑ¾­¼ÓÔØ½áÊø 
+            //èµ„æºå·²ç»åŠ è½½ç»“æŸ 
             if (resInfo.asset != null && resInfo.refCount == 0 && resInfo.isDel)
             {
-                //´Ó×ÖµäÒÆ³ı
+                //ä»å­—å…¸ç§»é™¤
                 resDic.Remove(resName);
-                //Í¨¹ıapi Ğ¶ÔØ×ÊÔ´
+                //é€šè¿‡api å¸è½½èµ„æº
                 Resources.UnloadAsset(resInfo.asset);
             }
-            else if (resInfo.asset == null)//×ÊÔ´ÕıÔÚÒì²½¼ÓÔØÖĞ
+            else if (resInfo.asset == null)//èµ„æºæ­£åœ¨å¼‚æ­¥åŠ è½½ä¸­
             {
                 //MonoMgr.Instance.StopCoroutine(resInfo.coroutine);
                 //resDic.Remove(resName);
-                //ÎªÁË±£ÏÕÆğ¼û Ò»¶¨ÒªÈÃ×ÊÔ´ÒÆ³ıÁË
-                //¸Ä±ä±íÊ¾ ´ıÉ¾³ı
+                //ä¸ºäº†ä¿é™©èµ·è§ ä¸€å®šè¦è®©èµ„æºç§»é™¤äº†
+                //æ”¹å˜è¡¨ç¤º å¾…åˆ é™¤
                 //resInfo.isDel = true;
-                //µ±Òì²½¼ÓÔØ²»ÏëÊ¹ÓÃÊ± ÎÒÃÇÓ¦¸ÃÒÆ³ıËüµÄ»Øµ÷¼ÇÂ¼ ¶ø²»ÊÇÖ±½ÓÈ¥Ğ¶ÔØ×ÊÔ´
+                //å½“å¼‚æ­¥åŠ è½½ä¸æƒ³ä½¿ç”¨æ—¶ æˆ‘ä»¬åº”è¯¥ç§»é™¤å®ƒçš„å›è°ƒè®°å½• è€Œä¸æ˜¯ç›´æ¥å»å¸è½½èµ„æº
                 if (callBack != null)
                     resInfo.callBack -= callBack;
             }
@@ -320,9 +320,9 @@ public class ResMgr : BaseManager<ResMgr>
     }
 
     /// <summary>
-    /// Òì²½Ğ¶ÔØ¶ÔÓ¦Ã»ÓĞÊ¹ÓÃµÄResourcesÏà¹ØµÄ×ÊÔ´
+    /// å¼‚æ­¥å¸è½½å¯¹åº”æ²¡æœ‰ä½¿ç”¨çš„Resourcesç›¸å…³çš„èµ„æº
     /// </summary>
-    /// <param name="callBack">»Øµ÷º¯Êı</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°</param>
     public void UnloadUnusedAssets(UnityAction callBack)
     {
         MonoMgr.Instance.StartCoroutine(ReallyUnloadUnusedAssets(callBack));
@@ -330,8 +330,8 @@ public class ResMgr : BaseManager<ResMgr>
 
     private IEnumerator ReallyUnloadUnusedAssets(UnityAction callBack)
     {
-        //¾ÍÊÇÔÚÕæÕıÒÆ³ı²»Ê¹ÓÃµÄ×ÊÔ´Ö®Ç° Ó¦¸Ã°ÑÎÒÃÇ×Ô¼º¼ÇÂ¼µÄÄÇĞ©ÒıÓÃ¼ÆÊıÎª0 ²¢ÇÒÃ»ÓĞ±»ÒÆ³ı¼ÇÂ¼µÄ×ÊÔ´
-        //ÒÆ³ıµô
+        //å°±æ˜¯åœ¨çœŸæ­£ç§»é™¤ä¸ä½¿ç”¨çš„èµ„æºä¹‹å‰ åº”è¯¥æŠŠæˆ‘ä»¬è‡ªå·±è®°å½•çš„é‚£äº›å¼•ç”¨è®¡æ•°ä¸º0 å¹¶ä¸”æ²¡æœ‰è¢«ç§»é™¤è®°å½•çš„èµ„æº
+        //ç§»é™¤æ‰
         List<string> list = new List<string>();
         foreach (string path in resDic.Keys)
         {
@@ -345,12 +345,12 @@ public class ResMgr : BaseManager<ResMgr>
 
         AsyncOperation ao = Resources.UnloadUnusedAssets();
         yield return ao;
-        //Ğ¶ÔØÍê±Ïºó Í¨ÖªÍâ²¿
+        //å¸è½½å®Œæ¯•å é€šçŸ¥å¤–éƒ¨
         callBack();
     }
 
     /// <summary>
-    /// »ñÈ¡µ±Ç°Ä³¸ö×ÊÔ´µÄÒıÓÃ¼ÆÊı
+    /// è·å–å½“å‰æŸä¸ªèµ„æºçš„å¼•ç”¨è®¡æ•°
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="path"></param>
@@ -367,7 +367,7 @@ public class ResMgr : BaseManager<ResMgr>
 
 
     /// <summary>
-    /// Çå¿Õ×Öµä
+    /// æ¸…ç©ºå­—å…¸
     /// </summary>
     /// <param name="callBack"></param>
     public void ClearDic(UnityAction callBack)
@@ -380,7 +380,7 @@ public class ResMgr : BaseManager<ResMgr>
         resDic.Clear();
         AsyncOperation ao = Resources.UnloadUnusedAssets();
         yield return ao;
-        //Ğ¶ÔØÍê±Ïºó Í¨ÖªÍâ²¿
+        //å¸è½½å®Œæ¯•å é€šçŸ¥å¤–éƒ¨
         callBack();
     }
 }

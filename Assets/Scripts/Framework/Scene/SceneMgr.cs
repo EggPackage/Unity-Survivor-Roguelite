@@ -5,23 +5,23 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// ³¡¾°ÇĞ»»¹ÜÀíÆ÷ Ö÷ÒªÓÃÓÚÇĞ»»³¡¾°
+/// åœºæ™¯åˆ‡æ¢ç®¡ç†å™¨ ä¸»è¦ç”¨äºåˆ‡æ¢åœºæ™¯
 /// </summary>
 public class SceneMgr : BaseManager<SceneMgr>
 {
     private SceneMgr() { }
 
-    //Í¬²½ÇĞ»»³¡¾°µÄ·½·¨
+    //åŒæ­¥åˆ‡æ¢åœºæ™¯çš„æ–¹æ³•
     public void LoadScene(string name, UnityAction callBack = null)
     {
-        //ÇĞ»»³¡¾°
+        //åˆ‡æ¢åœºæ™¯
         SceneManager.LoadScene(name);
-        //µ÷ÓÃ»Øµ÷
+        //è°ƒç”¨å›è°ƒ
         callBack?.Invoke();
         callBack = null;
     }
 
-    //Òì²½ÇĞ»»³¡¾°µÄ·½·¨
+    //å¼‚æ­¥åˆ‡æ¢åœºæ™¯çš„æ–¹æ³•
     public void LoadSceneAsyn(string name, UnityAction callBack = null)
     {
         MonoMgr.Instance.StartCoroutine(ReallyLoadSceneAsyn(name, callBack));
@@ -30,14 +30,14 @@ public class SceneMgr : BaseManager<SceneMgr>
     private IEnumerator ReallyLoadSceneAsyn(string name, UnityAction callBack)
     {
         AsyncOperation ao = SceneManager.LoadSceneAsync(name);
-        //²»Í£µÄÔÚĞ­Í¬³ÌĞòÖĞÃ¿Ö¡¼ì²âÊÇ·ñ¼ÓÔØ½áÊø Èç¹û¼ÓÔØ½áÊø¾Í²»»á½øÕâ¸öÑ­»·Ã¿Ö¡Ö´ĞĞÁË
+        //ä¸åœçš„åœ¨ååŒç¨‹åºä¸­æ¯å¸§æ£€æµ‹æ˜¯å¦åŠ è½½ç»“æŸ å¦‚æœåŠ è½½ç»“æŸå°±ä¸ä¼šè¿›è¿™ä¸ªå¾ªç¯æ¯å¸§æ‰§è¡Œäº†
         while (!ao.isDone)
         {
-            //¿ÉÒÔÔÚÕâÀïÀûÓÃÊÂ¼şÖĞĞÄ Ã¿Ò»Ö¡½«½ø¶È·¢ËÍ¸øÏëÒªµÃµ½µÄµØ·½
+            //å¯ä»¥åœ¨è¿™é‡Œåˆ©ç”¨äº‹ä»¶ä¸­å¿ƒ æ¯ä¸€å¸§å°†è¿›åº¦å‘é€ç»™æƒ³è¦å¾—åˆ°çš„åœ°æ–¹
             EventCenter.Instance.EventTrigger<float>(E_EventType.E_SceneLoadChange, ao.progress);
             yield return 0;
         }
-        //±ÜÃâ×îºóÒ»Ö¡Ö±½Ó½áÊøÁË Ã»ÓĞÍ¬²½1³öÈ¥
+        //é¿å…æœ€åä¸€å¸§ç›´æ¥ç»“æŸäº† æ²¡æœ‰åŒæ­¥1å‡ºå»
         EventCenter.Instance.EventTrigger<float>(E_EventType.E_SceneLoadChange, 1);
 
         callBack?.Invoke();

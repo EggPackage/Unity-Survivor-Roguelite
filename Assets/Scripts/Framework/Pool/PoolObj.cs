@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¸Ã½Å±¾Ö÷ÒªÓÃÓÚ¹ÒÔØµ½ĞèÒªÊ¹ÓÃ»º´æ³Ø¹¦ÄÜµÄÔ¤ÉèÌå¶ÔÏóÉÏ
+/// è¯¥è„šæœ¬ä¸»è¦ç”¨äºæŒ‚è½½åˆ°éœ€è¦ä½¿ç”¨ç¼“å­˜æ± åŠŸèƒ½çš„é¢„è®¾ä½“å¯¹è±¡ä¸Š
 /// </summary>
 public class PoolObj : MonoBehaviour
 {

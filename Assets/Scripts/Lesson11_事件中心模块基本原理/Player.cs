@@ -13,12 +13,12 @@ public class Player : MonoBehaviour
 
     public void Test()
     {
-        print("ÎŞ²ÎÊÂ¼ş¼àÌıÕß");
+        print("æ— å‚äº‹ä»¶ç›‘å¬è€…");
     }
 
     public void PlayerWaitMonsterDeadDo(Monster info)
     {
-        Debug.Log("Íæ¼ÒµÃ½±Àø" + info.monsterName);
+        Debug.Log("ç©å®¶å¾—å¥–åŠ±" + info.monsterName);
     }
 
     private void OnDestroy()

@@ -7,18 +7,18 @@ public class Lesson16 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        #region �ر�֪ʶ��
-        //1.C#��Dictionary���֪ʶ�㣨C#�Ĳ���C#���ף�
-        //2.C#��ί�����֪ʶ�㣨C#�Ĳ���C#���ף�
-        //3.Unity��Resources���֪ʶ�㣨Unity�Ĳ���Unity������
-        //4.Unity��Эͬ�������֪ʶ�㣨Unity�Ĳ���Unity������
+        #region 必备知识点
+        //1.C#中Dictionary相关知识点（C#四部曲C#进阶）
+        //2.C#中委托相关知识点（C#四部曲C#进阶）
+        //3.Unity中Resources相关知识点（Unity四部曲Unity基础）
+        //4.Unity中协同程序相关知识点（Unity四部曲Unity基础）
         #endregion
 
-        #region ֪ʶ�� Resources��Դ����ģ��ľ���ʵ��
-        //1.����ResourcesMgr �̳� ���̳�MonoBehaviour�ĵ���ģʽ����
-        //2.Ϊ����װResources�첽������Դ����ط�������ҪĿ�� �����첽���صĴ������ࣩ
-        //3.Ϊ����װResourcesͬ��������Դ����ط�����˳���װ��
-        //4.Ϊ����װ��Դж����ط�����˳���װ��
+        #region 知识点 Resources资源加载模块的具体实现
+        //1.创建ResourcesMgr 继承 不继承MonoBehaviour的单例模式基类
+        //2.为它封装Resources异步加载资源的相关方法（主要目的 避免异步加载的代码冗余）
+        //3.为它封装Resources同步加载资源的相关方法（顺便封装）
+        //4.为它封装资源卸载相关方法（顺便封装）
         #endregion
     }
 

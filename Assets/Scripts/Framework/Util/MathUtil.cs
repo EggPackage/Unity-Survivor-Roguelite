@@ -6,34 +6,34 @@ using UnityEngine.Events;
 
 public class MathUtil
 {
-    #region ½Ç¶ÈºÍ»¡¶È
+    #region è§’åº¦å’Œå¼§åº¦
     /// <summary>
-    /// ½Ç¶È×ª»¡¶ÈµÄ·½·¨
+    /// è§’åº¦è½¬å¼§åº¦çš„æ–¹æ³•
     /// </summary>
-    /// <param name="deg">½Ç¶ÈÖµ</param>
-    /// <returns>»¡¶ÈÖµ</returns>
+    /// <param name="deg">è§’åº¦å€¼</param>
+    /// <returns>å¼§åº¦å€¼</returns>
     public static float Deg2Rad(float deg)
     {
         return deg * Mathf.Deg2Rad;
     }
 
     /// <summary>
-    /// »¡¶È×ª½Ç¶ÈµÄ·½·¨
+    /// å¼§åº¦è½¬è§’åº¦çš„æ–¹æ³•
     /// </summary>
-    /// <param name="rad">»¡¶ÈÖµ</param>
-    /// <returns>½Ç¶ÈÖµ</returns>
+    /// <param name="rad">å¼§åº¦å€¼</param>
+    /// <returns>è§’åº¦å€¼</returns>
     public static float Rad2Deg(float rad)
     {
         return rad * Mathf.Rad2Deg;
     }
     #endregion
 
-    #region ¾àÀë¼ÆËãÏà¹ØµÄ
+    #region è·ç¦»è®¡ç®—ç›¸å…³çš„
     /// <summary>
-    /// »ñÈ¡XZÆ½ÃæÉÏ Á½µãµÄ¾àÀë
+    /// è·å–XZå¹³é¢ä¸Š ä¸¤ç‚¹çš„è·ç¦»
     /// </summary>
-    /// <param name="srcPos">µã1</param>
-    /// <param name="targetPos">µã2</param>
+    /// <param name="srcPos">ç‚¹1</param>
+    /// <param name="targetPos">ç‚¹2</param>
     /// <returns></returns>
     public static float GetObjDistanceXZ(Vector3 srcPos, Vector3 targetPos)
     {
@@ -43,11 +43,11 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÁ½µãÖ®¼ä¾àÀë ÊÇ·ñĞ¡ÓÚµÈÓÚÄ¿±ê¾àÀë XZÆ½Ãæ
+    /// åˆ¤æ–­ä¸¤ç‚¹ä¹‹é—´è·ç¦» æ˜¯å¦å°äºç­‰äºç›®æ ‡è·ç¦» XZå¹³é¢
     /// </summary>
-    /// <param name="srcPos">µã1</param>
-    /// <param name="targetPos">µã2</param>
-    /// <param name="dis">¾àÀë</param>
+    /// <param name="srcPos">ç‚¹1</param>
+    /// <param name="targetPos">ç‚¹2</param>
+    /// <param name="dis">è·ç¦»</param>
     /// <returns></returns>
     public static bool CheckObjDistanceXZ(Vector3 srcPos, Vector3 targetPos, float dis)
     {
@@ -55,10 +55,10 @@ public class MathUtil
     }
 
     /// <summary>
-    /// »ñÈ¡XYÆ½ÃæÉÏ Á½µãµÄ¾àÀë
+    /// è·å–XYå¹³é¢ä¸Š ä¸¤ç‚¹çš„è·ç¦»
     /// </summary>
-    /// <param name="srcPos">µã1</param>
-    /// <param name="targetPos">µã2</param>
+    /// <param name="srcPos">ç‚¹1</param>
+    /// <param name="targetPos">ç‚¹2</param>
     /// <returns></returns>
     public static float GetObjDistanceXY(Vector3 srcPos, Vector3 targetPos)
     {
@@ -68,11 +68,11 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÁ½µãÖ®¼ä¾àÀë ÊÇ·ñĞ¡ÓÚµÈÓÚÄ¿±ê¾àÀë XYÆ½Ãæ
+    /// åˆ¤æ–­ä¸¤ç‚¹ä¹‹é—´è·ç¦» æ˜¯å¦å°äºç­‰äºç›®æ ‡è·ç¦» XYå¹³é¢
     /// </summary>
-    /// <param name="srcPos">µã1</param>
-    /// <param name="targetPos">µã2</param>
-    /// <param name="dis">¾àÀë</param>
+    /// <param name="srcPos">ç‚¹1</param>
+    /// <param name="targetPos">ç‚¹2</param>
+    /// <param name="dis">è·ç¦»</param>
     /// <returns></returns>
     public static bool CheckObjDistanceXY(Vector3 srcPos, Vector3 targetPos, float dis)
     {
@@ -81,17 +81,17 @@ public class MathUtil
 
     #endregion
 
-    #region Î»ÖÃÅĞ¶ÏÏà¹Ø
+    #region ä½ç½®åˆ¤æ–­ç›¸å…³
     /// <summary>
-    /// ÅĞ¶ÏÊÀ½ç×ø±êÏµÏÂµÄÄ³Ò»¸öµã ÊÇ·ñÔÚÆÁÄ»¿É¼û·¶Î§Íâ
+    /// åˆ¤æ–­ä¸–ç•Œåæ ‡ç³»ä¸‹çš„æŸä¸€ä¸ªç‚¹ æ˜¯å¦åœ¨å±å¹•å¯è§èŒƒå›´å¤–
     /// </summary>
-    /// <param name="pos">ÊÀ½ç×ø±êÏµÏÂµÄÒ»¸öµãµÄÎ»ÖÃ</param>
-    /// <returns>Èç¹ûÔÚ¿É¼û·¶Î§Íâ·µ»Øtrue£¬·ñÔò·µ»Øfalse</returns>
+    /// <param name="pos">ä¸–ç•Œåæ ‡ç³»ä¸‹çš„ä¸€ä¸ªç‚¹çš„ä½ç½®</param>
+    /// <returns>å¦‚æœåœ¨å¯è§èŒƒå›´å¤–è¿”å›trueï¼Œå¦åˆ™è¿”å›false</returns>
     public static bool IsWorldPosOutScreen(Vector3 pos)
     {
-        //½«ÊÀ½ç×ø±ê×ªÎªÆÁÄ»×ø±ê
+        //å°†ä¸–ç•Œåæ ‡è½¬ä¸ºå±å¹•åæ ‡
         Vector3 screenPos = Camera.main.WorldToScreenPoint(pos);
-        //ÅĞ¶ÏÊÇ·ñÔÚÆÁÄ»·¶Î§ÄÚ
+        //åˆ¤æ–­æ˜¯å¦åœ¨å±å¹•èŒƒå›´å†…
         if (screenPos.x >= 0 && screenPos.x <= Screen.width &&
             screenPos.y >= 0 && screenPos.y <= Screen.height)
             return false;
@@ -99,33 +99,33 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÄ³Ò»¸öÎ»ÖÃ ÊÇ·ñÔÚÖ¸¶¨ÉÈĞÎ·¶Î§ÄÚ£¨×¢Òâ£º´«ÈëµÄ×ø±êÏòÁ¿¶¼±ØĞëÊÇ»ùÓÚÍ¬Ò»¸ö×ø±êÏµÏÂµÄ£©
+    /// åˆ¤æ–­æŸä¸€ä¸ªä½ç½® æ˜¯å¦åœ¨æŒ‡å®šæ‰‡å½¢èŒƒå›´å†…ï¼ˆæ³¨æ„ï¼šä¼ å…¥çš„åæ ‡å‘é‡éƒ½å¿…é¡»æ˜¯åŸºäºåŒä¸€ä¸ªåæ ‡ç³»ä¸‹çš„ï¼‰
     /// </summary>
-    /// <param name="pos">ÉÈĞÎÖĞĞÄµãÎ»ÖÃ</param>
-    /// <param name="forward">×Ô¼ºµÄÃæ³¯Ïò</param>
-    /// <param name="targetPos">Ä¿±ê¶ÔÏó</param>
-    /// <param name="radius">°ë¾¶</param>
-    /// <param name="angle">ÉÈĞÎµÄ½Ç¶È</param>
+    /// <param name="pos">æ‰‡å½¢ä¸­å¿ƒç‚¹ä½ç½®</param>
+    /// <param name="forward">è‡ªå·±çš„é¢æœå‘</param>
+    /// <param name="targetPos">ç›®æ ‡å¯¹è±¡</param>
+    /// <param name="radius">åŠå¾„</param>
+    /// <param name="angle">æ‰‡å½¢çš„è§’åº¦</param>
     /// <returns></returns>
     public static bool IsInSectorRangeXZ(Vector3 pos, Vector3 forward, Vector3 targetPos, float radius, float angle)
     {
         pos.y = 0;
         forward.y = 0;
         targetPos.y = 0;
-        //¾àÀë + ½Ç¶È
+        //è·ç¦» + è§’åº¦
         return Vector3.Distance(pos, targetPos) <= radius && Vector3.Angle(forward, targetPos - pos) <= angle / 2f;
     }
     #endregion
 
-    #region ÉäÏß¼ì²âÏà¹Ø
+    #region å°„çº¿æ£€æµ‹ç›¸å…³
 
     /// <summary>
-    /// ÉäÏß¼ì²â »ñÈ¡Ò»¸ö¶ÔÏó Ö¸¶¨¾àÀë Ö¸¶¨²ã¼¶µÄ
+    /// å°„çº¿æ£€æµ‹ è·å–ä¸€ä¸ªå¯¹è±¡ æŒ‡å®šè·ç¦» æŒ‡å®šå±‚çº§çš„
     /// </summary>
-    /// <param name="ray">ÉäÏß</param>
-    /// <param name="callBack">»Øµ÷º¯Êı£¨»á°ÑÅöµ½µÄRayCastHitĞÅÏ¢´«µİ³öÈ¥£©</param>
-    /// <param name="maxDistance">×î´ó¾àÀë</param>
-    /// <param name="layerMask">²ã¼¶É¸Ñ¡</param>
+    /// <param name="ray">å°„çº¿</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°ï¼ˆä¼šæŠŠç¢°åˆ°çš„RayCastHitä¿¡æ¯ä¼ é€’å‡ºå»ï¼‰</param>
+    /// <param name="maxDistance">æœ€å¤§è·ç¦»</param>
+    /// <param name="layerMask">å±‚çº§ç­›é€‰</param>
     public static void RayCast(Ray ray, UnityAction<RaycastHit> callBack, float maxDistance, int layerMask)
     {
         RaycastHit hitInfo;
@@ -134,12 +134,12 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ÉäÏß¼ì²â »ñÈ¡Ò»¸ö¶ÔÏó Ö¸¶¨¾àÀë Ö¸¶¨²ã¼¶µÄ
+    /// å°„çº¿æ£€æµ‹ è·å–ä¸€ä¸ªå¯¹è±¡ æŒ‡å®šè·ç¦» æŒ‡å®šå±‚çº§çš„
     /// </summary>
-    /// <param name="ray">ÉäÏß</param>
-    /// <param name="callBack">»Øµ÷º¯Êı£¨»á°ÑÅöµ½µÄGameObjectĞÅÏ¢´«µİ³öÈ¥£©</param>
-    /// <param name="maxDistance">×î´ó¾àÀë</param>
-    /// <param name="layerMask">²ã¼¶É¸Ñ¡</param>
+    /// <param name="ray">å°„çº¿</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°ï¼ˆä¼šæŠŠç¢°åˆ°çš„GameObjectä¿¡æ¯ä¼ é€’å‡ºå»ï¼‰</param>
+    /// <param name="maxDistance">æœ€å¤§è·ç¦»</param>
+    /// <param name="layerMask">å±‚çº§ç­›é€‰</param>
     public static void RayCast(Ray ray, UnityAction<GameObject> callBack, float maxDistance, int layerMask)
     {
         RaycastHit hitInfo;
@@ -148,12 +148,12 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ÉäÏß¼ì²â »ñÈ¡Ò»¸ö¶ÔÏó Ö¸¶¨¾àÀë Ö¸¶¨²ã¼¶µÄ
+    /// å°„çº¿æ£€æµ‹ è·å–ä¸€ä¸ªå¯¹è±¡ æŒ‡å®šè·ç¦» æŒ‡å®šå±‚çº§çš„
     /// </summary>
-    /// <param name="ray">ÉäÏß</param>
-    /// <param name="callBack">»Øµ÷º¯Êı£¨»á°ÑÅöµ½µÄ¶ÔÏóĞÅÏ¢ÉÏ¹ÒÔÚµÄÖ¸¶¨½Å±¾´«µİ³öÈ¥£©</param>
-    /// <param name="maxDistance">×î´ó¾àÀë</param>
-    /// <param name="layerMask">²ã¼¶É¸Ñ¡</param>
+    /// <param name="ray">å°„çº¿</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°ï¼ˆä¼šæŠŠç¢°åˆ°çš„å¯¹è±¡ä¿¡æ¯ä¸ŠæŒ‚åœ¨çš„æŒ‡å®šè„šæœ¬ä¼ é€’å‡ºå»ï¼‰</param>
+    /// <param name="maxDistance">æœ€å¤§è·ç¦»</param>
+    /// <param name="layerMask">å±‚çº§ç­›é€‰</param>
     public static void RayCast<T>(Ray ray, UnityAction<T> callBack, float maxDistance, int layerMask)
     {
         RaycastHit hitInfo;
@@ -162,12 +162,12 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ÉäÏß¼ì²â »ñÈ¡µ½¶à¸ö¶ÔÏó Ö¸¶¨¾àÀë Ö¸¶¨²ã¼¶
+    /// å°„çº¿æ£€æµ‹ è·å–åˆ°å¤šä¸ªå¯¹è±¡ æŒ‡å®šè·ç¦» æŒ‡å®šå±‚çº§
     /// </summary>
-    /// <param name="ray">ÉäÏß</param>
-    /// <param name="callBack">»Øµ÷º¯Êı£¨»á°ÑÅöµ½µÄRayCastHitĞÅÏ¢´«µİ³öÈ¥£© Ã¿Ò»¸ö¶ÔÏó¶¼»áµ÷ÓÃÒ»´Î</param>
-    /// <param name="maxDistance">×î´ó¾àÀë</param>
-    /// <param name="layerMask">²ã¼¶É¸Ñ¡</param>
+    /// <param name="ray">å°„çº¿</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°ï¼ˆä¼šæŠŠç¢°åˆ°çš„RayCastHitä¿¡æ¯ä¼ é€’å‡ºå»ï¼‰ æ¯ä¸€ä¸ªå¯¹è±¡éƒ½ä¼šè°ƒç”¨ä¸€æ¬¡</param>
+    /// <param name="maxDistance">æœ€å¤§è·ç¦»</param>
+    /// <param name="layerMask">å±‚çº§ç­›é€‰</param>
     public static void RayCastAll(Ray ray, UnityAction<RaycastHit> callBack, float maxDistance, int layerMask)
     {
         RaycastHit[] hitInfos = Physics.RaycastAll(ray, maxDistance, layerMask);
@@ -176,12 +176,12 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ÉäÏß¼ì²â »ñÈ¡µ½¶à¸ö¶ÔÏó Ö¸¶¨¾àÀë Ö¸¶¨²ã¼¶
+    /// å°„çº¿æ£€æµ‹ è·å–åˆ°å¤šä¸ªå¯¹è±¡ æŒ‡å®šè·ç¦» æŒ‡å®šå±‚çº§
     /// </summary>
-    /// <param name="ray">ÉäÏß</param>
-    /// <param name="callBack">»Øµ÷º¯Êı£¨»á°ÑÅöµ½µÄGameObjectĞÅÏ¢´«µİ³öÈ¥£© Ã¿Ò»¸ö¶ÔÏó¶¼»áµ÷ÓÃÒ»´Î</param>
-    /// <param name="maxDistance">×î´ó¾àÀë</param>
-    /// <param name="layerMask">²ã¼¶É¸Ñ¡</param>
+    /// <param name="ray">å°„çº¿</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°ï¼ˆä¼šæŠŠç¢°åˆ°çš„GameObjectä¿¡æ¯ä¼ é€’å‡ºå»ï¼‰ æ¯ä¸€ä¸ªå¯¹è±¡éƒ½ä¼šè°ƒç”¨ä¸€æ¬¡</param>
+    /// <param name="maxDistance">æœ€å¤§è·ç¦»</param>
+    /// <param name="layerMask">å±‚çº§ç­›é€‰</param>
     public static void RayCastAll(Ray ray, UnityAction<GameObject> callBack, float maxDistance, int layerMask)
     {
         RaycastHit[] hitInfos = Physics.RaycastAll(ray, maxDistance, layerMask);
@@ -190,12 +190,12 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ÉäÏß¼ì²â »ñÈ¡µ½¶à¸ö¶ÔÏó Ö¸¶¨¾àÀë Ö¸¶¨²ã¼¶
+    /// å°„çº¿æ£€æµ‹ è·å–åˆ°å¤šä¸ªå¯¹è±¡ æŒ‡å®šè·ç¦» æŒ‡å®šå±‚çº§
     /// </summary>
-    /// <param name="ray">ÉäÏß</param>
-    /// <param name="callBack">»Øµ÷º¯Êı£¨»á°ÑÅöµ½µÄ¶ÔÏóĞÅÏ¢ÉÏÒÀ¸½µÄ½Å±¾´«µİ³öÈ¥£© Ã¿Ò»¸ö¶ÔÏó¶¼»áµ÷ÓÃÒ»´Î</param>
-    /// <param name="maxDistance">×î´ó¾àÀë</param>
-    /// <param name="layerMask">²ã¼¶É¸Ñ¡</param>
+    /// <param name="ray">å°„çº¿</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°ï¼ˆä¼šæŠŠç¢°åˆ°çš„å¯¹è±¡ä¿¡æ¯ä¸Šä¾é™„çš„è„šæœ¬ä¼ é€’å‡ºå»ï¼‰ æ¯ä¸€ä¸ªå¯¹è±¡éƒ½ä¼šè°ƒç”¨ä¸€æ¬¡</param>
+    /// <param name="maxDistance">æœ€å¤§è·ç¦»</param>
+    /// <param name="layerMask">å±‚çº§ç­›é€‰</param>
     public static void RayCastAll<T>(Ray ray, UnityAction<T> callBack, float maxDistance, int layerMask)
     {
         RaycastHit[] hitInfos = Physics.RaycastAll(ray, maxDistance, layerMask);
@@ -204,16 +204,16 @@ public class MathUtil
     }
     #endregion
 
-    #region ·¶Î§¼ì²âÏà¹Ø
+    #region èŒƒå›´æ£€æµ‹ç›¸å…³
     /// <summary>
-    /// ½øĞĞºĞ×°·¶Î§¼ì²â
+    /// è¿›è¡Œç›’è£…èŒƒå›´æ£€æµ‹
     /// </summary>
-    /// <typeparam name="T">ÏëÒª»ñÈ¡µÄĞÅÏ¢ÀàĞÍ ¿ÉÒÔÌîĞ´ Collider GameObject ÒÔ¼°¶ÔÏóÉÏÒÀ¸½µÄ×é¼şÀàĞÍ</typeparam>
-    /// <param name="center">ºĞ×°ÖĞĞÄµã</param>
-    /// <param name="rotation">ºĞ×ÓµÄ½Ç¶È</param>
-    /// <param name="halfExtents">³¤¿í¸ßµÄÒ»°ë</param>
-    /// <param name="layerMask">²ã¼¶É¸Ñ¡</param>
-    /// <param name="callBack">»Øµ÷º¯Êı </param>
+    /// <typeparam name="T">æƒ³è¦è·å–çš„ä¿¡æ¯ç±»å‹ å¯ä»¥å¡«å†™ Collider GameObject ä»¥åŠå¯¹è±¡ä¸Šä¾é™„çš„ç»„ä»¶ç±»å‹</typeparam>
+    /// <param name="center">ç›’è£…ä¸­å¿ƒç‚¹</param>
+    /// <param name="rotation">ç›’å­çš„è§’åº¦</param>
+    /// <param name="halfExtents">é•¿å®½é«˜çš„ä¸€åŠ</param>
+    /// <param name="layerMask">å±‚çº§ç­›é€‰</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•° </param>
     public static void OverlapBox<T>(Vector3 center, Quaternion rotation, Vector3 halfExtents, int layerMask, UnityAction<T> callBack) where T : class
     {
         Type type = typeof(T);
@@ -230,13 +230,13 @@ public class MathUtil
     }
 
     /// <summary>
-    /// ½øĞĞÇòÌå·¶Î§¼ì²â
+    /// è¿›è¡Œçƒä½“èŒƒå›´æ£€æµ‹
     /// </summary>
-    /// <typeparam name="T">ÏëÒª»ñÈ¡µÄĞÅÏ¢ÀàĞÍ ¿ÉÒÔÌîĞ´ Collider GameObject ÒÔ¼°¶ÔÏóÉÏÒÀ¸½µÄ×é¼şÀàĞÍ</typeparam>
-    /// <param name="center">ÇòÌåµÄÖĞĞÄµã</param>
-    /// <param name="radius">ÇòÌåµÄ°ë¾¶</param>
-    /// <param name="layerMask">²ã¼¶É¸Ñ¡</param>
-    /// <param name="callBack">»Øµ÷º¯Êı</param>
+    /// <typeparam name="T">æƒ³è¦è·å–çš„ä¿¡æ¯ç±»å‹ å¯ä»¥å¡«å†™ Collider GameObject ä»¥åŠå¯¹è±¡ä¸Šä¾é™„çš„ç»„ä»¶ç±»å‹</typeparam>
+    /// <param name="center">çƒä½“çš„ä¸­å¿ƒç‚¹</param>
+    /// <param name="radius">çƒä½“çš„åŠå¾„</param>
+    /// <param name="layerMask">å±‚çº§ç­›é€‰</param>
+    /// <param name="callBack">å›è°ƒå‡½æ•°</param>
     public static void OverlapSphere<T>(Vector3 center, float radius, int layerMask, UnityAction<T> callBack) where T:class
     {
         Type type = typeof(T);

@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ÊäÈëĞÅÏ¢
+/// è¾“å…¥ä¿¡æ¯
 /// </summary>
 public class InputInfo
 {
     public enum E_KeyOrMouse
     {
         /// <summary>
-        /// ¼üÅÌÊäÈë
+        /// é”®ç›˜è¾“å…¥
         /// </summary>
         Key,
         /// <summary>
-        /// Êó±êÊäÈë
+        /// é¼ æ ‡è¾“å…¥
         /// </summary>
         Mouse,
     }
@@ -22,22 +22,22 @@ public class InputInfo
     public enum E_InputType
     {
         /// <summary>
-        /// °´ÏÂ
+        /// æŒ‰ä¸‹
         /// </summary>
         Down,
         /// <summary>
-        /// Ì§Æğ
+        /// æŠ¬èµ·
         /// </summary>
         Up,
         /// <summary>
-        /// ³¤°´
+        /// é•¿æŒ‰
         /// </summary>
         Always,
     }
 
-    //¾ßÌåÊäÈëµÄÀàĞÍ¡ª¡ª¼üÅÌ»¹ÊÇÊó±ê
+    //å…·ä½“è¾“å…¥çš„ç±»å‹â€”â€”é”®ç›˜è¿˜æ˜¯é¼ æ ‡
     public E_KeyOrMouse keyOrMouse;
-    //ÊäÈëµÄÀàĞÍ¡ª¡ªÌ§Æğ¡¢°´ÏÂ¡¢³¤°´
+    //è¾“å…¥çš„ç±»å‹â€”â€”æŠ¬èµ·ã€æŒ‰ä¸‹ã€é•¿æŒ‰
     public E_InputType inputType;
     //KeyCode
     public KeyCode key;
@@ -45,7 +45,7 @@ public class InputInfo
     public int mouseID;
 
     /// <summary>
-    /// Ö÷Òª¸ø¼üÅÌÊäÈë³õÊ¼»¯
+    /// ä¸»è¦ç»™é”®ç›˜è¾“å…¥åˆå§‹åŒ–
     /// </summary>
     /// <param name="inputType"></param>
     /// <param name="key"></param>
@@ -57,7 +57,7 @@ public class InputInfo
     }
 
     /// <summary>
-    /// Ö÷Òª¸øÊó±êÊäÈë³õÊ¼»¯
+    /// ä¸»è¦ç»™é¼ æ ‡è¾“å…¥åˆå§‹åŒ–
     /// </summary>
     /// <param name="inputType"></param>
     /// <param name="mouseID"></param>

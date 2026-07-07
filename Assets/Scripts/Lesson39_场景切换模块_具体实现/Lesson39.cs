@@ -7,11 +7,11 @@ public class Lesson39 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        #region ֪ʶ�� ʵ�ֳ����л�ģ��
-        //1.����SceneMgr����ģʽ������
-        //2.ʵ��ͬ�����س��� �Ĺ�������
-        //3.ʵ���첽���س��� �Ĺ�������
-        //4.ʵ���ⲿ��ȡ�첽���س�������
+        #region 知识点 实现场景切换模块
+        //1.制作SceneMgr单例模式管理器
+        //2.实现同步加载场景 的公共方法
+        //3.实现异步加载场景 的公共方法
+        //4.实现外部获取异步加载场景进度
         #endregion
     }
 

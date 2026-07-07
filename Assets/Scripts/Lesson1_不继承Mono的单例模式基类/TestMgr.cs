@@ -10,7 +10,7 @@ public class TestMgr:BaseManager<TestMgr>
     private TestMgr()
     {
         if (!InstanceisNull)
-            Debug.LogError("ÒÑ¾­´æÔÚµ¥ÀıÄ£Ê½¶ÔÏó£¬Çë²»ÒªÔÙÊµÀı»¯ÁË");
+            Debug.LogError("å·²ç»å­˜åœ¨å•ä¾‹æ¨¡å¼å¯¹è±¡ï¼Œè¯·ä¸è¦å†å®ä¾‹åŒ–äº†");
     }
 
     public void TestLog()

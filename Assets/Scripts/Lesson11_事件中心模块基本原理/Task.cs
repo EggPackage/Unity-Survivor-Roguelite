@@ -11,7 +11,7 @@ public class Task : MonoBehaviour
 
     public void TaskWaitMonsterDeadDo(Monster info)
     {
-        Debug.Log("ÈÎÎñ¼ÇÂ¼" + info.monsterName);
+        Debug.Log("ä»»åŠ¡è®°å½•" + info.monsterName);
     }
 
     private void OnDestroy()

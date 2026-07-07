@@ -4,54 +4,54 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// ¼ÆÊ±Æ÷¶ÔÏó ÀïÃæ´æ´¢ÁË¼ÆÊ±Æ÷µÄÏà¹ØÊı¾İ
+/// è®¡æ—¶å™¨å¯¹è±¡ é‡Œé¢å­˜å‚¨äº†è®¡æ—¶å™¨çš„ç›¸å…³æ•°æ®
 /// </summary>
 public class TimerItem : IPoolObject
 {
     /// <summary>
-    /// Î¨Ò»ID
+    /// å”¯ä¸€ID
     /// </summary>
     public int keyID;
     /// <summary>
-    /// ¼ÆÊ±½áÊøºóµÄÎ¯ÍĞ»Øµ÷
+    /// è®¡æ—¶ç»“æŸåçš„å§”æ‰˜å›è°ƒ
     /// </summary>
     public UnityAction overCallBack;
     /// <summary>
-    /// ¼ä¸ôÒ»¶¨Ê±¼äÈ¥Ö´ĞĞµÄÎ¯ÍĞ»Øµ÷
+    /// é—´éš”ä¸€å®šæ—¶é—´å»æ‰§è¡Œçš„å§”æ‰˜å›è°ƒ
     /// </summary>
     public UnityAction callBack;
 
     /// <summary>
-    /// ±íÊ¾¼ÆÊ±Æ÷×ÜµÄ¼ÆÊ±Ê±¼ä ºÁÃë£º1s = 1000ms
+    /// è¡¨ç¤ºè®¡æ—¶å™¨æ€»çš„è®¡æ—¶æ—¶é—´ æ¯«ç§’ï¼š1s = 1000ms
     /// </summary>
     public int allTime;
     /// <summary>
-    /// ¼ÇÂ¼Ò»¿ªÊ¼¼ÆÊ±Ê±µÄ×ÜÊ±¼ä ÓÃÓÚÊ±¼äÖØÖÃ
+    /// è®°å½•ä¸€å¼€å§‹è®¡æ—¶æ—¶çš„æ€»æ—¶é—´ ç”¨äºæ—¶é—´é‡ç½®
     /// </summary>
     public int maxAllTime;
 
     /// <summary>
-    /// ¼ä¸ôÖ´ĞĞ»Øµ÷µÄÊ±¼ä ºÁÃë ºÁÃë£º1s = 1000ms
+    /// é—´éš”æ‰§è¡Œå›è°ƒçš„æ—¶é—´ æ¯«ç§’ æ¯«ç§’ï¼š1s = 1000ms
     /// </summary>
     public int intervalTime;
     /// <summary>
-    /// ¼ÇÂ¼Ò»¿ªÊ¼µÄ¼ä¸ôÊ±¼ä
+    /// è®°å½•ä¸€å¼€å§‹çš„é—´éš”æ—¶é—´
     /// </summary>
     public int maxIntervalTime;
 
     /// <summary>
-    /// ÊÇ·ñÔÚ½øĞĞ¼ÆÊ±
+    /// æ˜¯å¦åœ¨è¿›è¡Œè®¡æ—¶
     /// </summary>
     public bool isRuning;
 
     /// <summary>
-    /// ³õÊ¼»¯¼ÆÊ±Æ÷Êı¾İ
+    /// åˆå§‹åŒ–è®¡æ—¶å™¨æ•°æ®
     /// </summary>
-    /// <param name="keyID">Î¨Ò»ID</param>
-    /// <param name="allTime">×ÜµÄÊ±¼ä</param>
-    /// <param name="overCallBack">×ÜÊ±¼ä¼ÆÊ±½áÊøºóµÄ»Øµ÷</param>
-    /// <param name="intervalTime">¼ä¸ôÖ´ĞĞµÄÊ±¼ä</param>
-    /// <param name="callBack">¼ä¸ôÖ´ĞĞÊ±¼ä½áÊøºóµÄ»Øµ÷</param>
+    /// <param name="keyID">å”¯ä¸€ID</param>
+    /// <param name="allTime">æ€»çš„æ—¶é—´</param>
+    /// <param name="overCallBack">æ€»æ—¶é—´è®¡æ—¶ç»“æŸåçš„å›è°ƒ</param>
+    /// <param name="intervalTime">é—´éš”æ‰§è¡Œçš„æ—¶é—´</param>
+    /// <param name="callBack">é—´éš”æ‰§è¡Œæ—¶é—´ç»“æŸåçš„å›è°ƒ</param>
     public void InitInfo(int keyID, int allTime, UnityAction overCallBack, int intervalTime = 0, UnityAction callBack = null)
     {
         this.keyID = keyID;
@@ -63,7 +63,7 @@ public class TimerItem : IPoolObject
     }
 
     /// <summary>
-    /// ÖØÖÃ¼ÆÊ±Æ÷
+    /// é‡ç½®è®¡æ—¶å™¨
     /// </summary>
     public void ResetTimer()
     {
@@ -73,7 +73,7 @@ public class TimerItem : IPoolObject
     }
 
     /// <summary>
-    /// »º´æ³Ø»ØÊÕÊ±  Çå³ıÏà¹ØÒıÓÃÊı¾İ
+    /// ç¼“å­˜æ± å›æ”¶æ—¶  æ¸…é™¤ç›¸å…³å¼•ç”¨æ•°æ®
     /// </summary>
     public void ResetInfo()
     {

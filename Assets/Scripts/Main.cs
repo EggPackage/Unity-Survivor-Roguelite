@@ -28,7 +28,7 @@ public class Main : MonoBehaviour
 
         Test2Mgr2.Instance.TestLog();
 
-        //ÆÆ»µµ¥ÀıÄ£Ê½Î¨Ò»ĞÔ ÎÒÃÇÄÜ¹»×Ô¼ºÈ¥new¶ÔÓ¦µÄµ¥ÀıÄ£Ê½Àà¶ÔÏó ÕâÑùÊÇ²»°²È«
+        //ç ´åå•ä¾‹æ¨¡å¼å”¯ä¸€æ€§ æˆ‘ä»¬èƒ½å¤Ÿè‡ªå·±å»newå¯¹åº”çš„å•ä¾‹æ¨¡å¼ç±»å¯¹è±¡ è¿™æ ·æ˜¯ä¸å®‰å…¨
         //TestMgr t = new TestMgr();
         //BaseManager<TestMgr> t2 = new BaseManager<TestMgr>();
 
@@ -73,58 +73,58 @@ public class Main : MonoBehaviour
 
         //UWQResMgr.Instance.LoadRes<string>("file://" + Application.streamingAssetsPath + "/test.txt", (str) =>
         //{
-        //    print("¼ÓÔØµÄÎÄ±¾ĞÅÏ¢" + str);
+        //    print("åŠ è½½çš„æ–‡æœ¬ä¿¡æ¯" + str);
         //}, () =>
         //{
-        //    print("¼ÓÔØÊÇÊ§°Ü");
+        //    print("åŠ è½½æ˜¯å¤±è´¥");
         //});
 
         //UWQResMgr.Instance.LoadRes<byte[]>("file://" + Application.streamingAssetsPath + "/test.txt", (bytes) =>
         //{
-        //    print("¼ÓÔØµÄ2½øÖÆ×Ö½ÚÊı×éĞÅÏ¢" + bytes.Length);
+        //    print("åŠ è½½çš„2è¿›åˆ¶å­—èŠ‚æ•°ç»„ä¿¡æ¯" + bytes.Length);
         //}, () =>
         //{
-        //    print("¼ÓÔØÊÇÊ§°Ü");
+        //    print("åŠ è½½æ˜¯å¤±è´¥");
         //});
 
-        //UWQResMgr.Instance.LoadRes<Texture>("file://" + Application.streamingAssetsPath + "/»ù´¡Ğ¡¿ò¼Ü·âÃæ480.png", (tex) =>
+        //UWQResMgr.Instance.LoadRes<Texture>("file://" + Application.streamingAssetsPath + "/åŸºç¡€å°æ¡†æ¶å°é¢480.png", (tex) =>
         //{
         //    img.texture = tex;
         //}, () =>
         //{
-        //    print("¼ÓÔØÊÇÊ§°Ü");
+        //    print("åŠ è½½æ˜¯å¤±è´¥");
         //});
 
         //UWQResMgr.Instance.LoadRes<AssetBundle>("file://" + Application.streamingAssetsPath + "/test", (ab) =>
         //{
-        //    print("ab°ü¼ÓÔØ³É¹¦£¬Ãû×ÖÊÇ£º" + ab.name);
+        //    print("abåŒ…åŠ è½½æˆåŠŸï¼Œåå­—æ˜¯ï¼š" + ab.name);
         //}, () =>
         //{
-        //    print("¼ÓÔØÊÇÊ§°Ü");
+        //    print("åŠ è½½æ˜¯å¤±è´¥");
         //});
 
         ABResMgr.Instance.LoadResAsync<GameObject>("test", "Cube", (res) =>
         {
             GameObject obj = Instantiate(res);
-            obj.name = "ABResMgr´´½¨µÄ¶ÔÏó";
+            obj.name = "ABResMgråˆ›å»ºçš„å¯¹è±¡";
         });
 
-        //Í¬Ò»Ö¡µ÷ÓÃÏÔÊ¾Ä³Ò»¸öÃæ°å
+        //åŒä¸€å¸§è°ƒç”¨æ˜¾ç¤ºæŸä¸€ä¸ªé¢æ¿
         UIMgr.Instance.ShowPanel<BeginPanel>(E_UILayer.Middle, (panel) =>
         {
-            print("µÚÒ»´ÎÏÔÊ¾");
+            print("ç¬¬ä¸€æ¬¡æ˜¾ç¤º");
         }, false);
 
         UIMgr.Instance.HidePanel<BeginPanel>();
 
         UIMgr.Instance.ShowPanel<BeginPanel>(E_UILayer.Middle, (panel) =>
         {
-            print("µÚ¶ş´ÎÏÔÊ¾");
+            print("ç¬¬äºŒæ¬¡æ˜¾ç¤º");
         }, true);
 
         UIMgr.Instance.GetPanel<BeginPanel>((panel) =>
         {
-            print("»ñÈ¡Ãæ°åÒª´¦ÀíµÄÂß¼­");
+            print("è·å–é¢æ¿è¦å¤„ç†çš„é€»è¾‘");
         });
 
         InputMgr.Instance.StartOrCloseInputMgr(true);
@@ -143,15 +143,15 @@ public class Main : MonoBehaviour
 
     private void Skill1()
     {
-        print("¼¼ÄÜ1´¥·¢");
+        print("æŠ€èƒ½1è§¦å‘");
     }
     private void Skill2()
     {
-        print("¼¼ÄÜ2´¥·¢");
+        print("æŠ€èƒ½2è§¦å‘");
     }
     private void Skill3()
     {
-        print("¼¼ÄÜ3´¥·¢");
+        print("æŠ€èƒ½3è§¦å‘");
     }
 
     private void CheckHorizontal(float v)
@@ -179,22 +179,22 @@ public class Main : MonoBehaviour
     private AudioSource source;
     private void OnGUI()
     {
-        if(GUILayout.Button("²¥·Å±³¾°ÒôÀÖ"))
+        if(GUILayout.Button("æ’­æ”¾èƒŒæ™¯éŸ³ä¹"))
         {
             MusicMgr.Instance.PlayBKMusic("Begin");
         }
 
-        if (GUILayout.Button("²¥·Å±³¾°ÒôÀÖ2"))
+        if (GUILayout.Button("æ’­æ”¾èƒŒæ™¯éŸ³ä¹2"))
         {
             MusicMgr.Instance.PlayBKMusic("Fight");
         }
 
-        if (GUILayout.Button("Í£Ö¹ÒôÀÖ"))
+        if (GUILayout.Button("åœæ­¢éŸ³ä¹"))
         {
             MusicMgr.Instance.StopBKMusic();
         }
 
-        if (GUILayout.Button("ÔİÍ£ÒôÀÖ"))
+        if (GUILayout.Button("æš‚åœéŸ³ä¹"))
         {
             MusicMgr.Instance.PauseBKMusic();
         }
@@ -208,7 +208,7 @@ public class Main : MonoBehaviour
             MusicMgr.Instance.ChangeSoundValue(v);
         }
 
-        if (GUILayout.Button("²¥·ÅÒôĞ§"))
+        if (GUILayout.Button("æ’­æ”¾éŸ³æ•ˆ"))
         {
             MusicMgr.Instance.PlaySound("hit_5");
             MusicMgr.Instance.PlaySound("hit_4", true, false, (source) =>
@@ -217,18 +217,18 @@ public class Main : MonoBehaviour
             });
         }
 
-        if (GUILayout.Button("Í£Ö¹ÒôĞ§"))
+        if (GUILayout.Button("åœæ­¢éŸ³æ•ˆ"))
         {
             MusicMgr.Instance.StopSound(this.source);
             this.source = null;
         }
 
-        if (GUILayout.Button("ÔİÍ£ÒôĞ§"))
+        if (GUILayout.Button("æš‚åœéŸ³æ•ˆ"))
         {
             MusicMgr.Instance.PlayOrPauseSound(false);
         }
 
-        if (GUILayout.Button("»Ø¸´²¥·ÅÒôĞ§"))
+        if (GUILayout.Button("å›å¤æ’­æ”¾éŸ³æ•ˆ"))
         {
             MusicMgr.Instance.PlayOrPauseSound(true);
         }
@@ -268,17 +268,17 @@ public class Main : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            print("¿ªÊ¼¸Ä½¨£¬»ñÈ¡ÊäÈëĞÅÏ¢ÁË");
+            print("å¼€å§‹æ”¹å»ºï¼Œè·å–è¾“å…¥ä¿¡æ¯äº†");
             InputMgr.Instance.GetInputInfo((inputInfo) =>
             {
                 if(inputInfo.keyOrMouse == InputInfo.E_KeyOrMouse.Key)
                 {
-                    print("¼üÅÌÊäÈë£º" + inputInfo.key);
+                    print("é”®ç›˜è¾“å…¥ï¼š" + inputInfo.key);
                     InputMgr.Instance.ChangeKeyboardInfo(E_EventType.E_Input_Skill1, inputInfo.key, InputInfo.E_InputType.Down);
                 }
                 else
                 {
-                    print("Êó±êÊäÈë£º" + inputInfo.mouseID);
+                    print("é¼ æ ‡è¾“å…¥ï¼š" + inputInfo.mouseID);
                     InputMgr.Instance.ChangeMouseInfo(E_EventType.E_Input_Skill1, inputInfo.mouseID, InputInfo.E_InputType.Down);
                 }
             });
@@ -303,16 +303,16 @@ public class Main : MonoBehaviour
             //timerID = 
             TimerMgr.Instance.CreateTimer(false, 5000, () =>
             {
-                print("5s¼ÆÊ±½áÊø");
+                print("5sè®¡æ—¶ç»“æŸ");
             }, 1000, ()=> {
-                print("Ã¿¼ä¸ô1s»á´òÓ¡ĞÅÏ¢");
+                print("æ¯é—´éš”1sä¼šæ‰“å°ä¿¡æ¯");
             });
 
             TimerMgr.Instance.CreateTimer(true, 5000, () =>
             {
-                print("²»ÊÜtimeSceleÓ°ÏìµÄ£º5s¼ÆÊ±½áÊø");
+                print("ä¸å—timeSceleå½±å“çš„ï¼š5sè®¡æ—¶ç»“æŸ");
             }, 1000, () => {
-                print("²»ÊÜtimeSceleÓ°ÏìµÄ£ºÃ¿¼ä¸ô1s»á´òÓ¡ĞÅÏ¢");
+                print("ä¸å—timeSceleå½±å“çš„ï¼šæ¯é—´éš”1sä¼šæ‰“å°ä¿¡æ¯");
             });
         }
 
@@ -322,7 +322,7 @@ public class Main : MonoBehaviour
             Time.timeScale = 0;
         }
 
-        #region »º´æ³Ø²âÊÔ
+        #region ç¼“å­˜æ± æµ‹è¯•
         if (Input.GetMouseButtonDown(0))
         {
             GameObject obj = PoolMgr.Instance.GetObj("Test/Cube");

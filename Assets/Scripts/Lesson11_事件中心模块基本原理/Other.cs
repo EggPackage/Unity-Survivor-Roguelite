@@ -11,7 +11,7 @@ public class Other : MonoBehaviour
 
     public void OtherWaitMonsterDeadDo(Monster info)
     {
-        Debug.Log("其他相关处理" + info.monsterID);
+        Debug.Log("鍏朵粬鐩稿叧澶勭悊" + info.monsterID);
     }
 
     private void OnDestroy()

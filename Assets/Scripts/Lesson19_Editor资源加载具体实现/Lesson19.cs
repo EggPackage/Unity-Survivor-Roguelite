@@ -7,22 +7,22 @@ public class Lesson19 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        #region ÖªÊ¶µãÒ» Ö÷ÒªÊ¹ÓÃµÄAPI
-        //1.AssetDatabase.LoadAssetAtPath                       ÓÃÓÚ¼ÓÔØµ¥¸ö×ÊÔ´
-        //2.AssetDatabase.LoadAllAssetRepresentationsAtPath     ÓÃÓÚ¼ÓÔØÍ¼¼¯×ÊÔ´ÖĞµÄÄÚÈİ(¸ÃAPIÓÃÓÚ¼ÓÔØËùÓĞ×Ó×ÊÔ´)
+        #region çŸ¥è¯†ç‚¹ä¸€ ä¸»è¦ä½¿ç”¨çš„API
+        //1.AssetDatabase.LoadAssetAtPath                       ç”¨äºåŠ è½½å•ä¸ªèµ„æº
+        //2.AssetDatabase.LoadAllAssetRepresentationsAtPath     ç”¨äºåŠ è½½å›¾é›†èµ„æºä¸­çš„å†…å®¹(è¯¥APIç”¨äºåŠ è½½æ‰€æœ‰å­èµ„æº)
 
-        //×¢Òâ£º
-        //ÕâÁ½¸öAPI¼ÓÔØ×ÊÔ´µÄÂ·¾¶¶¼ÊÇ´Ó Assets/... ¿ªÊ¼
+        //æ³¨æ„ï¼š
+        //è¿™ä¸¤ä¸ªAPIåŠ è½½èµ„æºçš„è·¯å¾„éƒ½æ˜¯ä» Assets/... å¼€å§‹
         #endregion
 
-        #region ÖªÊ¶µã¶ş ´´½¨ÓÃÓÚ·ÅÖÃ×ÊÔ´µÄÎÄ¼ş¼Ğ
-        //ÎÒÃÇ¿ÉÒÔ´´½¨EditorÎÄ¼ş¼Ğ
-        //ÒÔºóÎÒÃÇ×îÖÕ»á´ò°üÎªAB°üµÄ×ÊÔ´¶¼·ÅÖÃÔÚ´Ë´¦
+        #region çŸ¥è¯†ç‚¹äºŒ åˆ›å»ºç”¨äºæ”¾ç½®èµ„æºçš„æ–‡ä»¶å¤¹
+        //æˆ‘ä»¬å¯ä»¥åˆ›å»ºEditoræ–‡ä»¶å¤¹
+        //ä»¥åæˆ‘ä»¬æœ€ç»ˆä¼šæ‰“åŒ…ä¸ºABåŒ…çš„èµ„æºéƒ½æ”¾ç½®åœ¨æ­¤å¤„
         #endregion
 
-        #region ÖªÊ¶µãÈı ÊµÏÖEditor×ÊÔ´¹ÜÀíÆ÷
-        //·â×°API
-        //Ö÷ÒªÌá¹©¼ÓÔØµ¥¸ö×ÊÔ´ÒÔ¼°¼ÓÔØÍ¼¼¯×ÊÔ´µÄAPI
+        #region çŸ¥è¯†ç‚¹ä¸‰ å®ç°Editorèµ„æºç®¡ç†å™¨
+        //å°è£…API
+        //ä¸»è¦æä¾›åŠ è½½å•ä¸ªèµ„æºä»¥åŠåŠ è½½å›¾é›†èµ„æºçš„API
         #endregion
 
     }
