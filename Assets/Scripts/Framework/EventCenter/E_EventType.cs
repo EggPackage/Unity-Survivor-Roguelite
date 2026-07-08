@@ -46,4 +46,22 @@ public enum E_EventType
     /// 垂直轴 -1~1 事件传递
     /// </summary>
     E_Input_Vertical,
+
+    // ===== 吧台核心玩法事件（早咖晚酒 · 摆放系统） =====
+
+    /// <summary>
+    /// 吧台上摆放了一个物品 —— 参数：PlacedItem（新落位的物品）
+    /// </summary>
+    E_Bar_ItemPlaced,
+
+    /// <summary>
+    /// 吧台上移除了一个物品 —— 参数：PlacedItem（被移除的物品）
+    /// </summary>
+    E_Bar_ItemRemoved,
+
+    /// <summary>
+    /// 一次相邻 combo 结算完成 —— 参数：ComboResult（本次结算产出的所有效果）
+    /// 白天经营用它算出杯效率，下午地牢用它算战斗数值，UI 用它播特效
+    /// </summary>
+    E_Bar_ComboResolved,
 }
