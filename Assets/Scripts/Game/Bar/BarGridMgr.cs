@@ -44,9 +44,9 @@ public class BarGridMgr : BaseManager<BarGridMgr>
     /// 摆放一个物品并立即重算 combo。
     /// 成功返回落位的 PlacedItem，失败（越界/占用/无效 id）返回 null。
     /// </summary>
-    public PlacedItem Place(string itemId, GridPos pos)
+    public PlacedItem Place(string itemId, GridPos pos, int rotation = 0)
     {
-        PlacedItem item = Grid.Place(itemId, pos);
+        PlacedItem item = Grid.Place(itemId, pos, rotation);
         if (item == null)
             return null;
 
@@ -78,6 +78,17 @@ public class BarGridMgr : BaseManager<BarGridMgr>
     public bool Move(GridPos from, GridPos to)
     {
         bool ok = Grid.Move(from, to);
+        if (ok)
+            Resolve();
+        return ok;
+    }
+
+    /// <summary>
+    /// 将某格物品旋转90°（顺时针）并重算 combo。返回是否成功。
+    /// </summary>
+    public bool Rotate(GridPos pos, int rotations = 1)
+    {
+        bool ok = Grid.Rotate(pos, rotations);
         if (ok)
             Resolve();
         return ok;

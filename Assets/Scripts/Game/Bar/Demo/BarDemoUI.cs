@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -127,39 +128,6 @@ public class BarDemoUI : MonoBehaviour
         }
     }
 
-    /// <summary>创建一个格子按钮（背景 Image + Button + 居中图标文本）</summary>
-    private GridCellView CreateCell(GridPos pos)
-    {
-        GameObject go = new GameObject($"Cell_{pos.row}_{pos.col}", typeof(RectTransform));
-        go.transform.SetParent(gridContainer, false);
-
-        Image bg = go.AddComponent<Image>();
-        bg.color = colorEmpty;
-
-        Button btn = go.AddComponent<Button>();
-        GridPos captured = pos; // 闭包捕获
-        btn.onClick.AddListener(() => OnCellClicked(captured));
-
-        // 图标文本（子节点，居中铺满）
-        GameObject iconGo = new GameObject("Icon", typeof(RectTransform));
-        iconGo.transform.SetParent(go.transform, false);
-        RectTransform iconRt = iconGo.GetComponent<RectTransform>();
-        iconRt.anchorMin = Vector2.zero;
-        iconRt.anchorMax = Vector2.one;
-        iconRt.offsetMin = Vector2.zero;
-        iconRt.offsetMax = Vector2.zero;
-
-        TMP_Text icon = iconGo.AddComponent<TextMeshProUGUI>();
-        icon.alignment = TextAlignmentOptions.Center;
-        icon.enableAutoSizing = true;      // 按格子大小自动缩放，长词短词都不溢出
-        icon.fontSizeMin = 18;
-        icon.fontSizeMax = 44;
-        icon.text = "";
-        icon.raycastTarget = false; // 别挡住格子按钮点击
-
-        return new GridCellView { pos = pos, button = btn, icon = icon, background = bg };
-    }
-
     /// <summary>遍历 ItemDatabase 生成物品选择按钮，填进 paletteContainer</summary>
     private void BuildPalette()
     {
@@ -221,6 +189,46 @@ public class BarDemoUI : MonoBehaviour
         UpdateSelectionText();
     }
 
+    /// <summary>创建一个格子按钮（背景 Image + Button + 居中图标文本）</summary>
+    private GridCellView CreateCell(GridPos pos)
+    {
+        GameObject go = new GameObject($"Cell_{pos.row}_{pos.col}", typeof(RectTransform));
+        go.transform.SetParent(gridContainer, false);
+
+        Image bg = go.AddComponent<Image>();
+        bg.color = colorEmpty;
+
+        Button btn = go.AddComponent<Button>();
+        GridPos captured = pos; // 闭包捕获
+        btn.onClick.AddListener(() => OnCellClicked(captured));
+
+        // 添加右键旋转功能（使用 PointerDown 事件并检查右键）
+        EventTrigger trigger = go.AddComponent<EventTrigger>();
+        EventTrigger.Entry pointerDownEntry = new EventTrigger.Entry();
+        pointerDownEntry.eventID = EventTriggerType.PointerDown;
+        pointerDownEntry.callback.AddListener((data) => OnCellPointerDown(captured));
+        trigger.triggers.Add(pointerDownEntry);
+
+        // 图标文本（子节点，居中铺满）
+        GameObject iconGo = new GameObject("Icon", typeof(RectTransform));
+        iconGo.transform.SetParent(go.transform, false);
+        RectTransform iconRt = iconGo.GetComponent<RectTransform>();
+        iconRt.anchorMin = Vector2.zero;
+        iconRt.anchorMax = Vector2.one;
+        iconRt.offsetMin = Vector2.zero;
+        iconRt.offsetMax = Vector2.zero;
+
+        TMP_Text icon = iconGo.AddComponent<TextMeshProUGUI>();
+        icon.alignment = TextAlignmentOptions.Center;
+        icon.enableAutoSizing = true;      // 按格子大小自动缩放，长词短词都不溢出
+        icon.fontSizeMin = 18;
+        icon.fontSizeMax = 44;
+        icon.text = "";
+        icon.raycastTarget = false; // 别挡住格子按钮点击
+
+        return new GridCellView { pos = pos, button = btn, icon = icon, background = bg };
+    }
+
     /// <summary>点网格格子：空格摆放选中物品，占用格则移除</summary>
     private void OnCellClicked(GridPos pos)
     {
@@ -244,6 +252,24 @@ public class BarDemoUI : MonoBehaviour
         PlacedItem placed = BarGridMgr.Instance.Place(selectedItemId, pos);
         if (placed == null)
             selectionText.text = "放不下：这个物品的形状会越界或和已有物品重叠，换个位置试试";
+    }
+
+    /// <summary>指针按下：检查是否右键旋转</summary>
+    private void OnCellPointerDown(GridPos pos)
+    {
+        if (Input.GetMouseButtonDown(1)) // 右键
+        {
+            BarGrid grid = BarGridMgr.Instance.Grid;
+            PlacedItem existing = grid.GetItem(pos);
+            if (existing == null)
+                return;
+
+            bool rotated = BarGridMgr.Instance.Rotate(pos);
+            if (!rotated)
+                selectionText.text = "无法旋转：旋转后会越界或与其他物品重叠";
+            else
+                selectionText.text = $"已旋转物品：{existing.def.displayName}";
+        }
     }
 
     // ---------------------------------------------------------------- 刷新

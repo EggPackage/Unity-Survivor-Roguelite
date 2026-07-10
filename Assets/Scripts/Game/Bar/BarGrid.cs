@@ -48,6 +48,8 @@ public class PlacedItem
     public ItemDef def;
     /// <summary>锚点格坐标（形状 (0,0) 对应的格子）。多格物品的"主位置"。</summary>
     public GridPos pos;
+    /// <summary>旋转角度（0=0°, 1=90°, 2=180°, 3=270°）</summary>
+    public int rotation;
 
     /// <summary>
     /// 本物品实际占用的所有格子（含锚点）。单格物品就一个元素，
@@ -58,10 +60,11 @@ public class PlacedItem
     /// <summary>本轮 combo 结算附加的临时增益标签，例如 "burning"（灼烧）。每次结算前清空。</summary>
     public List<string> runtimeBuffs = new List<string>();
 
-    public PlacedItem(ItemDef def, GridPos pos)
+    public PlacedItem(ItemDef def, GridPos pos, int rotation = 0)
     {
         this.def = def;
         this.pos = pos;
+        this.rotation = rotation;
     }
 }
 
@@ -122,17 +125,40 @@ public class BarGrid
     }
 
     /// <summary>
-    /// 按物品形状算出以 anchor 为锚点时实际占用的所有格子。
+    /// 将单个形状偏移点按指定角度旋转（顺时针）
+    /// </summary>
+    private static Vector2Int RotateOffset(Vector2Int offset, int rotation)
+    {
+        switch (rotation % 4)
+        {
+            case 0: // 0°
+                return offset;
+            case 1: // 90°
+                return new Vector2Int(offset.y, -offset.x);
+            case 2: // 180°
+                return new Vector2Int(-offset.x, -offset.y);
+            case 3: // 270°
+                return new Vector2Int(-offset.y, offset.x);
+            default:
+                return offset;
+        }
+    }
+
+    /// <summary>
+    /// 按物品形状算出以 anchor 为锚点时实际占用的所有格子（支持旋转）。
     /// 形状偏移 (dx,dy) 中 x 加到行、y 加到列。
     /// </summary>
-    public static List<GridPos> GetCellsForShape(ItemDef def, GridPos anchor)
+    public static List<GridPos> GetCellsForShape(ItemDef def, GridPos anchor, int rotation = 0)
     {
         List<GridPos> result = new List<GridPos>();
         List<Vector2Int> shape = (def != null && def.shapeCells != null && def.shapeCells.Count > 0)
             ? def.shapeCells
             : new List<Vector2Int> { new Vector2Int(0, 0) };
         foreach (Vector2Int off in shape)
-            result.Add(new GridPos(anchor.row + off.x, anchor.col + off.y));
+        {
+            Vector2Int rotated = RotateOffset(off, rotation);
+            result.Add(new GridPos(anchor.row + rotated.x, anchor.col + rotated.y));
+        }
         return result;
     }
 
@@ -140,11 +166,11 @@ public class BarGrid
     /// 判断把某物品摆在 anchor 处是否合法：所有占用格都在界内、且都为空。
     /// ignore 参数用于 Move 时排除物品自身占用的格子（不算冲突）。
     /// </summary>
-    public bool CanPlace(ItemDef def, GridPos anchor, PlacedItem ignore = null)
+    public bool CanPlace(ItemDef def, GridPos anchor, PlacedItem ignore = null, int rotation = 0)
     {
         if (def == null)
             return false;
-        foreach (GridPos gp in GetCellsForShape(def, anchor))
+        foreach (GridPos gp in GetCellsForShape(def, anchor, rotation))
         {
             if (!IsInBounds(gp))
                 return false;
@@ -156,11 +182,11 @@ public class BarGrid
     }
 
     /// <summary>
-    /// 在 anchor 处摆放一个物品（按其形状占用多个格子）。
+    /// 在 anchor 处摆放一个物品（按其形状占用多个格子，支持旋转）。
     /// 返回摆放成功的 PlacedItem；越界、任一占用格被占、物品 id 无效则返回 null。
     /// 只改数据，不广播事件也不结算 combo——那是 BarGridMgr 的职责。
     /// </summary>
-    public PlacedItem Place(string itemId, GridPos anchor)
+    public PlacedItem Place(string itemId, GridPos anchor, int rotation = 0)
     {
         ItemDef def = ItemDatabase.Instance.Get(itemId);
         if (def == null)
@@ -168,11 +194,11 @@ public class BarGrid
             UnityEngine.Debug.LogWarning($"[BarGrid] 未知物品 id：{itemId}");
             return null;
         }
-        if (!CanPlace(def, anchor))
+        if (!CanPlace(def, anchor, null, rotation))
             return null;
 
-        PlacedItem item = new PlacedItem(def, anchor);
-        item.occupiedCells = GetCellsForShape(def, anchor);
+        PlacedItem item = new PlacedItem(def, anchor, rotation);
+        item.occupiedCells = GetCellsForShape(def, anchor, rotation);
         // 每个占用格都指向同一个 PlacedItem，这样点任意一格都能找到它
         foreach (GridPos gp in item.occupiedCells)
             cells[gp] = item;
@@ -202,14 +228,40 @@ public class BarGrid
     {
         if (!cells.TryGetValue(from, out PlacedItem item))
             return false;
-        if (!CanPlace(item.def, toAnchor, ignore: item))
+        if (!CanPlace(item.def, toAnchor, ignore: item, rotation: item.rotation))
             return false;
 
         // 先清除旧占用格，再按新锚点写入
         foreach (GridPos gp in item.occupiedCells)
             cells.Remove(gp);
         item.pos = toAnchor;
-        item.occupiedCells = GetCellsForShape(item.def, toAnchor);
+        item.occupiedCells = GetCellsForShape(item.def, toAnchor, item.rotation);
+        foreach (GridPos gp in item.occupiedCells)
+            cells[gp] = item;
+        return true;
+    }
+
+    /// <summary>
+    /// 将某格所属物品旋转90°（顺时针）。
+    /// 需要旋转后的形状占用格都在界内且为空（排除自身当前占用格）。
+    /// </summary>
+    /// <param name="pos">物品所在的任意一格</param>
+    /// <param name="rotations">旋转次数（每次90°，默认为1次）</param>
+    /// <returns>是否旋转成功</returns>
+    public bool Rotate(GridPos pos, int rotations = 1)
+    {
+        if (!cells.TryGetValue(pos, out PlacedItem item))
+            return false;
+
+        int newRotation = (item.rotation + rotations) % 4;
+        if (!CanPlace(item.def, item.pos, ignore: item, rotation: newRotation))
+            return false;
+
+        // 先清除旧占用格，再按新旋转写入
+        foreach (GridPos gp in item.occupiedCells)
+            cells.Remove(gp);
+        item.rotation = newRotation;
+        item.occupiedCells = GetCellsForShape(item.def, item.pos, item.rotation);
         foreach (GridPos gp in item.occupiedCells)
             cells[gp] = item;
         return true;
