@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// ============================================================================
@@ -45,8 +46,14 @@ public class PlacedItem
 {
     /// <summary>它是什么物品（引用数据库里的定义）</summary>
     public ItemDef def;
-    /// <summary>它在网格上的位置</summary>
+    /// <summary>锚点格坐标（形状 (0,0) 对应的格子）。多格物品的"主位置"。</summary>
     public GridPos pos;
+
+    /// <summary>
+    /// 本物品实际占用的所有格子（含锚点）。单格物品就一个元素，
+    /// 多格物品是锚点 + 形状偏移算出的全部格子。移除/相邻判定都基于它。
+    /// </summary>
+    public List<GridPos> occupiedCells = new List<GridPos>();
 
     /// <summary>本轮 combo 结算附加的临时增益标签，例如 "burning"（灼烧）。每次结算前清空。</summary>
     public List<string> runtimeBuffs = new List<string>();
@@ -115,62 +122,102 @@ public class BarGrid
     }
 
     /// <summary>
-    /// 在指定格子摆放一个物品。
-    /// 返回摆放成功的 PlacedItem；越界、格子已占用、物品 id 无效则返回 null。
-    /// 注意：这里只改数据，不广播事件也不结算 combo——那是 BarGridMgr 的职责，
-    /// 保持 BarGrid 的纯粹，方便单元测试和地牢里的“假想布局试算”。
+    /// 按物品形状算出以 anchor 为锚点时实际占用的所有格子。
+    /// 形状偏移 (dx,dy) 中 x 加到行、y 加到列。
     /// </summary>
-    public PlacedItem Place(string itemId, GridPos pos)
+    public static List<GridPos> GetCellsForShape(ItemDef def, GridPos anchor)
     {
-        if (!IsInBounds(pos))
-            return null;
-        if (!IsEmpty(pos))
-            return null;
+        List<GridPos> result = new List<GridPos>();
+        List<Vector2Int> shape = (def != null && def.shapeCells != null && def.shapeCells.Count > 0)
+            ? def.shapeCells
+            : new List<Vector2Int> { new Vector2Int(0, 0) };
+        foreach (Vector2Int off in shape)
+            result.Add(new GridPos(anchor.row + off.x, anchor.col + off.y));
+        return result;
+    }
 
+    /// <summary>
+    /// 判断把某物品摆在 anchor 处是否合法：所有占用格都在界内、且都为空。
+    /// ignore 参数用于 Move 时排除物品自身占用的格子（不算冲突）。
+    /// </summary>
+    public bool CanPlace(ItemDef def, GridPos anchor, PlacedItem ignore = null)
+    {
+        if (def == null)
+            return false;
+        foreach (GridPos gp in GetCellsForShape(def, anchor))
+        {
+            if (!IsInBounds(gp))
+                return false;
+            PlacedItem occ = GetItem(gp);
+            if (occ != null && occ != ignore)
+                return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// 在 anchor 处摆放一个物品（按其形状占用多个格子）。
+    /// 返回摆放成功的 PlacedItem；越界、任一占用格被占、物品 id 无效则返回 null。
+    /// 只改数据，不广播事件也不结算 combo——那是 BarGridMgr 的职责。
+    /// </summary>
+    public PlacedItem Place(string itemId, GridPos anchor)
+    {
         ItemDef def = ItemDatabase.Instance.Get(itemId);
         if (def == null)
         {
             UnityEngine.Debug.LogWarning($"[BarGrid] 未知物品 id：{itemId}");
             return null;
         }
+        if (!CanPlace(def, anchor))
+            return null;
 
-        PlacedItem item = new PlacedItem(def, pos);
-        cells[pos] = item;
+        PlacedItem item = new PlacedItem(def, anchor);
+        item.occupiedCells = GetCellsForShape(def, anchor);
+        // 每个占用格都指向同一个 PlacedItem，这样点任意一格都能找到它
+        foreach (GridPos gp in item.occupiedCells)
+            cells[gp] = item;
         return item;
     }
 
     /// <summary>
-    /// 移除某格物品，返回被移除的实例；格子本就为空则返回 null。
+    /// 移除某格所属的物品（多格物品会整体移除所有占用格），返回被移除的实例；
+    /// 格子本就为空则返回 null。
     /// </summary>
     public PlacedItem Remove(GridPos pos)
     {
-        if (cells.TryGetValue(pos, out PlacedItem item))
-        {
-            cells.Remove(pos);
-            return item;
-        }
-        return null;
+        if (!cells.TryGetValue(pos, out PlacedItem item))
+            return null;
+        // 按该物品的占用格整体清除（点它任意一格都能移除整体）
+        foreach (GridPos gp in item.occupiedCells)
+            cells.Remove(gp);
+        return item;
     }
 
     /// <summary>
-    /// 把物品从 from 移动到 to。
-    /// 只有 from 有物品、to 为空且都在界内时成功。用于玩家拖动重排布局。
+    /// 把 from 格所属物品整体移动，使其锚点落到 toAnchor。
+    /// 需要目标形状占用的所有格都在界内且为空（排除自身当前占用格）。
+    /// 用于玩家拖动重排布局。
     /// </summary>
-    public bool Move(GridPos from, GridPos to)
+    public bool Move(GridPos from, GridPos toAnchor)
     {
-        if (!IsInBounds(to) || !IsEmpty(to))
+        if (!cells.TryGetValue(from, out PlacedItem item))
             return false;
-        PlacedItem item = Remove(from);
-        if (item == null)
+        if (!CanPlace(item.def, toAnchor, ignore: item))
             return false;
-        item.pos = to;
-        cells[to] = item;
+
+        // 先清除旧占用格，再按新锚点写入
+        foreach (GridPos gp in item.occupiedCells)
+            cells.Remove(gp);
+        item.pos = toAnchor;
+        item.occupiedCells = GetCellsForShape(item.def, toAnchor);
+        foreach (GridPos gp in item.occupiedCells)
+            cells[gp] = item;
         return true;
     }
 
     /// <summary>
-    /// 取某格子的所有相邻物品（跳过空格子和越界）。
-    /// 这是 combo 判定的基础：ComboResolver 靠它知道“谁挨着谁”。
+    /// 取某个格子的所有相邻物品（跳过空格子和越界）。
+    /// 单格判定用；多格物品请用 GetNeighbors(PlacedItem)。
     /// </summary>
     public List<PlacedItem> GetNeighbors(GridPos pos)
     {
@@ -189,11 +236,64 @@ public class BarGrid
         return result;
     }
 
-    /// <summary>遍历所有已摆放的物品（顺序不保证）。结算和存档都用它。</summary>
-    public IEnumerable<PlacedItem> AllItems() => cells.Values;
+    /// <summary>
+    /// 取某个物品的所有相邻物品：遍历它的每一个占用格的外部邻居，
+    /// 去重并排除物品自身（自己的其它格子不算邻居）。
+    /// 这是多格物品 combo 判定的正确基础。
+    /// </summary>
+    public List<PlacedItem> GetNeighbors(PlacedItem self)
+    {
+        List<PlacedItem> result = new List<PlacedItem>();
+        if (self == null)
+            return result;
 
-    /// <summary>当前摆放的物品数量</summary>
-    public int Count => cells.Count;
+        HashSet<PlacedItem> seen = new HashSet<PlacedItem>();
+        int[,] dirs = UseDiagonal ? dir8 : dir4;
+        int count = dirs.GetLength(0);
+
+        foreach (GridPos cell in self.occupiedCells)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                GridPos n = new GridPos(cell.row + dirs[i, 0], cell.col + dirs[i, 1]);
+                if (!IsInBounds(n))
+                    continue;
+                PlacedItem item = GetItem(n);
+                if (item == null || item == self)
+                    continue;
+                if (seen.Add(item))
+                    result.Add(item);
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 遍历所有已摆放的物品（顺序不保证，且已去重）。结算和存档都用它。
+    /// 注意：多格物品在 cells 里有多个 key 指向同一实例，这里用 HashSet 去重，
+    /// 避免 ComboResolver 把同一个物品算多次。
+    /// </summary>
+    public IEnumerable<PlacedItem> AllItems()
+    {
+        HashSet<PlacedItem> seen = new HashSet<PlacedItem>();
+        foreach (PlacedItem item in cells.Values)
+        {
+            if (seen.Add(item))
+                yield return item;
+        }
+    }
+
+    /// <summary>当前摆放的物品数量（按物品实例去重，不是占用格数）</summary>
+    public int Count
+    {
+        get
+        {
+            HashSet<PlacedItem> seen = new HashSet<PlacedItem>();
+            foreach (PlacedItem item in cells.Values)
+                seen.Add(item);
+            return seen.Count;
+        }
+    }
 
     /// <summary>清空整个网格</summary>
     public void Clear() => cells.Clear();

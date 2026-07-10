@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7506c3b006f4c2448a75b759af4ade0f, type: 3}
+  m_Name: Item_coffee_bean
+  m_EditorClassIdentifier: 
+  id: coffee_bean
+  displayName: "\u5496\u5561\u8C46"
+  category: 1
+  iconPath: 
+  sellPrice: 0
+  brewValue: 0
+  attack: 0
+  defense: 0
+  shapeCells:
+  - {x: 0, y: 0}

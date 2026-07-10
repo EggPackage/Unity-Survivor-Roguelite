@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// ============================================================================
@@ -57,9 +58,15 @@ public class ItemDef
     /// <summary>战斗中的防御力（器具当作防御时使用）</summary>
     public int defense;
 
+    /// <summary>
+    /// 形状：物品占用的格子集合，以锚点为 (0,0) 的相对偏移（x=行、y=列）。
+    /// 单格 = [(0,0)]；由 ItemConfig 配置而来，为空时按单格处理。
+    /// </summary>
+    public List<Vector2Int> shapeCells;
+
     public ItemDef(string id, string displayName, E_ItemCategory category,
                    int sellPrice = 0, int brewValue = 0, int attack = 0, int defense = 0,
-                   string iconPath = null)
+                   string iconPath = null, List<Vector2Int> shapeCells = null)
     {
         this.id = id;
         this.displayName = displayName;
@@ -69,6 +76,10 @@ public class ItemDef
         this.attack = attack;
         this.defense = defense;
         this.iconPath = iconPath;
+        // 形状为空时回退单格，保证运行时永远有至少一个占用格
+        this.shapeCells = (shapeCells != null && shapeCells.Count > 0)
+            ? shapeCells
+            : new List<Vector2Int> { new Vector2Int(0, 0) };
     }
 }
 
@@ -90,33 +101,73 @@ public class ItemDatabase : BaseManager<ItemDatabase>
     // 私有构造：契合框架 BaseManager 的反射单例约定
     private ItemDatabase()
     {
-        BuildDefaultDatabase();
+        // 优先从 ScriptableObject 配置加载（数据驱动，含形状）；
+        // 加载不到（如迁移前还没生成 .asset）则回退内置数据，保证任何时候都能跑。
+        int loaded = LoadFromConfigs();
+        if (loaded == 0)
+        {
+            UnityEngine.Debug.Log("[ItemDatabase] 未找到 Resources/ItemConfigs 下的配置，使用内置默认数据。" +
+                                  "可用菜单「早咖晚酒/生成初始物品配置」生成 SO 资源。");
+            BuildDefaultDatabase();
+        }
+    }
+
+    /// <summary>
+    /// 从 Resources/ItemConfigs 加载所有 ItemConfig（ScriptableObject），转成运行时 ItemDef。
+    /// 返回加载到的数量。这是"数据驱动"的落地：物品与形状都由 .asset 配置，改数据不改代码。
+    /// </summary>
+    private int LoadFromConfigs()
+    {
+        ItemConfig[] configs = Resources.LoadAll<ItemConfig>("ItemConfigs");
+        if (configs == null || configs.Length == 0)
+            return 0;
+
+        foreach (ItemConfig cfg in configs)
+        {
+            if (cfg == null || string.IsNullOrEmpty(cfg.id))
+                continue;
+            // 复制一份形状列表，避免运行时误改到资源
+            List<Vector2Int> shape = new List<Vector2Int>(cfg.GetShapeOrSingle());
+            Register(new ItemDef(cfg.id, cfg.displayName, cfg.category,
+                cfg.sellPrice, cfg.brewValue, cfg.attack, cfg.defense, cfg.iconPath, shape));
+        }
+        return dict.Count;
     }
 
     /// <summary>
     /// 内置的示例物品表。对应垂直切片需要的最小集合：
     /// 咖啡机 / 牛奶 / 咖啡豆 / 烈酒 / 冰 / 摇酒器，
     /// 足以演示 3-4 条 combo（拿铁、美式、冰镇烈酒、鸡尾酒）。
+    ///
+    /// 数值设计（demo 阶段，为让"白天赚钱 vs 下午打架"的取舍看得出来）：
+    ///   - 咖啡系（拿铁/美式）：偏 brewValue，白天出杯流派
+    ///   - 酒系（冰镇烈酒/鸡尾酒）：偏 attack，下午战斗流派
+    ///   - 器具（摇酒器/杯垫）：偏 defense，防御向
+    ///   - 设备本身也给一点基础值，避免空布局全 0 看不出差异
+    /// 这套数值只用于手感验证，正式平衡后续再调（策划案 7.3）。
     /// </summary>
     private void BuildDefaultDatabase()
     {
-        // ---- 设备 ----
-        Register(new ItemDef("coffee_machine", "咖啡机", E_ItemCategory.Equipment));
-        Register(new ItemDef("liquor_rack", "酒架", E_ItemCategory.Equipment));
+        // ---- 设备（combo 发起方，给一点基础出杯效率，代表"这台机器本身能干活"）----
+        Register(new ItemDef("coffee_machine", "咖啡机", E_ItemCategory.Equipment, brewValue: 1));
+        Register(new ItemDef("liquor_rack", "酒架", E_ItemCategory.Equipment, attack: 1));
 
-        // ---- 原料 ----
+        // ---- 原料（本身无数值，靠 combo 才产生价值）----
         Register(new ItemDef("milk", "牛奶", E_ItemCategory.Material));
         Register(new ItemDef("coffee_bean", "咖啡豆", E_ItemCategory.Material));
         Register(new ItemDef("ice", "冰", E_ItemCategory.Material));
 
-        // ---- 器具 ----
-        Register(new ItemDef("shaker", "摇酒器", E_ItemCategory.Utensil, defense: 2));
+        // ---- 器具（防御向，主要在地牢发挥作用）----
+        Register(new ItemDef("shaker", "摇酒器", E_ItemCategory.Utensil, defense: 3));
+        Register(new ItemDef("coaster", "杯垫", E_ItemCategory.Utensil, defense: 2));
 
         // ---- 饮品（combo 的产物，也可直接手动摆上做占位）----
-        Register(new ItemDef("latte", "拿铁", E_ItemCategory.Drink, sellPrice: 18, brewValue: 3, attack: 3));
-        Register(new ItemDef("americano", "美式", E_ItemCategory.Drink, sellPrice: 12, brewValue: 2, attack: 2));
-        Register(new ItemDef("iced_liquor", "冰镇烈酒", E_ItemCategory.Drink, sellPrice: 25, brewValue: 2, attack: 6));
-        Register(new ItemDef("cocktail", "鸡尾酒", E_ItemCategory.Drink, sellPrice: 30, brewValue: 4, attack: 5));
+        // 咖啡系：高 brewValue、低 attack —— 白天流派
+        Register(new ItemDef("latte", "拿铁", E_ItemCategory.Drink, sellPrice: 18, brewValue: 5, attack: 2));
+        Register(new ItemDef("americano", "美式", E_ItemCategory.Drink, sellPrice: 12, brewValue: 4, attack: 1));
+        // 酒系：低 brewValue、高 attack —— 下午战斗流派
+        Register(new ItemDef("iced_liquor", "冰镇烈酒", E_ItemCategory.Drink, sellPrice: 25, brewValue: 2, attack: 7));
+        Register(new ItemDef("cocktail", "鸡尾酒", E_ItemCategory.Drink, sellPrice: 30, brewValue: 3, attack: 6));
     }
 
     /// <summary>注册一个物品定义；重复 id 会覆盖并给出警告</summary>
@@ -142,4 +193,7 @@ public class ItemDatabase : BaseManager<ItemDatabase>
 
     /// <summary>是否存在某个 id</summary>
     public bool Has(string id) => id != null && dict.ContainsKey(id);
+
+    /// <summary>遍历所有已注册的物品定义（供 UI palette、图鉴等使用，顺序不保证）</summary>
+    public IEnumerable<ItemDef> All() => dict.Values;
 }

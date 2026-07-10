@@ -50,6 +50,10 @@ public class ComboResolver : BaseManager<ComboResolver>
 
         rules.Add(new ComboRule("鸡尾酒配方", "shaker", "ice",
             E_ComboEffect.ProduceDrink, resultItemId: "cocktail"));
+
+        // 器具联动：摇酒器旁边有杯垫 → 摇酒器附加"稳固"buff（demo 里体现器具/防御流派的联动）
+        rules.Add(new ComboRule("稳固摆放", "shaker", "coaster",
+            E_ComboEffect.AttachBuff, buffTag: "steady"));
     }
 
     /// <summary>运行时追加一条规则（例如地牢里掉落了新配方）</summary>
@@ -93,7 +97,7 @@ public class ComboResolver : BaseManager<ComboResolver>
         // 2. 遍历每个物品作为发起方
         foreach (PlacedItem source in grid.AllItems())
         {
-            List<PlacedItem> neighbors = grid.GetNeighbors(source.pos);
+            List<PlacedItem> neighbors = grid.GetNeighbors(source);
 
             foreach (ComboRule rule in rules)
             {
