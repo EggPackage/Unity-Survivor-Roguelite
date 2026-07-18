@@ -64,4 +64,12 @@ public enum E_EventType
     /// 白天经营用它算出杯效率，下午地牢用它算战斗数值，UI 用它播特效
     /// </summary>
     E_Bar_ComboResolved,
+
+    // ===== 地牢玩法事件（早咖晚酒 · 下午情绪调和） =====
+
+    /// <summary>
+    /// 一次地牢战斗（情绪调和）结算完成 —— 参数：BattleResult
+    /// 携带安抚值 / 执念阈值 / 是否化解 / 咖啡·酒分项，UI 用它显示胜负与救回居民
+    /// </summary>
+    E_Dungeon_BattleResolved,
 }

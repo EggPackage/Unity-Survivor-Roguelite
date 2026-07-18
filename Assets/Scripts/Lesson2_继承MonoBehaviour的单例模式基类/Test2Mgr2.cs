@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,4 +9,6 @@ public class Test2Mgr2 : SingletonAutoMono<Test2Mgr2>
     {
         print("Test2Mgr2 ");
     }
+
+   
 }
