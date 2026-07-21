@@ -72,4 +72,36 @@ public enum E_EventType
     /// 携带安抚值 / 执念阈值 / 是否化解 / 咖啡·酒分项，UI 用它显示胜负与救回居民
     /// </summary>
     E_Dungeon_BattleResolved,
+
+    // ===== 地牢战斗手感事件（早咖晚酒 · 下午肉鸽砍杀原型） =====
+
+    /// <summary>
+    /// 玩家受到伤害 —— 参数：int（本次受到的伤害值）
+    /// UI 血条、受击闪红、镜头反馈用它
+    /// </summary>
+    E_Player_Hit,
+
+    /// <summary>
+    /// 玩家死亡 —— 参数：无
+    /// 用于触发结算 / 复活 / 失败流程
+    /// </summary>
+    E_Player_Dead,
+
+    /// <summary>
+    /// 敌人受到伤害 —— 参数：int（本次受到的伤害值）
+    /// 伤害飘字、受击特效用它（敌人死亡另走已有的 E_Monster_Dead）
+    /// </summary>
+    E_Enemy_Hit,
+
+    /// <summary>
+    /// 请求屏幕震动 —— 参数：float（震动强度）
+    /// GameFeelManager 监听并驱动主摄像机抖动
+    /// </summary>
+    E_Camera_Shake,
+
+    /// <summary>
+    /// 请求命中顿帧 —— 参数：float（顿帧时长，秒）
+    /// GameFeelManager 监听并用 timeScale 实现短暂卡帧
+    /// </summary>
+    E_Hitstop,
 }
