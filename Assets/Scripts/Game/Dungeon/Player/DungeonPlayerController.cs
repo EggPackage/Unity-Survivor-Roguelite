@@ -62,7 +62,6 @@ namespace Game.Dungeon.Player
         private Rigidbody2D _rb;
         private PlayerStats _stats;
         private PlayerAttack _attack;
-        private Camera _mainCam;
 
         private E_PlayerState _state = E_PlayerState.Idle;
         private Vector2 _moveInput;         // 缓存的输入向量（-1~1）
@@ -86,7 +85,6 @@ namespace Game.Dungeon.Player
             _rb = GetComponent<Rigidbody2D>();
             _stats = GetComponent<PlayerStats>();
             _attack = GetComponent<PlayerAttack>();
-            _mainCam = Camera.main;
 
             if (visual == null) visual = transform.Find("Visual");
             if (visual != null)
@@ -120,8 +118,8 @@ namespace Game.Dungeon.Player
         private void OnEnable()
         {
             InputMgr.Instance.StartOrCloseInputMgr(true);
-            // 攻击键映射到鼠标左键（0），按下触发无参 E_Input_Skill1
-            InputMgr.Instance.ChangeMouseInfo(E_EventType.E_Input_Skill1, 0, InputInfo.E_InputType.Down);
+            // 攻击键映射到键盘 J，按下触发无参 E_Input_Skill1
+            InputMgr.Instance.ChangeKeyboardInfo(E_EventType.E_Input_Skill1, KeyCode.J, InputInfo.E_InputType.Down);
 
             EventCenter.Instance.AddEventListener<float>(E_EventType.E_Input_Horizontal, OnInputHorizontal);
             EventCenter.Instance.AddEventListener<float>(E_EventType.E_Input_Vertical, OnInputVertical);
@@ -174,16 +172,14 @@ namespace Game.Dungeon.Player
         }
 
         /// <summary>
-        /// 根据鼠标在玩家左 / 右侧翻转 Visual。只翻显示层，不动根节点。
+        /// 根据水平输入的方向翻转 Visual：向右走朝右，向左走朝左，不动保持。
+        /// 只翻显示层，不动根节点。
         /// </summary>
         private void UpdateFacing()
         {
-            if (_mainCam == null) { _mainCam = Camera.main; if (_mainCam == null) return; }
-
-            Vector3 mouseWorld = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-            // 鼠标在右侧 → 朝右。相等时保持原朝向，避免抖动
-            if (mouseWorld.x > transform.position.x + 0.01f) _facingRight = true;
-            else if (mouseWorld.x < transform.position.x - 0.01f) _facingRight = false;
+            // 水平输入的 x 分量 > 0 表示向右，< 0 向左；=0 保持原朝向避免抖动
+            if (_moveInput.x > 0.01f) _facingRight = true;
+            else if (_moveInput.x < -0.01f) _facingRight = false;
 
             if (visualRenderer != null)
                 visualRenderer.flipX = !_facingRight; // 素材默认朝右，朝左才翻

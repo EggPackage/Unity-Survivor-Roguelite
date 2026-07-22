@@ -73,6 +73,7 @@ namespace Game.Dungeon.Enemy
         private int _curStateHash;        // 当前动画状态哈希，去重避免每帧重播
         private Color _baseColor = Color.white;
         private Coroutine _flashCo;
+        private bool _isDying;             // 防止 Health.OnDeath 被多次触发导致重复回池
 
         private void Awake()
         {
@@ -100,9 +101,10 @@ namespace Game.Dungeon.Enemy
             _lastContactTime = -999f;
             _knockbackUntil = 0f;
 
-            // 池复用重置：清残留闪白协程、复位颜色与动画状态
+            // 池复用重置：清残留闪白协程、复位颜色与动画状态、解除死亡锁
             _flashCo = null;
             _curStateHash = 0;
+            _isDying = false;
             if (visualRenderer != null) visualRenderer.color = _baseColor;
 
             AcquirePlayer();
@@ -219,15 +221,29 @@ namespace Game.Dungeon.Enemy
 
         /// <summary>
         /// 死亡：广播 E_Monster_Dead → 生成死亡特效 → 回收进池。
+        /// 加 bool 保护避免 Health 多次触发 OnDeath 导致 PushObj 被重复调用。
+        /// PushObj 抛异常时回退为 Destroy，避免敌人卡死在场上。
         /// </summary>
         private void OnDeath()
         {
+            if (_isDying) return;
+            _isDying = true;
+
             EventCenter.Instance.EventTrigger(E_EventType.E_Monster_Dead);
-            _rb.velocity = Vector2.zero;
+            if (_rb != null) _rb.velocity = Vector2.zero;
 
             if (visualRenderer != null) visualRenderer.color = _baseColor; // 回收前复位颜色
-            SpawnDeathVfx();
-            PoolMgr.Instance.PushObj(gameObject);
+
+            try
+            {
+                SpawnDeathVfx();
+                PoolMgr.Instance.PushObj(gameObject);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[Enemy] 回收到对象池失败，回退为 Destroy：{ex.Message}");
+                Destroy(gameObject);
+            }
         }
 
         /// <summary>

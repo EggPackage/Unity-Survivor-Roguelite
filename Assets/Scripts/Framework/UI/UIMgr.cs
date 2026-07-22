@@ -172,6 +172,25 @@ public class UIMgr : BaseManager<UIMgr>
                 return;
             }
 
+            // AB 包里没找到 → 回退尝试从 Resources/UI/ 加载
+            // 这样把 LoginPanel.prefab 放到 Assets/Resources/UI/ 也能工作，不需要先打 AB 包
+            if (res == null)
+            {
+                GameObject fallback = ResMgr.Instance.Load<GameObject>("UI/" + panelName);
+                if (fallback != null)
+                {
+                    Debug.LogWarning($"[UIMgr] ui AB 包未找到 {panelName}，已从 Resources/UI/ 回退加载");
+                    res = fallback;
+                }
+            }
+
+            if (res == null)
+            {
+                Debug.LogError($"[UIMgr] 无法加载面板 {panelName}（AB 包和 Resources 都没找到）");
+                panelDic.Remove(panelName);
+                return;
+            }
+
             //层级的处理
             Transform father = GetLayerFather(layer);
             //避免没有按指定规则传递层级参数 避免为空

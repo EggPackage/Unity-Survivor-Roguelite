@@ -52,11 +52,17 @@ public class PoolData
         PoolObj poolObj = usedObj.GetComponent<PoolObj>();
         if (poolObj == null)
         {
-            Debug.LogError("请为使用缓存池功能的预设体对象挂载PoolObj脚本 用于设置数量上限");
-            return;
+            // 预设体没挂 PoolObj 脚本：给一个合理的默认上限（10），而不是让 maxNum=0
+            // maxNum=0 会导致 NeedCreate 永远为 false，池空后会硬抢场上的对象
+            Debug.LogWarning($"[PoolData] 预设体 \"{name}\" 未挂载 PoolObj 脚本，" +
+                             "使用默认上限 10。建议在预设体上挂 PoolObj 并设置 maxNum。");
+            maxNum = 10;
         }
-        //记录上限数量值
-        maxNum = poolObj.maxNum;
+        else
+        {
+            //记录上限数量值
+            maxNum = Mathf.Max(1, poolObj.maxNum); // 至少 1，避免 Inspector 上写了 0
+        }
     }
 
     /// <summary>
@@ -193,20 +199,33 @@ public class PoolMgr : BaseManager<PoolMgr>
         if(!poolDic.ContainsKey(name) ||
             (poolDic[name].Count == 0 && poolDic[name].NeedCreate))
         {
-            //动态创建对象
-            //没有的时候 通过资源加载 去实例化出一个GameObject
-            obj = GameObject.Instantiate(Resources.Load<GameObject>(name));
-            //避免实例化出来的对象 默认会在名字后面加一个(Clone)
-            //我们重命名过后 方便往里面放
+            // 从 Resources 加载预设；找不到就打 warning 返回 null，让调用方自己处理
+            GameObject prefab = Resources.Load<GameObject>(name);
+            if (prefab == null)
+            {
+                Debug.LogError($"[PoolMgr] Resources.Load<GameObject>(\"{name}\") 返回 null，" +
+                               $"请确认预设体是否在 Assets/Resources/ 目录下，并且名字与 {nameof(name)} 参数完全一致。");
+                return null;
+            }
+
+            // 动态创建对象
+            obj = GameObject.Instantiate(prefab);
+            // 重命名为 drawer 名，确保 PushObj 时能匹配（否则 Unity 会加 "(Clone)" 后缀）
             obj.name = name;
 
-            //创建抽屉
+            // 创建抽屉
             if(!poolDic.ContainsKey(name))
                 poolDic.Add(name, new PoolData(poolObj, name, obj));
             else//实例化出来的对象 需要记录到使用中的对象容器中
                 poolDic[name].PushUsedList(obj);
         }
-        //当抽屉中有对象 或者 使用中的对象超上限了 直接去取出来用
+        // 池空但已达上限：没有可复用的，也不能再创建；返回 null，让调用方（例如 EnemySpawner）
+        // 等下一帧有敌人死亡后再尝试
+        else if (poolDic[name].Count == 0 && !poolDic[name].NeedCreate)
+        {
+            return null;
+        }
+        //抽屉中有对象 直接去取出来用
         else
         {
             obj = poolDic[name].Pop();
@@ -274,41 +293,22 @@ public class PoolMgr : BaseManager<PoolMgr>
     /// <summary>
     /// 往缓存池中放入对象
     /// </summary>
-    /// <param name="name">抽屉（对象）的名字</param>
-    /// <param name="obj">希望放入的对象</param>
+    /// <param name="obj">希望放入的对象（必须是通过 GetObj 取出来的；否则回退为 Destroy）</param>
     public void PushObj(GameObject obj)
     {
-        #region 因为失活 父子关系都放入了 抽屉对象中处理 所以不需要再处理这些内容了
-        ////总之，目的就是要把对象隐藏起来
-        ////并不是直接移除对象 而是将对象失活 一会儿再用 用的时候再激活它
-        ////除了这种方式，还可以把对象放倒屏幕外看不见的地方
-        //obj.SetActive(false);
+        if (obj == null) return;
 
-        ////把失活的对象（要放入抽屉中的对象） 父对象先设置为 柜子（缓存池）根对象
-        //obj.transform.SetParent(poolObj.transform);
-        #endregion
+        // 如果对应的 drawer 不存在（例如：对象是手动拖到场景里的，不是通过 GetObj 生成的），
+        // 不抛异常，直接 Destroy 掉，避免场景里堆满死敌人
+        if (!poolDic.ContainsKey(obj.name))
+        {
+            Debug.LogWarning($"[PoolMgr] 对象 \"{obj.name}\" 不是从对象池取的，" +
+                             $"跳过回池直接 Destroy。请通过 PoolMgr.Instance.GetObj(\"{obj.name}\") 来生成。");
+            Object.Destroy(obj);
+            return;
+        }
 
-        //没有抽屉 创建抽屉
-        //if (!poolDic.ContainsKey(obj.name))
-        //    poolDic.Add(obj.name, new PoolData(poolObj, obj.name));
-
-        //往抽屉当中放对象
         poolDic[obj.name].Push(obj);
-
-        ////如果存在对应的抽屉容器 直接放
-        //if(poolDic.ContainsKey(name))
-        //{
-        //    //往栈（抽屉）中放入对象
-        //    poolDic[name].Push(obj);
-        //}
-        ////否则 需要先创建抽屉 再放
-        //else
-        //{
-        //    //先创建抽屉
-        //    poolDic.Add(name, new Stack<GameObject>());
-        //    //再往抽屉里面放
-        //    poolDic[name].Push(obj);
-        //}
     }
 
     /// <summary>
