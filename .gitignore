@@ -45,7 +45,3 @@ crashlytics-build.properties
 
 # 临时文件
 *.tmp
-
-# 私人文档：含薪资/社保/存款/外包身份，文件自身约定不进 git、不推远端
-/Assets/docs/职业增值计划.md
-/Assets/docs/职业增值计划.md.meta
