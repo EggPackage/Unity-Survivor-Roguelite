@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -327,7 +326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1090113648
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -414,6 +413,190 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1197610486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1197610488}
+  - component: {fileID: 1197610487}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1197610487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197610486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea669f5b198ab5247a35a78df7c2505e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move:
+    m_Name: Move
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 40af3d88-db43-496c-a684-647327e411e8
+    m_Processors: 
+    m_Interactions: Hold
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 5166035f-a677-489b-9659-0cd9e4980039
+      m_Path: <Mouse>/leftButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 0
+    m_Flags: 0
+  Axis:
+    m_Name: Axis
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 913989e2-9d55-48c1-b859-01ea7013bc3f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 37f79654-6bf1-4ab4-9a8f-745c7257e3c5
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Axis
+      m_Flags: 0
+    - m_Name: 1D Axis
+      m_Id: 74737090-672b-4cd6-978f-7fda41705aa2
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Axis
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: dcf26e8c-d407-460b-8202-e3a8924394f2
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Axis
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: 122f49f0-745c-469b-b590-341870783b0d
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Axis
+      m_Flags: 8
+    m_Flags: 0
+  vector2d:
+    m_Name: Vector 2d
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e2249bed-a5b8-4b2d-99db-52c8c3fd96a4
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 6dfa7251-f1a6-4f5b-8866-cb0cb2687f5e
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Vector 2d
+      m_Flags: 4
+    - m_Name: up
+      m_Id: d8c60816-a826-4098-8b72-017bb3281680
+      m_Path: <Keyboard>/upArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Vector 2d
+      m_Flags: 8
+    - m_Name: down
+      m_Id: c5dc9067-6194-43be-b9a1-77cae22bfe5d
+      m_Path: <Keyboard>/downArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Vector 2d
+      m_Flags: 8
+    - m_Name: left
+      m_Id: a9d66ba7-8006-44b7-9982-b6ba095f9752
+      m_Path: <Keyboard>/leftArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Vector 2d
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 01d7f76b-0341-41b3-9d09-d990999addab
+      m_Path: <Keyboard>/rightArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Vector 2d
+      m_Flags: 8
+    m_Flags: 0
+  mixedAxis:
+    m_Name: Mixed Axis
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: ae441f19-7b40-4b44-a7db-027d52e8f07e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: One Modifier
+      m_Id: 0eaf131d-6a08-4f24-9907-7ed788bdd5cf
+      m_Path: OneModifier
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Mixed Axis
+      m_Flags: 4
+    - m_Name: modifier
+      m_Id: 4d93cb6a-04be-45fe-8372-52d3dcc4333e
+      m_Path: <Keyboard>/j
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Mixed Axis
+      m_Flags: 8
+    - m_Name: binding
+      m_Id: edcfd5bf-4721-4519-9419-428c177c23c2
+      m_Path: <Keyboard>/k
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Mixed Axis
+      m_Flags: 8
+    m_Flags: 0
+--- !u!4 &1197610488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197610486}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15, y: 10, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1462798802
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +615,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1462798803
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -527,3 +710,4 @@ SceneRoots:
   - {fileID: 746615902}
   - {fileID: 1090113651}
   - {fileID: 1462798806}
+  - {fileID: 1197610488}
