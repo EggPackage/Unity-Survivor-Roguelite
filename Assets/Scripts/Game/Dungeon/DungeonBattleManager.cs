@@ -111,11 +111,16 @@ namespace Game.Dungeon
 
         /// <summary>
         /// R 键重开：只在已结算（死亡/胜利）后生效，避免中途误触重开。
+        /// 编辑器模式下随时生效，方便开发迭代快速重开。
         /// </summary>
         private void OnRestartPressed()
         {
+#if UNITY_EDITOR
+            RestartBattle();
+#else
             if (!_resolved) return;
             RestartBattle();
+#endif
         }
 
         /// <summary>
