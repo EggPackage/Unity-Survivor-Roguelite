@@ -51,6 +51,9 @@ namespace Game.Dungeon.Enemy
         private readonly System.Collections.Generic.List<GameObject> _alive
             = new System.Collections.Generic.List<GameObject>();
 
+        // 生成检测复用缓冲（规范⑦：禁 OverlapCircleAll，改 NonAlloc）
+        private readonly Collider2D[] _overlapBuffer = new Collider2D[16];
+
         private void Start()
         {
             GameObject p = GameObject.FindGameObjectWithTag("Player");
@@ -166,10 +169,10 @@ namespace Game.Dungeon.Enemy
         private bool IsSafeSpawnPoint(Vector3 from, Vector3 to)
         {
             // 检测 1：生成点小圆不能撞墙（排除玩家和敌人自身）
-            Collider2D[] hits = Physics2D.OverlapCircleAll(to, blockCheckRadius);
-            for (int i = 0; i < hits.Length; i++)
+            int hitCount = Physics2D.OverlapCircleNonAlloc(to, blockCheckRadius, _overlapBuffer);
+            for (int i = 0; i < hitCount; i++)
             {
-                Collider2D c = hits[i];
+                Collider2D c = _overlapBuffer[i];
                 if (c == null) continue;
                 if (c.CompareTag("Player")) continue;
                 if (_enemyLayer != -1 && c.gameObject.layer == _enemyLayer) continue;

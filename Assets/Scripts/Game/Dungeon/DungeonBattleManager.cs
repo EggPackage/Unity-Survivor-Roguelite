@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Game.Dungeon.Combat;
 using Game.Dungeon.Enemy;
+using Game.Dungeon.Input;
 
 namespace Game.Dungeon
 {
@@ -75,12 +76,17 @@ namespace Game.Dungeon
             }
 
             if (spawner == null) spawner = FindObjectOfType<EnemySpawner>();
+
+            // T5：R 键重开（结算后）。输入走 DungeonInput 意图层。
+            DungeonInput.EnsureEnabled();
+            DungeonInput.OnRestart += OnRestartPressed;
         }
 
         private void OnDestroy()
         {
             EventCenter.Instance.RemoveEventListener(E_EventType.E_Monster_Dead, OnMonsterDead);
             if (_playerHealth != null) _playerHealth.OnDeath -= OnPlayerDeath;
+            DungeonInput.OnRestart -= OnRestartPressed;
         }
 
         /// <summary>
@@ -101,6 +107,15 @@ namespace Game.Dungeon
         {
             if (_resolved) return;
             Resolve(false);
+        }
+
+        /// <summary>
+        /// R 键重开：只在已结算（死亡/胜利）后生效，避免中途误触重开。
+        /// </summary>
+        private void OnRestartPressed()
+        {
+            if (!_resolved) return;
+            RestartBattle();
         }
 
         /// <summary>

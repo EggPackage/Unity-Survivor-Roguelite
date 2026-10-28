@@ -74,6 +74,7 @@ namespace Game.Dungeon.Enemy
         private Color _baseColor = Color.white;
         private Coroutine _flashCo;
         private bool _isDying;             // 防止 Health.OnDeath 被多次触发导致重复回池
+        private bool _triedFindPlayer;     // 兜底 Find 只做一次，避免每帧扫描
 
         private void Awake()
         {
@@ -105,8 +106,11 @@ namespace Game.Dungeon.Enemy
             _flashCo = null;
             _curStateHash = 0;
             _isDying = false;
+            _triedFindPlayer = false;
             if (visualRenderer != null) visualRenderer.color = _baseColor;
 
+            // 加入角色注册表，供武器选目标 / 玩家查询（替代每帧 Find）
+            ActorRegistry.RegisterEnemy(_health);
             AcquirePlayer();
         }
 
@@ -114,6 +118,7 @@ namespace Game.Dungeon.Enemy
         {
             _health.OnDamaged -= OnDamaged;
             _health.OnDeath -= OnDeath;
+            ActorRegistry.UnregisterEnemy(_health);
             _flashCo = null; // 失活时协程已随之停止，清引用即可
         }
 
@@ -134,6 +139,16 @@ namespace Game.Dungeon.Enemy
         /// </summary>
         private void AcquirePlayer()
         {
+            // 优先从注册表拿（替代每帧 FindGameObjectWithTag，规范⑦）
+            if (ActorRegistry.Player != null)
+            {
+                _player = ActorRegistry.Player;
+                return;
+            }
+
+            // 注册表还没玩家时兜底 Find 一次（不是每帧），之后靠注册表
+            if (_triedFindPlayer) return;
+            _triedFindPlayer = true;
             GameObject p = GameObject.FindGameObjectWithTag("Player");
             if (p != null) _player = p.transform;
         }
