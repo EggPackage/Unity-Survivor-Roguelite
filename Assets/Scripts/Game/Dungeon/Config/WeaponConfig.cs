@@ -25,6 +25,8 @@ namespace Game.Dungeon.Config
         public float interval = 0.8f;
 
         [Header("判定")]
+        [Tooltip("索敌距离：最近的敌人在这个距离之外就不挥砍，避免对着远处的敌人空挥。0 = 自动取 range + radius")]
+        public float triggerDistance = 0f;
         [Tooltip("判定圆相对玩家的前方偏移（沿攻击方向）")]
         public float range = 0.9f;
         [Tooltip("判定圆半径")]

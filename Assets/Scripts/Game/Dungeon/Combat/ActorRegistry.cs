@@ -48,6 +48,26 @@ namespace Game.Dungeon.Combat
         }
 
         /// <summary>
+        /// 最近存活敌人到 from 的距离平方；没有存活敌人返回 float.MaxValue。
+        /// 用平方值比较，省掉每次开方（判定只需要 &lt;= reach*reach）。
+        /// 供近战武器判断"目标是否已经进入可及范围"，避免对着远处的敌人空挥。
+        /// </summary>
+        public static float GetNearestEnemySqrDistance(Vector2 from)
+        {
+            float minSqr = float.MaxValue;
+
+            for (int i = 0; i < _enemies.Count; i++)
+            {
+                Health h = _enemies[i];
+                if (h == null || h.IsDead) continue;
+
+                float sqr = ((Vector2)h.transform.position - from).sqrMagnitude;
+                if (sqr < minSqr) minSqr = sqr;
+            }
+            return minSqr;
+        }
+
+        /// <summary>
         /// 最近存活敌人的方向（单位向量）；没有存活敌人返回 Vector2.zero。
         /// 用于武器决定朝哪挥砍，避免 FindObjectsOfType。
         /// </summary>

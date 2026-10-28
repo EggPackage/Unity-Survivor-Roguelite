@@ -8,8 +8,9 @@ namespace Game.Dungeon.Weapon
     /// 自动攻击驱动器：按 interval 定时调用武器策略开火。
     ///
     /// ==== 设计说明 ====
-    /// M1 的核心新增就是"自动攻击"——站着不动也会按间隔挥砍，不需要攻击键
-    /// （规范：自动攻击不配输入键，避免养成手动攻击的路径依赖）。
+    /// M1 的核心新增就是"自动攻击"——不需要攻击键（规范：自动攻击不配输入键，
+    /// 避免养成手动攻击的路径依赖）。但"自动"不等于"无条件"：到点后还要问策略
+    /// CanFire，够不着目标就不挥（详见 Update 内注释）。
     ///
     /// 定时用 Time.deltaTime 累加（规范⑥：受 timeScale 影响，命中顿帧时会跟着停，
     /// 这正是想要的）。间隔/范围/倍率全部读 WeaponConfig(SO)，改 SO 即时生效；
@@ -25,6 +26,8 @@ namespace Game.Dungeon.Weapon
 
         [Header("默认数值（无配置时生效）")]
         [SerializeField] private float defaultInterval = 0.8f;
+        [Tooltip("索敌距离，0 = 自动取 range + radius")]
+        [SerializeField] private float defaultTriggerDistance = 0f;
         [SerializeField] private float defaultRange = 0.9f;
         [SerializeField] private float defaultRadius = 0.7f;
         [SerializeField] private float defaultDamageMul = 1f;
@@ -57,6 +60,7 @@ namespace Game.Dungeon.Weapon
             {
                 _fallback = ScriptableObject.CreateInstance<WeaponConfig>();
                 _fallback.interval = defaultInterval;
+                _fallback.triggerDistance = defaultTriggerDistance;
                 _fallback.range = defaultRange;
                 _fallback.radius = defaultRadius;
                 _fallback.damageMul = defaultDamageMul;
@@ -82,9 +86,17 @@ namespace Game.Dungeon.Weapon
             _timer += Time.deltaTime;
             if (_timer < cfg.interval) return;
 
-            _timer -= cfg.interval;      // 保留溢出，节奏稳定
+            // 计时封顶：没目标期间不能无限累积"赊账"，否则一进范围会连打好几下
+            if (_timer > cfg.interval) _timer = cfg.interval;
             if (_strategy == null) return;
 
+            // 够不着就不挥：定时器只知道到点了，不知道目标距离。
+            // 不进这个判断的话，角色会在敌人还在远处时一直空挥剑。
+            // 注意这里不清零 _timer —— 保留满计时，敌人一进范围下一帧立刻出手，
+            // 不用再白等一个 interval。
+            if (!_strategy.CanFire(transform, cfg)) return;
+
+            _timer -= cfg.interval;      // 保留溢出，节奏稳定
             _strategy.Fire(transform, cfg);
             OnFired?.Invoke();           // 通知表现层播攻击动作（无人订阅也无害）
         }

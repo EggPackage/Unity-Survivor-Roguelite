@@ -16,7 +16,8 @@ namespace Game.Dungeon.Weapon
     ///      没有敌人时才退化为玩家当前朝向（GetComponentInChildren 不做 Find）。
     ///   3. 命中后统一走 Health.TakeDamage（规范④），并触发顿帧/震屏/命中特效。
     ///
-    /// 不负责：定时（那是 WeaponRunner 的事）、动画（M1 白盒不做攻击动画）。
+    /// 不负责：定时与"要不要打"的调度（WeaponRunner 按时调用 CanFire 再调 Fire）、
+    ///        动画（由 DungeonPlayerController 订阅 WeaponRunner.OnFired 负责）。
     /// </summary>
     public class MeleeSwing : IWeaponStrategy
     {
@@ -27,6 +28,17 @@ namespace Game.Dungeon.Weapon
         public MeleeSwing(LayerMask enemyMask)
         {
             _enemyMask = enemyMask;
+        }
+
+        public bool CanFire(Transform owner, WeaponConfig cfg)
+        {
+            if (owner == null || cfg == null) return false;
+
+            // 可及距离 = 判定圆心沿攻击方向偏移的 range + 判定圆半径 radius，
+            // 也就是这一刀挥出去最远能碰到哪。SO 里填了 triggerDistance 就以它为准
+            // （长柄/大范围武器需要单独调，不必跟着判定圆走）。
+            float reach = cfg.triggerDistance > 0f ? cfg.triggerDistance : cfg.range + cfg.radius;
+            return ActorRegistry.GetNearestEnemySqrDistance(owner.position) <= reach * reach;
         }
 
         public void Fire(Transform owner, WeaponConfig cfg)
