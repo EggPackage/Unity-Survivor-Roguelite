@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Game.Dungeon.Config;
 
@@ -31,6 +32,12 @@ namespace Game.Dungeon.Weapon
 
         [Header("判定层（留空自动取 Enemy 层）")]
         [SerializeField] private LayerMask enemyMask;
+
+        /// <summary>
+        /// 每次真正开火后触发。表现层（玩家动画）订阅它播攻击动作，
+        /// 武器层不关心谁在听，避免动画和战斗逻辑互相依赖。
+        /// </summary>
+        public event Action OnFired;
 
         private IWeaponStrategy _strategy;
         private WeaponConfig _fallback;   // 无 SO 时的一次性兜底配置，避免每次攻击 new
@@ -76,7 +83,10 @@ namespace Game.Dungeon.Weapon
             if (_timer < cfg.interval) return;
 
             _timer -= cfg.interval;      // 保留溢出，节奏稳定
-            _strategy?.Fire(transform, cfg);
+            if (_strategy == null) return;
+
+            _strategy.Fire(transform, cfg);
+            OnFired?.Invoke();           // 通知表现层播攻击动作（无人订阅也无害）
         }
     }
 }

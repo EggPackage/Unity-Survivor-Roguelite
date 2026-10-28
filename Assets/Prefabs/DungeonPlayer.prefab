@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5615533674550228211}
   - component: {fileID: 3084373441027795626}
   - component: {fileID: 3844982595991936504}
-  - component: {fileID: 7785283453543222300}
   - component: {fileID: 3420750010157500731}
   m_Layer: 9
   m_Name: DungeonPlayer
@@ -128,34 +127,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96427743ac409784fb19ffa999f8a230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visual: {fileID: 0}
-  visualRenderer: {fileID: 0}
-  animator: {fileID: 0}
-  attackDuration: 0.35
+  visual: {fileID: 527996744521282983}
+  visualRenderer: {fileID: 5487230290370996533}
+  animator: {fileID: 8865438637055926899}
+  playerInvulnerableTime: 0.5
   idleStateName: Warrior_Idle_Blue
   runStateName: Warrior_Run_Blue
-  attackStateName: Warrior_Attack_Blue
---- !u!114 &7785283453543222300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2218565772419582616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f3750e046de07949b88a58a687933b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackRange: 0.9
-  attackRadius: 0.7
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 256
-  hitStopDuration: 0.06
-  shakeIntensity: 1
-  knockbackForce: 4
-  hitVfxResName: DungeonHitVfx
+  attackStateNameA: Warrior_Attack_Blue
+  attackStateNameB: Warrior_Attack2_Blue
+  attackClipNameA: Warrior_Attack1_Blue
+  attackClipNameB: Warrior_Attack2_Blue
+  attackFallbackDuration: 0.4
 --- !u!114 &3420750010157500731
 MonoBehaviour:
   m_ObjectHideFlags: 0

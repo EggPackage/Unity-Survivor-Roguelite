@@ -32,6 +32,9 @@ namespace Game.Dungeon.Player
     ///   - 本类不再处理攻击键；Awake 时确保场景里有 WeaponRunner 组件（没有就补一个），
     ///     由它按 WeaponConfig.interval 定时调用武器策略开火。攻击方向优先指向
     ///     ActorRegistry 里最近的敌人，业务层不参与。
+    ///   - 开火后 WeaponRunner 会抛 OnFired，本类订阅它播一段攻击动作（两段交替），
+    ///     并在动作时长内屏蔽 Idle/Run 覆盖，否则动画会被每帧打断。
+    ///     时长从 Animator 的剪辑列表里读，不在代码里写死。
     ///
     /// 无敌帧（M1）：
     ///   - Awake 时把自己的 Health.invulnerableTime 设成 playerInvulnerableTime（默认 0.5s），
@@ -61,15 +64,33 @@ namespace Game.Dungeon.Player
         [Tooltip("移动动画状态名。占位素材：Warrior_Run_Blue")]
         [SerializeField] private string runStateName = "Warrior_Run_Blue";
 
+        [Header("攻击动画（自动攻击开火时播放，播完回 Idle/Run）")]
+        [Tooltip("攻击状态名（第一段）。占位素材：Warrior_Attack_Blue")]
+        [SerializeField] private string attackStateNameA = "Warrior_Attack_Blue";
+        [Tooltip("攻击状态名（第二段，与第一段交替，避免每次同一动作）")]
+        [SerializeField] private string attackStateNameB = "Warrior_Attack2_Blue";
+        [Tooltip("第一段状态对应的剪辑名，用于取时长（状态名与剪辑名不一定相同）")]
+        [SerializeField] private string attackClipNameA = "Warrior_Attack1_Blue";
+        [Tooltip("第二段状态对应的剪辑名，用于取时长")]
+        [SerializeField] private string attackClipNameB = "Warrior_Attack2_Blue";
+        [Tooltip("取不到剪辑长度时的兜底时长（秒）")]
+        [SerializeField] private float attackFallbackDuration = 0.4f;
+
         private Rigidbody2D _rb;
         private PlayerStats _stats;
         private Health _health;
+        private WeaponRunner _weapon;
 
         private E_PlayerState _state = E_PlayerState.Idle;
         private Vector2 _moveInput;         // 缓存的输入向量（-1~1）
         private bool _facingRight = true;   // 当前朝向
 
         private int _curStateHash;          // 当前动画状态哈希，避免重复 Play 打断自身
+
+        private int _attackHashA, _attackHashB;
+        private float _attackDurationA, _attackDurationB;
+        private float _attackUntil;         // 攻击动作播到这个时刻之前，不覆盖动画
+        private bool _attackToggle;         // 两段攻击交替标记
 
         private void Reset()
         {
@@ -100,9 +121,14 @@ namespace Game.Dungeon.Player
             // T4：玩家无敌帧
             if (_health != null) _health.SetInvulnerableTime(playerInvulnerableTime);
 
+            // 攻击动画：状态哈希与剪辑时长一次性缓存，不在开火路径上算/分配
+            _attackHashA = Animator.StringToHash(attackStateNameA);
+            _attackHashB = Animator.StringToHash(attackStateNameB);
+            CacheAttackDurations();
+
             // T2：自动攻击驱动器（场景未挂则运行时补上，保证直接 Play 就能打怪）
-            if (GetComponent<WeaponRunner>() == null)
-                gameObject.AddComponent<WeaponRunner>();
+            _weapon = GetComponent<WeaponRunner>();
+            if (_weapon == null) _weapon = gameObject.AddComponent<WeaponRunner>();
         }
 
         private void OnEnable()
@@ -111,6 +137,9 @@ namespace Game.Dungeon.Player
             DungeonInput.EnsureEnabled();
             DungeonInput.OnMove += OnMoveInput;
 
+            // 自动攻击开火 -> 播攻击动作
+            if (_weapon != null) _weapon.OnFired += OnWeaponFired;
+
             // T3：注册为玩家，供敌人/武器查询，替代 FindGameObjectWithTag
             ActorRegistry.RegisterPlayer(transform);
         }
@@ -118,6 +147,7 @@ namespace Game.Dungeon.Player
         private void OnDisable()
         {
             DungeonInput.OnMove -= OnMoveInput;
+            if (_weapon != null) _weapon.OnFired -= OnWeaponFired;
             ActorRegistry.UnregisterPlayer(transform);
         }
 
@@ -157,7 +187,50 @@ namespace Game.Dungeon.Player
 
         private void UpdateAnimator()
         {
+            // 攻击动作播放期间不覆盖：否则 Idle/Run 每帧把攻击动画打断在第一帧
+            if (Time.time < _attackUntil) return;
+
             PlayState(_state == E_PlayerState.Move ? runStateName : idleStateName);
+        }
+
+        /// <summary>
+        /// 武器开火回调：播一段攻击动作，两段交替。
+        /// 用 _attackUntil 标记占位时长，期间 UpdateAnimator 不覆盖。
+        /// </summary>
+        private void OnWeaponFired()
+        {
+            if (animator == null) return;
+
+            _attackToggle = !_attackToggle;
+            int hash = _attackToggle ? _attackHashA : _attackHashB;
+            float duration = _attackToggle ? _attackDurationA : _attackDurationB;
+
+            animator.Play(hash, 0, 0f);
+            _curStateHash = hash;                        // 让 PlayState 的去重逻辑认它
+            _attackUntil = Time.time + Mathf.Max(0.01f, duration);
+        }
+
+        /// <summary>
+        /// 从 Animator 控制器的剪辑列表取两段攻击的时长，只在 Awake 跑一次。
+        /// 状态名和剪辑名在本素材里不一致（Attack_Blue 对应 Attack1_Blue），
+        /// 所以拆成两组字段，避免靠字符串猜。取不到就用 Inspector 兜底值。
+        /// </summary>
+        private void CacheAttackDurations()
+        {
+            _attackDurationA = attackFallbackDuration;
+            _attackDurationB = attackFallbackDuration;
+
+            if (animator == null || animator.runtimeAnimatorController == null) return;
+
+            AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+            for (int i = 0; i < clips.Length; i++)
+            {
+                AnimationClip clip = clips[i];
+                if (clip == null) continue;
+
+                if (clip.name == attackClipNameA) _attackDurationA = clip.length;
+                else if (clip.name == attackClipNameB) _attackDurationB = clip.length;
+            }
         }
 
         /// <summary>

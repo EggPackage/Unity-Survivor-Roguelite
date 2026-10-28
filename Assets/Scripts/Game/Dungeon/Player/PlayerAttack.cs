@@ -6,6 +6,10 @@ namespace Game.Dungeon.Player
     /// <summary>
     /// 玩家近战挥砍判定（"拉花剑气"打蛋器重刃）。
     ///
+    /// ⚠️ 已废弃（2026-10-28）：M1 改为自动攻击后，判定逻辑搬到
+    /// `Game/Dungeon/Weapon/MeleeSwing.cs` 并由 `WeaponRunner` 定时驱动。
+    /// 本组件已从玩家预制体移除，文件保留仅供对照阅读，不要再挂回去。
+    ///
     /// ==== 设计说明 ====
     /// 对应 GDD 下午地牢的核心动作："挥舞出拉花剑气"。这里只负责一次挥砍的
     /// 命中判定与打击反馈，不管输入与状态机（那是 DungeonPlayerController 的事）。
